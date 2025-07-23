@@ -13,7 +13,7 @@
     </div>
 
     <!-- Logo -->
-    <div class="h-20 flex items-center justify-center border-b border-gray-100">
+    <div class="h-20 flex items-center justify-center">
         <a href="{{ route('dashboard') }}">
             <x-application-mark :class="collapsed ? 'h-6 w-auto' : 'h-9 w-auto'" class="block transition-all duration-300" />
         </a>
@@ -89,7 +89,7 @@
         @endif
     </div>
     <!-- Settings Dropdown at bottom -->
-    <div class="px-6 py-4 border-t border-gray-100 mt-auto" x-data="{ dropdownOpen: false }" class="relative" x-show="!collapsed" x-transition>
+    <div class="px-6 py-4  mt-auto" x-data="{ dropdownOpen: false }" class="relative" x-show="!collapsed" x-transition>
         <div class="relative">
             <button @click="dropdownOpen = !dropdownOpen" class="w-full inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
