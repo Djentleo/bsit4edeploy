@@ -15,6 +15,9 @@
                         <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
                         <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
                         <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
+                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Mobile</th>
+                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Barangay Position</th>
+                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Assigned Area</th>
                         <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                         <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
                     </tr>
@@ -26,6 +29,9 @@
                             <td class="px-4 py-2">{{ $user->name }}</td>
                             <td class="px-4 py-2">{{ $user->role ?? '-' }}</td>
                             <td class="px-4 py-2">{{ $user->email }}</td>
+                            <td class="px-4 py-2">{{ $user->mobile ?? '-' }}</td>
+                            <td class="px-4 py-2">{{ $user->position ?? '-' }}</td>
+                            <td class="px-4 py-2">{{ $user->assigned_area ?? '-' }}</td>
                             <td class="px-4 py-2">
                                 <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full
                                     {{ $user->status === 'active' ? 'bg-gray-200 text-gray-700' : 'bg-gray-100 text-gray-400' }}">
