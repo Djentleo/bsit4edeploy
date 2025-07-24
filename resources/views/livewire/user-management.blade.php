@@ -7,40 +7,40 @@
                 <i class="fa-solid fa-plus"></i>
             </button>
         </div>
-        <div>
-            <table class="w-full divide-y divide-gray-200 text-sm">
+        <div class="w-full">
+            <table class="w-full divide-y divide-gray-200 text-xs">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">#</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Name</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Mobile</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Barangay Position</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Assigned Area</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
-                        <th class="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">Action</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-8">#</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Name</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Role</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-32">Email</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Mobile</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Position</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Area</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Status</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Action</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-100">
                     @foreach ($users as $user)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-4 py-2 text-center">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-2">{{ $user->name }}</td>
-                            <td class="px-4 py-2">{{ $user->role ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $user->email }}</td>
-                            <td class="px-4 py-2">{{ $user->mobile ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $user->position ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $user->assigned_area ?? '-' }}</td>
-                            <td class="px-4 py-2">
-                                <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full
+                            <td class="px-2 py-2 text-center text-xs">{{ $loop->iteration }}</td>
+                            <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->name }}">{{ $user->name }}</td>
+                            <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->role ?? '-' }}">{{ $user->role ?? '-' }}</td>
+                            <td class="px-2 py-2 text-xs truncate max-w-32" title="{{ $user->email }}">{{ $user->email }}</td>
+                            <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->mobile ?? '-' }}">{{ $user->mobile ?? '-' }}</td>
+                            <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->position ?? '-' }}">{{ $user->position ?? '-' }}</td>
+                            <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->assigned_area ?? '-' }}">{{ $user->assigned_area ?? '-' }}</td>
+                            <td class="px-2 py-2">
+                                <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full
                                     {{ $user->status === 'active' ? 'bg-gray-200 text-gray-700' : 'bg-gray-100 text-gray-400' }}">
                                     {{ ucfirst($user->status ?? 'Active') }}
                                 </span>
                             </td>
-                            <td class="px-4 py-2 flex items-center gap-2">
-                                <button class="text-blue-600 hover:text-blue-900" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="text-gray-500 hover:text-red-600" title="Deactivate"><i class="fa-solid fa-user-slash"></i></button>
+                            <td class="px-2 py-2 flex items-center gap-1">
+                                <button class="text-blue-600 hover:text-blue-900" title="Edit"><i class="fa-solid fa-pen-to-square text-xs"></i></button>
+                                <button class="text-gray-500 hover:text-red-600" title="Deactivate"><i class="fa-solid fa-user-slash text-xs"></i></button>
                             </td>
                         </tr>
                     @endforeach

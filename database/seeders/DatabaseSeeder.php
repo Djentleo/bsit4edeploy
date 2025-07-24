@@ -19,6 +19,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@baritan.malabon',
             'password' => bcrypt('admin123'), // Password: admin123
+            'mobile' => '09123456789',
+            'role' => 'admin',
+            'position' => 'Administrator',
+            'assigned_area' => 'Malabon',
+            'status' => 'active',
         ]);
     }
 }
