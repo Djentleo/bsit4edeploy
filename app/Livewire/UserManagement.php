@@ -54,9 +54,9 @@ class UserManagement extends Component
             'status' => 'active',
         ]);
 
-        // Send welcome email
+        // Send welcome email with credentials
         try {
-            Mail::to($user->email)->send(new WelcomeUserMail($user));
+            Mail::to($user->email)->send(new WelcomeUserMail($user, $this->password));
         } catch (\Exception $e) {
             // Log or handle mail error
         }
