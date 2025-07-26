@@ -10,6 +10,8 @@ use App\Mail\WelcomeUserMail;
 class UserManagement extends Component
 {
     public $addUserModal = false;
+    public $editMode = false;
+    public $userId;
     public $name, $email, $password, $mobile, $role, $position, $assigned_area;
 
     protected $rules = [
@@ -22,10 +24,28 @@ class UserManagement extends Component
         'assigned_area' => 'required|string|max:255',
     ];
 
+    protected $listeners = ['editUser' => 'editUser', 'confirmDeleteUser' => 'deleteUser'];
+
     public function openModal()
     {
-        $this->reset(['name', 'email', 'mobile', 'role', 'position', 'assigned_area']);
+        $this->reset(['name', 'email', 'mobile', 'role', 'position', 'assigned_area', 'userId']);
         $this->password = $this->generatePassword();
+        $this->editMode = false;
+        $this->addUserModal = true;
+    }
+
+    public function editUser($id)
+    {
+        $user = User::findOrFail($id);
+        $this->userId = $user->id;
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->mobile = $user->mobile;
+        $this->role = $user->role;
+        $this->position = $user->position;
+        $this->assigned_area = $user->assigned_area;
+        $this->password = '********'; // Not editable
+        $this->editMode = true;
         $this->addUserModal = true;
     }
 
@@ -38,6 +58,8 @@ class UserManagement extends Component
     public function closeModal()
     {
         $this->addUserModal = false;
+        $this->editMode = false;
+        $this->reset(['name', 'email', 'password', 'mobile', 'role', 'position', 'assigned_area', 'userId']);
     }
 
     public function saveUser()
@@ -64,6 +86,49 @@ class UserManagement extends Component
         $this->closeModal();
         $this->reset(['name', 'email', 'password', 'mobile', 'role', 'position', 'assigned_area']);
         $this->dispatch('user-added');
+    }
+
+    public function updateUser()
+    {
+        $user = User::findOrFail($this->userId);
+        $this->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'mobile' => 'required|string|max:20',
+            'role' => 'required|in:admin,responder',
+            'position' => 'required|string|max:255',
+            'assigned_area' => 'required|string|max:255',
+        ]);
+        $user->update([
+            'name' => $this->name,
+            'email' => $this->email,
+            'mobile' => $this->mobile,
+            'role' => $this->role,
+            'position' => $this->position,
+            'assigned_area' => $this->assigned_area,
+        ]);
+        $this->closeModal();
+        $this->dispatch('user-updated');
+    }
+
+    public function toggleStatus($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = $user->status === 'active' ? 'inactive' : 'active';
+        $user->save();
+        $this->dispatch('user-status-toggled');
+    }
+
+    public function confirmDeleteUser($id)
+    {
+        $this->dispatch('confirm-delete', $id);
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        $this->dispatch('user-deleted');
     }
 
     public function render()
