@@ -24,7 +24,6 @@ class UserManagement extends Component
         'assigned_area' => 'required|string|max:255',
     ];
 
-    protected $listeners = ['editUser' => 'editUser', 'confirmDeleteUser' => 'deleteUser'];
 
     public function openModal()
     {
@@ -126,6 +125,7 @@ class UserManagement extends Component
 
     public function deleteUser($id)
     {
+        logger('Deleting user: ' . $id);
         $user = User::findOrFail($id);
         $user->delete();
         $this->dispatch('user-deleted');

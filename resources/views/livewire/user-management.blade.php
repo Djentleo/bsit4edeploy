@@ -43,7 +43,25 @@
                                 <button class="text-gray-500 hover:text-red-600" title="{{ $user->status === 'active' ? 'Deactivate' : 'Activate' }}" wire:click="toggleStatus({{ $user->id }})">
                                     <i class="fa-solid fa-user-slash text-xs"></i>
                                 </button>
-                                <button class="text-red-600 hover:text-red-900" title="Delete" wire:click="confirmDeleteUser({{ $user->id }})"><i class="fa-solid fa-trash text-xs"></i></button>
+                                <button 
+                                    x-data="{}"
+                                    @click.prevent="Swal.fire({
+                                        title: 'Are you sure?',
+                                        text: 'This will delete the user and all their records!',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#d33',
+                                        cancelButtonColor: '#3085d6',
+                                        confirmButtonText: 'Yes, delete it!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            $wire.deleteUser({{ $user->id }});
+                                        }
+                                    })"
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                                >
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     @endforeach
