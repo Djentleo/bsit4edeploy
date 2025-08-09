@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between mb-4">
             <h3 class="text-2xl font-bold text-gray-700">Users</h3>
             <button wire:click="openModal" class="bg-blue-700 hover:bg-blue-800 text-white font-semibold px-5 py-2 rounded flex items-center gap-2">
-                <span>ADD USERS</span>
+                <span>ADD USER</span>
                 <i class="fa-solid fa-plus"></i>
             </button>
         </div>
