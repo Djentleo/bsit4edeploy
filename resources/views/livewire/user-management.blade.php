@@ -12,40 +12,51 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-8">#</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Name</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Role</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-32">Email</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Mobile</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Position</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Area</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Status</th>
-                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Action</th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Name
+                        </th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Role
+                        </th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-32">Email
+                        </th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Mobile
+                        </th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">Position
+                        </th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Area
+                        </th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Status
+                        </th>
+                        <th class="px-2 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider w-16">Action
+                        </th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-100">
                     @foreach ($users as $user)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-2 py-2 text-center text-xs">{{ $loop->iteration }}</td>
-                            <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->name }}">{{ $user->name }}</td>
-                            <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->role ?? '-' }}">{{ $user->role ?? '-' }}</td>
-                            <td class="px-2 py-2 text-xs truncate max-w-32" title="{{ $user->email }}">{{ $user->email }}</td>
-                            <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->mobile ?? '-' }}">{{ $user->mobile ?? '-' }}</td>
-                            <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->position ?? '-' }}">{{ $user->position ?? '-' }}</td>
-                            <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->assigned_area ?? '-' }}">{{ $user->assigned_area ?? '-' }}</td>
-                            <td class="px-2 py-2">
-                                <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-2 py-2 text-center text-xs">{{ $loop->iteration }}</td>
+                        <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->name }}">{{ $user->name }}</td>
+                        <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->role ?? '-' }}">{{ $user->role
+                            ?? '-' }}</td>
+                        <td class="px-2 py-2 text-xs truncate max-w-32" title="{{ $user->email }}">{{ $user->email }}
+                        </td>
+                        <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->mobile ?? '-' }}">{{
+                            $user->mobile ?? '-' }}</td>
+                        <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->position ?? '-' }}">{{
+                            $user->position ?? '-' }}</td>
+                        <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->assigned_area ?? '-' }}">{{
+                            $user->assigned_area ?? '-' }}</td>
+                        <td class="px-2 py-2">
+                            <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full
                                     {{ $user->status === 'active' ? 'bg-gray-200 text-gray-700' : 'bg-gray-100 text-gray-400' }}">
-                                    {{ ucfirst($user->status ?? 'Active') }}
-                                </span>
-                            </td>
-                            <td class="px-2 py-2 flex items-center gap-1">
-                                <button class="text-blue-600 hover:text-blue-900" title="Edit" wire:click="editUser({{ $user->id }})"><i class="fa-solid fa-pen-to-square text-xs"></i></button>
-                                <button class="text-gray-500 hover:text-red-600" title="{{ $user->status === 'active' ? 'Deactivate' : 'Activate' }}" wire:click="toggleStatus({{ $user->id }})">
-                                    <i class="fa-solid fa-user-slash text-xs"></i>
-                                </button>
-                                <button 
-                                    x-data="{}"
-                                    @click.prevent="Swal.fire({
+                                {{ ucfirst($user->status ?? 'Active') }}
+                            </span>
+                        </td>
+                        <td class="px-2 py-2 flex items-center gap-1">
+                            <button class="text-blue-600 hover:text-blue-900" title="Edit" wire:click="editUser({{ $user->id }})"><i class="fa-solid fa-pen-to-square text-xs"></i></button>
+                            <button class="text-gray-500 hover:text-red-600" title="{{ $user->status === 'active' ? 'Deactivate' : 'Activate' }}" wire:click="toggleStatus({{ $user->id }})">
+                                <i class="fa-solid fa-user-slash text-xs"></i>
+                            </button>
+                            <button x-data="{}" @click.prevent="Swal.fire({
                                         title: 'Are you sure?',
                                         text: 'This will delete the user and all their records!',
                                         icon: 'warning',
@@ -57,13 +68,11 @@
                                         if (result.isConfirmed) {
                                             $wire.deleteUser({{ $user->id }});
                                         }
-                                    })"
-                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
-                                >
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
+                                    })" class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                               <i class="fa-solid fa-trash text-xs"></i>
+                            </button>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -92,7 +101,7 @@
                     <label class="block text-gray-700 text-sm font-semibold mb-1">Password (Auto-generated)</label>
                     <input type="text" wire:model.defer="password" readonly class="border border-gray-300 rounded-lg w-full py-2 px-3 bg-gray-100 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700 cursor-not-allowed">
                     @if(!$editMode)
-                        @error('password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    @error('password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                     @endif
                 </div>
                 <div>
@@ -122,11 +131,13 @@
                 <div class="md:col-span-2 flex justify-end gap-2 pt-2 relative">
                     <button type="button" wire:click="closeModal" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-5 rounded-lg transition-colors">Cancel</button>
                     <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-2 px-5 rounded-lg transition-colors relative" style="min-width: 110px;">
-                        <span wire:loading.remove wire:target="{{ $editMode ? 'updateUser' : 'saveUser' }}">{{ $editMode ? 'Update User' : 'Add User' }}</span>
+                        <span wire:loading.remove wire:target="{{ $editMode ? 'updateUser' : 'saveUser' }}">{{ $editMode
+                            ? 'Update User' : 'Add User' }}</span>
                         <span wire:loading wire:target="{{ $editMode ? 'updateUser' : 'saveUser' }}" class="flex items-center justify-center absolute inset-0 left-0 right-0 top-0 bottom-0 bg-blue-700 bg-opacity-80 rounded-lg">
                             <svg class="animate-spin h-5 w-5 text-white ml-12 mt-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+                                </path>
                             </svg>
                         </span>
                     </button>
@@ -134,60 +145,61 @@
             </form>
         </div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('livewire:init', () => {
-        window.Livewire.on('user-added', () => {
-            Swal.fire({
-                icon: 'success',
-                title: 'User Added',
-                text: 'The new user has been added successfully!',
-                timer: 2000,
-                showConfirmButton: false
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('livewire:init', () => {
+            window.Livewire.on('user-added', () => {
+                Swal.fire({
+                    icon: 'success'
+                    , title: 'User Added'
+                    , text: 'The new user has been added successfully!'
+                    , timer: 2000
+                    , showConfirmButton: false
+                });
+            });
+            window.Livewire.on('user-updated', () => {
+                Swal.fire({
+                    icon: 'success'
+                    , title: 'User Updated'
+                    , text: 'User information has been updated!'
+                    , timer: 2000
+                    , showConfirmButton: false
+                });
+            });
+            window.Livewire.on('user-status-toggled', () => {
+                Swal.fire({
+                    icon: 'success'
+                    , title: 'Status Changed'
+                    , text: 'User status has been updated!'
+                    , timer: 1500
+                    , showConfirmButton: false
+                });
+            });
+            window.Livewire.on('user-deleted', () => {
+                Swal.fire({
+                    icon: 'success'
+                    , title: 'User Deleted'
+                    , text: 'User account has been deleted!'
+                    , timer: 1500
+                    , showConfirmButton: false
+                });
+            });
+            window.Livewire.on('confirm-delete', (id) => {
+                Swal.fire({
+                    title: 'Are you sure?'
+                    , text: 'This will delete the user and all their records!'
+                    , icon: 'warning'
+                    , showCancelButton: true
+                    , confirmButtonColor: '#d33'
+                    , cancelButtonColor: '#3085d6'
+                    , confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Livewire.emit('deleteUser', id);
+                    }
+                });
             });
         });
-        window.Livewire.on('user-updated', () => {
-            Swal.fire({
-                icon: 'success',
-                title: 'User Updated',
-                text: 'User information has been updated!',
-                timer: 2000,
-                showConfirmButton: false
-            });
-        });
-        window.Livewire.on('user-status-toggled', () => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Status Changed',
-                text: 'User status has been updated!',
-                timer: 1500,
-                showConfirmButton: false
-            });
-        });
-        window.Livewire.on('user-deleted', () => {
-            Swal.fire({
-                icon: 'success',
-                title: 'User Deleted',
-                text: 'User account has been deleted!',
-                timer: 1500,
-                showConfirmButton: false
-            });
-        });
-        window.Livewire.on('confirm-delete', (id) => {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'This will delete the user and all their records!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Livewire.emit('deleteUser', id);
-                }
-            });
-        });
-    });
-</script>
+
+    </script>
 </div>
