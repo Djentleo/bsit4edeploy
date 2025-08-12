@@ -27,6 +27,12 @@
             <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
                 {{ __('User Management') }}
             </x-nav-link>
+            <x-nav-link href="{{ route('incidents.index') }}" :active="request()->routeIs('incidents.*')">
+                {{ __('Incident Tables') }}
+            </x-nav-link>
+            <x-nav-link href="{{ route('dispatch.index') }}" :active="request()->routeIs('dispatch.*')">
+                {{ __('Details & Dispatch') }}
+            </x-nav-link>
             <!-- Add more sidebar links here as needed -->
         </div>
         
@@ -41,6 +47,16 @@
                class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('users.*') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
                title="User Management">
                 <i class="fa-solid fa-users"></i>
+            </a>
+            <a href="{{ route('incidents.index') }}"
+               class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('incidents.*') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
+               title="Incident Tables">
+                <i class="fa-solid fa-table"></i>
+            </a>
+            <a href="{{ route('dispatch.index') }}"
+               class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('dispatch.*') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
+               title="Details & Dispatch">
+                <i class="fa-solid fa-truck"></i>
             </a>
         </div>
         <!-- Teams Dropdown -->
