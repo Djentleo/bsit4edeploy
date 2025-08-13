@@ -11,7 +11,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <div class="bg-blue-100 rounded-lg shadow p-6 flex flex-col items-center">
                     <span x-data="{ count: 0, target: 123 }" x-init="let i = setInterval(() => { if(count < target) count++; else clearInterval(i); }, 10)" class="text-3xl font-bold text-blue-900" x-text="count"></span>
-                    <span class="mt-2 text-blue-700">Total Cases</span>
+                    <span class="mt-2 text-blue-700">Total Cases Tite</span>
                 </div>
                 <div class="bg-yellow-100 rounded-lg shadow p-6 flex flex-col items-center">
                     <span x-data="{ count: 0, target: 12 }" x-init="let i = setInterval(() => { if(count < target) count++; else clearInterval(i); }, 30)" class="text-3xl font-bold text-yellow-900" x-text="count"></span>
