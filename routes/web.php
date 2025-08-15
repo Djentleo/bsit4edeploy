@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use App\Services\FirebaseService;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -13,9 +15,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('users', function () {
         return view('users.index');
     })->name('users.index');
@@ -27,4 +27,14 @@ Route::middleware([
     Route::get('dispatch', function () {
         return view('dispatch.index');
     })->name('dispatch.index');
+});
+
+Route::get('/test-firebase', function (FirebaseService $firebaseService) {
+    $incidents = $firebaseService->getIncidents();
+    return response()->json($incidents);
+});
+
+Route::get('/test-summary', function (FirebaseService $firebaseService) {
+    $summaryData = $firebaseService->getSummaryData();
+    return response()->json($summaryData);
 });
