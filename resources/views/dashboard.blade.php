@@ -40,7 +40,7 @@
             <div class="bg-white rounded-lg shadow p-6 mt-8">
                 <h3 class="text-2xl font-bold text-gray-700 mb-4 border-b pb-2">Recent Incidents</h3>
                 <div class="space-y-4">
-                    @foreach ($incidents as $incident)
+                    @foreach (array_slice($incidents, 0, 3) as $incident)
                         <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-3 shadow-sm">
                             <div class="flex items-center gap-3">
                                 <span class="h-4 w-4 rounded-full inline-block blinking-dot" style="background-color: {{ $incident['status'] === 'ongoing' ? '#FACC15' : ($incident['status'] === 'resolved' ? '#4ADE80' : '#F87171') }};"></span>
