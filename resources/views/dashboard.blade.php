@@ -43,14 +43,14 @@
                     @foreach ($incidents as $incident)
                         <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-3 shadow-sm">
                             <div class="flex items-center gap-3">
-                                <span class="h-4 w-4 rounded-full inline-block blinking-dot bg-{{ $incident['status'] === 'ongoing' ? 'yellow-400' : ($incident['status'] === 'resolved' ? 'green-400' : 'red-400') }}"></span>
+                                <span class="h-4 w-4 rounded-full inline-block blinking-dot" style="background-color: {{ $incident['status'] === 'ongoing' ? '#FACC15' : ($incident['status'] === 'resolved' ? '#4ADE80' : '#F87171') }};"></span>
                                 <div>
                                     <div class="font-semibold text-gray-700">{{ ucfirst($incident['type']) }}</div>
                                     <div class="text-xs text-gray-500">{{ \Carbon\Carbon::parse($incident['timestamp'])->format('Y-m-d h:i A') }}</div>
                                 </div>
                             </div>
                             <div class="flex flex-col items-end">
-                                <span class="inline-block px-3 py-1 text-xs font-semibold bg-{{ $incident['status'] === 'ongoing' ? 'yellow-200 text-yellow-800' : ($incident['status'] === 'resolved' ? 'green-200 text-green-800' : 'red-200 text-red-800') }} rounded-full mb-1">{{ ucfirst($incident['status']) }}</span>
+                                <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full mb-1" style="background-color: {{ $incident['status'] === 'ongoing' ? '#FEF3C7' : ($incident['status'] === 'resolved' ? '#D1FAE5' : '#FEE2E2') }}; color: {{ $incident['status'] === 'ongoing' ? '#B45309' : ($incident['status'] === 'resolved' ? '#065F46' : '#991B1B') }};">{{ ucfirst($incident['status']) }}</span>
                                 <span class="text-xs text-gray-500">{{ $incident['reporter_name'] }}</span>
                             </div>
                         </div>
