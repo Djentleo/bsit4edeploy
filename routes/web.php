@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use App\Services\FirebaseService;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileUploadController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -27,6 +28,9 @@ Route::middleware([
     Route::get('dispatch', function () {
         return view('dispatch.index');
     })->name('dispatch.index');
+    Route::get('incident-logs', function () {
+        return view('incident_logs.index'); // Updated to reflect the renamed file
+    })->name('incident.logs');
 });
 
 Route::get('/test-firebase', function (FirebaseService $firebaseService) {
@@ -38,3 +42,5 @@ Route::get('/test-summary', function (FirebaseService $firebaseService) {
     $summaryData = $firebaseService->getSummaryData();
     return response()->json($summaryData);
 });
+
+Route::post('/upload', [FileUploadController::class, 'upload'])->name('file.upload');

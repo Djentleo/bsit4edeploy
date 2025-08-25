@@ -1,4 +1,4 @@
-?php
+<?php
 
 namespace App\Http\Livewire;
 
@@ -14,9 +14,11 @@ class IncidentTable extends Component
     {
         $firebase = (new Factory)->withServiceAccount(config('firebase.credentials'))->createFirestore();
         $database = $firebase->database();
-        $this->incidents = $database->collection('incidents')->documents()->map(function ($doc) {
-            return $doc->data();
-        });
+        $documents = $database->collection('incidents')->documents();
+        $this->incidents = [];
+        foreach ($documents as $doc) {
+            $this->incidents[] = $doc->data();
+        }
     }
 
     public function render()

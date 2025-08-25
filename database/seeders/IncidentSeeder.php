@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Kreait\Firebase\Factory;
+use Illuminate\Support\Facades\Log;
 
 class IncidentSeeder extends Seeder
 {
@@ -24,55 +25,91 @@ class IncidentSeeder extends Seeder
             echo "Error clearing records: " . $e->getMessage() . "\n";
         }
 
+        // Load the trained model
+        $modelPath = str_replace('\\', '/', base_path('incident_classifier.joblib'));
+        if (!file_exists($modelPath)) {
+            echo "Trained model not found at: $modelPath\n";
+            return;
+        }
+
         $incidents = [
             [
                 'incident_id' => '1',
-                'type' => 'vehicular_accident',
+                'incident_description' => 'Car crash on the highway',
                 'location' => 'J.P. Rizal Street, Baritan, Malabon',
                 'reporter_name' => 'Juan Dela Cruz',
                 'source' => 'mobile',
                 'severity' => 'high',
                 'status' => 'new',
                 'timestamp' => now()->toIso8601String(),
-                'department' => 'police',
             ],
             [
                 'incident_id' => '2',
-                'type' => 'fire',
+                'incident_description' => 'Fire alarm triggered in the basement',
                 'location' => 'M.H. Del Pilar Street, Baritan, Malabon',
                 'reporter_name' => 'Maria Clara',
                 'source' => 'cctv_ai',
                 'severity' => 'medium',
                 'status' => 'dispatched',
                 'timestamp' => now()->toIso8601String(),
-                'department' => 'fire',
             ],
             [
                 'incident_id' => '3',
-                'type' => 'medical_emergency',
+                'incident_description' => 'Flooding reported in the parking lot',
                 'location' => 'Gen. Luna Street, Baritan, Malabon',
                 'reporter_name' => 'Jose Rizal',
                 'source' => 'mobile',
                 'severity' => 'low',
                 'status' => 'resolved',
                 'timestamp' => now()->toIso8601String(),
-                'department' => 'health',
             ],
-            // Add 17 more incidents with unique data
-            ...array_map(function ($i) {
-                return [
-                    'incident_id' => (string)($i + 3),
-                    'type' => ['vehicular_accident', 'fire', 'medical_emergency'][array_rand(['vehicular_accident', 'fire', 'medical_emergency'])],
-                    'location' => ['J.P. Rizal Street', 'M.H. Del Pilar Street', 'Gen. Luna Street'][array_rand(['J.P. Rizal Street', 'M.H. Del Pilar Street', 'Gen. Luna Street'])] . ', Baritan, Malabon',
-                    'reporter_name' => ['Juan Dela Cruz', 'Maria Clara', 'Jose Rizal'][array_rand(['Juan Dela Cruz', 'Maria Clara', 'Jose Rizal'])],
-                    'source' => ['mobile', 'cctv_ai'][array_rand(['mobile', 'cctv_ai'])],
-                    'severity' => ['low', 'medium', 'high'][array_rand(['low', 'medium', 'high'])],
-                    'status' => ['new', 'dispatched', 'resolved'][array_rand(['new', 'dispatched', 'resolved'])],
-                    'timestamp' => now()->toIso8601String(),
-                    'department' => ['police', 'fire', 'health'][array_rand(['police', 'fire', 'health'])],
-                ];
-            }, range(1, 17))
+            [
+                'incident_id' => '4',
+                'incident_description' => 'Medical emergency at the mall',
+                'location' => 'SM Center, Malabon',
+                'reporter_name' => 'Pedro Penduko',
+                'source' => 'mobile',
+                'severity' => 'high',
+                'status' => 'new',
+                'timestamp' => now()->toIso8601String(),
+            ],
+            [
+                'incident_id' => '5',
+                'incident_description' => 'Loud music disturbing the neighborhood',
+                'location' => 'Barangay Hall, Baritan, Malabon',
+                'reporter_name' => 'Aling Nena',
+                'source' => 'mobile',
+                'severity' => 'low',
+                'status' => 'resolved',
+                'timestamp' => now()->toIso8601String(),
+            ],
         ];
+
+        $typeToDepartment = [
+            'vehicle_crash' => 'Traffic Management',
+            'fire' => 'Fire Department',
+            'flood' => 'Maintenance',
+            'public_disturbance' => 'Community Affairs',
+            'healthcare' => 'Healthcare',
+        ];
+
+        foreach ($incidents as &$incident) {
+            // Predict the type using the model
+            $process = new \Symfony\Component\Process\Process([
+                'python', '-c', "import joblib; model = joblib.load('$modelPath'); print(model.predict(['" . addslashes($incident['incident_description']) . "'])[0])"
+            ]);
+            $process->run();
+
+            if ($process->isSuccessful()) {
+                $predictedType = trim($process->getOutput());
+                $incident['type'] = $predictedType;
+                $incident['department'] = $typeToDepartment[$predictedType] ?? 'Unknown';
+            } else {
+                Log::error("Failed to predict type for incident: " . $incident['incident_description']);
+                $incident['type'] = 'unknown';
+                $incident['department'] = 'Unknown';
+            }
+        }
 
         foreach ($incidents as $incident) {
             try {

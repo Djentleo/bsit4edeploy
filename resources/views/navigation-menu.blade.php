@@ -30,8 +30,8 @@
             <x-nav-link href="{{ route('incidents.index') }}" :active="request()->routeIs('incidents.*')">
                 {{ __('Incident Tables') }}
             </x-nav-link>
-            <x-nav-link href="{{ route('dispatch.index') }}" :active="request()->routeIs('dispatch.*')">
-                {{ __('Details & Dispatch') }}
+            <x-nav-link href="{{ route('incident.logs') }}" :active="request()->routeIs('incident.logs')">
+                {{ __('Incident Logs') }}
             </x-nav-link>
             <!-- Add more sidebar links here as needed -->
         </div>
@@ -53,10 +53,10 @@
                title="Incident Tables">
                 <i class="fa-solid fa-table"></i>
             </a>
-            <a href="{{ route('dispatch.index') }}"
-               class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('dispatch.*') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
-               title="Details & Dispatch">
-                <i class="fa-solid fa-truck"></i>
+            <a href="{{ route('incident.logs') }}"
+               class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('incident.logs') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
+               title="Incident Logs">
+                <i class="fa-solid fa-file-alt"></i>
             </a>
         </div>
         <!-- Teams Dropdown -->
