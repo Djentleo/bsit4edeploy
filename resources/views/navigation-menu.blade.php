@@ -27,9 +27,22 @@
             <x-nav-link href="{{ route('users.index') }}" :active="request()->routeIs('users.*')">
                 {{ __('User Management') }}
             </x-nav-link>
-            <x-nav-link href="{{ route('incidents.index') }}" :active="request()->routeIs('incidents.*')">
-                {{ __('Incident Tables') }}
-            </x-nav-link>
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between px-1 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-blue-800 transition-colors focus:outline-none">
+                    <span>{{ __('Incident Tables') }}</span>
+                    <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div x-show="open" x-transition class="pl-4 mt-1">
+                    <x-nav-link href="{{ route('incidents.mobile') }}" :active="request()->routeIs('incidents.mobile')">
+                        {{ __('Mobile Incident Table') }}
+                    </x-nav-link>
+                    <x-nav-link href="{{ route('incidents.cctv') }}" :active="request()->routeIs('incidents.cctv')">
+                        {{ __('CCTV Incident Table') }}
+                    </x-nav-link>
+                </div>
+            </div>
             <x-nav-link href="{{ route('incident.logs') }}" :active="request()->routeIs('incident.logs')">
                 {{ __('Incident Logs') }}
             </x-nav-link>
@@ -48,9 +61,14 @@
                title="User Management">
                 <i class="fa-solid fa-users"></i>
             </a>
-            <a href="{{ route('incidents.index') }}"
-               class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('incidents.*') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
-               title="Incident Tables">
+            <a href="{{ route('incidents.mobile') }}"
+               class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('incidents.mobile') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
+               title="Mobile Incidents">
+                <i class="fa-solid fa-table"></i>
+            </a>
+            <a href="{{ route('incidents.cctv') }}"
+               class="flex items-center justify-center p-2 rounded-md {{ request()->routeIs('incidents.cctv') ? 'bg-blue-800 text-white' : 'text-gray-300 hover:text-white hover:bg-blue-800' }} transition-colors"
+               title="CCTV Incidents">
                 <i class="fa-solid fa-table"></i>
             </a>
             <a href="{{ route('incident.logs') }}"

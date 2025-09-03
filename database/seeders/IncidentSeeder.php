@@ -24,119 +24,86 @@ class IncidentSeeder extends Seeder
         } catch (\Exception $e) {
             echo "Error clearing records: " . $e->getMessage() . "\n";
         }
-
-        // Load the trained model
-        $modelPath = str_replace('\\', '/', base_path('incident_classifier.joblib'));
-        if (!file_exists($modelPath)) {
-            echo "Trained model not found at: $modelPath\n";
-            return;
-        }
-
-        $incidents = [
-            [
-                'incident_id' => '1',
-                'incident_description' => 'Car crash on the highway',
-                'location' => 'J.P. Rizal Street, Baritan, Malabon',
-                'reporter_name' => 'Juan Dela Cruz',
-                'source' => 'mobile',
-                'severity' => 'high',
-                'status' => 'new',
-                'timestamp' => now()->toIso8601String(),
-            ],
-            [
-                'incident_id' => '2',
-                'incident_description' => 'Fire alarm triggered in the basement',
-                'location' => 'M.H. Del Pilar Street, Baritan, Malabon',
-                'reporter_name' => 'Maria Clara',
-                'source' => 'cctv_ai',
-                'severity' => 'medium',
-                'status' => 'dispatched',
-                'timestamp' => now()->toIso8601String(),
-            ],
-            [
-                'incident_id' => '3',
-                'incident_description' => 'Flooding reported in the parking lot',
-                'location' => 'Gen. Luna Street, Baritan, Malabon',
-                'reporter_name' => 'Jose Rizal',
-                'source' => 'mobile',
-                'severity' => 'low',
-                'status' => 'resolved',
-                'timestamp' => now()->toIso8601String(),
-            ],
-            [
-                'incident_id' => '4',
-                'incident_description' => 'Medical emergency at the mall',
-                'location' => 'SM Center, Malabon',
-                'reporter_name' => 'Pedro Penduko',
-                'source' => 'mobile',
-                'severity' => 'high',
-                'status' => 'new',
-                'timestamp' => now()->toIso8601String(),
-            ],
-            [
-                'incident_id' => '5',
-                'incident_description' => 'Loud music disturbing the neighborhood',
-                'location' => 'Barangay Hall, Baritan, Malabon',
-                'reporter_name' => 'Aling Nena',
-                'source' => 'mobile',
-                'severity' => 'low',
-                'status' => 'resolved',
-                'timestamp' => now()->toIso8601String(),
-            ],
-        ];
-
-        $typeToDepartment = [
-            'vehicle_crash' => 'Traffic Management',
-            'fire' => 'Fire Department',
-            'flood' => 'Maintenance',
-            'public_disturbance' => 'Community Affairs',
-            'healthcare' => 'Healthcare',
-        ];
-
-        foreach ($incidents as &$incident) {
-            // Predict the type using the model
-            $process = new \Symfony\Component\Process\Process([
-                'python', '-c', "import joblib; model = joblib.load('$modelPath'); print(model.predict(['" . addslashes($incident['incident_description']) . "'])[0])"
-            ]);
-            $process->run();
-
-            if ($process->isSuccessful()) {
-                $predictedType = trim($process->getOutput());
-                $incident['type'] = $predictedType;
-                $incident['department'] = $typeToDepartment[$predictedType] ?? 'Unknown';
-            } else {
-                Log::error("Failed to predict type for incident: " . $incident['incident_description']);
-                $incident['type'] = 'unknown';
-                $incident['department'] = 'Unknown';
-            }
-        }
-
-        foreach ($incidents as $incident) {
-            try {
-                $result = $database->push($incident);
-                echo "Record added with key: " . $result->getKey() . "\n";
-            } catch (\Exception $e) {
-                echo "Error adding record: " . $e->getMessage() . "\n";
-            }
-        }
-
-        // Test Firebase connection
-        try {
-            $testRecord = [
-                'incident_id' => 'connection_test',
-                'type' => 'test_type',
-                'location' => 'test_location',
-                'reporter_name' => 'test_name',
-                'source' => 'test_source',
-                'severity' => 'test_severity',
-                'status' => 'test_status',
-                'timestamp' => now()->toIso8601String(),
-                'department' => 'test_department',
+            // Programmatically generate 75 simulation incidents with varied fields
+            $types = ['vehicle_crash', 'fire', 'disturbance', 'medical_emergency'];
+            $departments = [
+                'vehicle_crash' => 'Traffic Management',
+                'fire' => 'Fire Department',
+                'disturbance' => 'Police',
+                'medical_emergency' => 'Health',
             ];
-            $result = $database->push($testRecord);
-            echo "Connection test record added with key: " . $result->getKey() . "\n";
-        } catch (\Exception $e) {
-            echo "Error adding connection test record: " . $e->getMessage() . "\n";
-        }
+            $locations = [
+                [
+                    'address' => 'J.P. Rizal Street, Baritan, Malabon',
+                    'latitude' => 14.6621,
+                    'longitude' => 120.9566
+                ],
+                [
+                    'address' => 'M.H. Del Pilar Street, Baritan, Malabon',
+                    'latitude' => 14.6602,
+                    'longitude' => 120.9551
+                ],
+                [
+                    'address' => 'Gen. Luna Street, Baritan, Malabon',
+                    'latitude' => 14.6587,
+                    'longitude' => 120.9540
+                ],
+                [
+                    'address' => 'SM Center, Malabon',
+                    'latitude' => 14.6562,
+                    'longitude' => 120.9532
+                ],
+                [
+                    'address' => 'Barangay Hall, Baritan, Malabon',
+                    'latitude' => 14.6610,
+                    'longitude' => 120.9570
+                ],
+                [
+                    'address' => 'Rizal Avenue, Malabon',
+                    'latitude' => 14.6550,
+                    'longitude' => 120.9520
+                ],
+                [
+                    'address' => 'Imelda Avenue, Malabon',
+                    'latitude' => 14.6535,
+                    'longitude' => 120.9510
+                ],
+                [
+                    'address' => 'Market Area, Malabon',
+                    'latitude' => 14.6545,
+                    'longitude' => 120.9505
+                ],
+            ];
+            $reporters = ['Juan Dela Cruz', 'Maria Clara', 'Jose Rizal', 'Pedro Penduko', 'Aling Nena', 'Anna Santos', 'Miguel Tan', 'Carmen Reyes'];
+            $severities = ['low', 'medium', 'high'];
+            $sources = ['mobile', 'cctv_ai', 'hotline'];
+            $statuses = ['new', 'dispatched', 'resolved'];
+
+            for ($i = 1; $i <= 50; $i++) {
+                $type = $types[array_rand($types)];
+                $loc = $locations[array_rand($locations)];
+                $incident = [
+                    'incident_id' => (string) $i,
+                    'type' => $type,
+                    'incident_description' => ucfirst($type) . ' reported (#' . $i . ')',
+                    'location' => $loc['address'],
+                    'latitude' => $loc['latitude'],
+                    'longitude' => $loc['longitude'],
+                    'reporter_name' => $reporters[array_rand($reporters)],
+                    'department' => $departments[$type] ?? 'General',
+                    'severity' => $severities[array_rand($severities)],
+                    'source' => $sources[array_rand($sources)],
+                    'status' => $statuses[array_rand($statuses)],
+                    // spread timestamps over recent time
+                    'timestamp' => now()->subMinutes(rand(0, 60 * 24 * 30))->toIso8601String(),
+                ];
+
+                try {
+                    $database->getChild($incident['incident_id'])->set($incident);
+                    echo "Record added with id: " . $incident['incident_id'] . "\n";
+                } catch (\Exception $e) {
+                    echo "Error adding record: " . $e->getMessage() . "\n";
+                }
+            }
     }
 }

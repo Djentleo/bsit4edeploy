@@ -21,6 +21,10 @@ class FirebaseService
     {
         return $this->database->getReference('incidents')->getValue();
     }
+        public function getIncidentById($incidentId)
+        {
+            return $this->database->getReference('incidents/' . $incidentId)->getValue();
+        }
     public function getSummaryData()
     {
         return $this->database->getReference('summary')->getValue();
