@@ -69,20 +69,11 @@
                         </div>
                         
                         <!-- Map display -->
-                        @if(!empty($incident['latitude']) && !empty($incident['longitude']))
-                            <iframe
-                                width="100%"
-                                height="250"
-                                frameborder="0"
-                                style="border:0"
-                                src="https://www.google.com/maps?q={{ $incident['latitude'] }},{{ $incident['longitude'] }}&hl=es;z=14&output=embed"
-                                allowfullscreen>
-                            </iframe>
-                        @else
-                            <div class="bg-gray-100 rounded-lg h-64 flex items-center justify-center mb-4 border-2 border-dashed border-gray-300">
-                                <div class="text-center text-gray-500">No map data available.</div>
-                            </div>
-                        @endif
+                        <div id="map" style="width: 100%; height: 250px; border-radius: 0.5rem; overflow: hidden;"></div>
+    <!-- Mapbox CSS & JS -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
                     </div>
 
                     <!-- Evidence & Attachments Section -->
@@ -238,6 +229,42 @@
     </div>
 
     <script>
+    // Mapbox integration for incident location (with geocoding if needed)
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGplbnRsZW8iLCJhIjoiY21mNnoxMDgzMGt3NjJyb20zY3dqdnRjdSJ9.OKI8RAGo7e9eRRXejMLfOA';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [120.9532, 14.6562], // Default center (Malabon)
+        zoom: 13
+    });
+
+    // Get address from Blade variable
+    const address = @json($incident['location'] ?? '');
+
+    if (address) {
+        // Use Mapbox Geocoding API to get coordinates
+        const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+        mapboxClient.geocoding
+            .forwardGeocode({
+                query: address,
+                limit: 1
+            })
+            .send()
+            .then(function(response) {
+                if (
+                    response &&
+                    response.body &&
+                    response.body.features &&
+                    response.body.features.length
+                ) {
+                    const feature = response.body.features[0];
+                    map.setCenter(feature.center);
+                    new mapboxgl.Marker({ color: 'red' })
+                        .setLngLat(feature.center)
+                        .addTo(map);
+                }
+            });
+    }
         // Fetch incident details from Firebase
         const urlParams = new URLSearchParams(window.location.search);
         const incidentId = urlParams.get('id');

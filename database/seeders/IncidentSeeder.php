@@ -33,46 +33,14 @@ class IncidentSeeder extends Seeder
                 'medical_emergency' => 'Health',
             ];
             $locations = [
-                [
-                    'address' => 'J.P. Rizal Street, Baritan, Malabon',
-                    'latitude' => 14.6621,
-                    'longitude' => 120.9566
-                ],
-                [
-                    'address' => 'M.H. Del Pilar Street, Baritan, Malabon',
-                    'latitude' => 14.6602,
-                    'longitude' => 120.9551
-                ],
-                [
-                    'address' => 'Gen. Luna Street, Baritan, Malabon',
-                    'latitude' => 14.6587,
-                    'longitude' => 120.9540
-                ],
-                [
-                    'address' => 'SM Center, Malabon',
-                    'latitude' => 14.6562,
-                    'longitude' => 120.9532
-                ],
-                [
-                    'address' => 'Barangay Hall, Baritan, Malabon',
-                    'latitude' => 14.6610,
-                    'longitude' => 120.9570
-                ],
-                [
-                    'address' => 'Rizal Avenue, Malabon',
-                    'latitude' => 14.6550,
-                    'longitude' => 120.9520
-                ],
-                [
-                    'address' => 'Imelda Avenue, Malabon',
-                    'latitude' => 14.6535,
-                    'longitude' => 120.9510
-                ],
-                [
-                    'address' => 'Market Area, Malabon',
-                    'latitude' => 14.6545,
-                    'longitude' => 120.9505
-                ],
+                [ 'address' => 'J.P. Rizal Street, Baritan, Malabon' ],
+                [ 'address' => 'M.H. Del Pilar Street, Baritan, Malabon' ],
+                [ 'address' => 'Gen. Luna Street, Baritan, Malabon' ],
+                [ 'address' => 'SM Center, Malabon' ],
+                [ 'address' => 'Barangay Hall, Baritan, Malabon' ],
+                [ 'address' => 'Rizal Avenue, Malabon' ],
+                [ 'address' => 'Imelda Avenue, Malabon' ],
+                [ 'address' => 'Market Area, Malabon' ],
             ];
             $reporters = ['Juan Dela Cruz', 'Maria Clara', 'Jose Rizal', 'Pedro Penduko', 'Aling Nena', 'Anna Santos', 'Miguel Tan', 'Carmen Reyes'];
             $severities = ['low', 'medium', 'high'];
@@ -87,8 +55,6 @@ class IncidentSeeder extends Seeder
                     'type' => $type,
                     'incident_description' => ucfirst($type) . ' reported (#' . $i . ')',
                     'location' => $loc['address'],
-                    'latitude' => $loc['latitude'],
-                    'longitude' => $loc['longitude'],
                     'reporter_name' => $reporters[array_rand($reporters)],
                     'department' => $departments[$type] ?? 'General',
                     'severity' => $severities[array_rand($severities)],
