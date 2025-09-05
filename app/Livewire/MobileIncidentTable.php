@@ -31,7 +31,7 @@ class MobileIncidentTable extends Component
             ->withDatabaseUri(config('firebase.database_url'))
             ->createDatabase();
 
-        $reference = $firebase->getReference('incidents');
+        $reference = $firebase->getReference('mobile_incidents');
         $data = $reference->getValue();
 
         // Debug: log raw Firebase data structure
@@ -41,7 +41,8 @@ class MobileIncidentTable extends Component
                 'data_keys' => is_array($data) ? array_keys($data) : null,
                 'data_sample' => is_array($data) ? array_slice($data, 0, 3) : $data,
             ]);
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         // Convert Firebase data to numerically-indexed array
         if (is_array($data)) {

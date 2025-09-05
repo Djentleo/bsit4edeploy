@@ -1,16 +1,15 @@
-<div class="max-w-full" x-data="mobileIncidents({{ json_encode($incidents) }})" wire:poll.10s x-effect="incidents = {{ json_encode($incidents) }}">
+<div class="max-w-full" x-data="mobileIncidents({{ json_encode($incidents) }})" wire:poll.10s
+    x-effect="incidents = {{ json_encode($incidents) }}">
     <!-- Search & Filter Row -->
     <div class="flex flex-row gap-4 mb-6">
         <div class="relative flex-grow">
-            <input type="search"
-                x-model.debounce.150ms="search"
-                @keydown.enter.prevent
-                autocomplete="off"
+            <input type="search" x-model.debounce.150ms="search" @keydown.enter.prevent autocomplete="off"
                 class="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg bg-white text-sm text-gray-600"
                 placeholder="Search incidents...">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
             </div>
         </div>
@@ -25,7 +24,7 @@
             </select>
             <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
             </div>
         </div>
@@ -33,7 +32,7 @@
 
     <!-- Content Section -->
     <div class="bg-white rounded-lg px-6 py-4">
-      
+
         <div class="w-full">
             <table class="w-full">
                 <thead>
@@ -70,13 +69,15 @@
                                         'text-emerald-600': incident.status === 'new',
                                         'text-orange-600': incident.status === 'dispatched',
                                         'text-gray-600': incident.status === 'resolved'
-                                    }"
-                                    x-text="(incident.status || '').replace(/\b\w/g, c => c.toUpperCase())"></span>
+                                    }" x-text="(incident.status || '').replace(/\b\w/g, c => c.toUpperCase())"></span>
                             </td>
-                            <td class="py-3 text-gray-600" x-text="(incident.department || '').replace(/\b\w/g, c => c.toUpperCase())"></td>
-                            <td class="py-3 text-gray-500" x-text="incident.timestamp_formatted || incident.timestamp"></td>
+                            <td class="py-3 text-gray-600"
+                                x-text="(incident.department || '').replace(/\b\w/g, c => c.toUpperCase())"></td>
+                            <td class="py-3 text-gray-500" x-text="incident.timestamp_formatted || incident.timestamp">
+                            </td>
                             <td class="py-3">
-                                <a :href="'/dispatch?incident_id=' + encodeURIComponent(incident.incident_id)" class="inline-flex items-center px-3 py-1 rounded bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition">
+                                <a :href="'/dispatch?incident_id=' + encodeURIComponent(incident.incident_id)"
+                                    class="inline-flex items-center px-3 py-1 rounded bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition">
                                     View
                                 </a>
                             </td>
@@ -93,8 +94,11 @@
                     Page <span x-text="page + 1"></span> of <span x-text="totalPages"></span>
                 </div>
                 <div class="space-x-2">
-                    <button type="button" class="px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm" :disabled="page === 0" @click="page = Math.max(0, page - 1)">Prev</button>
-                    <button type="button" class="px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm" :disabled="page >= totalPages - 1" @click="page = Math.min(totalPages - 1, page + 1)">Next</button>
+                    <button type="button" class="px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm"
+                        :disabled="page === 0" @click="page = Math.max(0, page - 1)">Prev</button>
+                    <button type="button" class="px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm"
+                        :disabled="page >= totalPages - 1"
+                        @click="page = Math.min(totalPages - 1, page + 1)">Next</button>
                 </div>
             </div>
         </div>

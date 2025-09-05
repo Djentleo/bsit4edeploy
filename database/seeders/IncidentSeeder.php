@@ -15,7 +15,7 @@ class IncidentSeeder extends Seeder
             ->withDatabaseUri(config('firebase.database_url'))
             ->createDatabase();
 
-        $database = $firebase->getReference('incidents');
+        $database = $firebase->getReference('mobile_incidents');
 
         // Clear existing records in the 'incidents' node
         try {

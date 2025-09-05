@@ -19,10 +19,13 @@ class FirebaseService
 
     public function getIncidents()
     {
-        return $this->database->getReference('incidents')->getValue();
+    return $this->database->getReference('mobile_incidents')->getValue();
     }
         public function getIncidentById($incidentId)
         {
+            // Try mobile_incidents first, then fallback to incidents (for CCTV)
+            $mobile = $this->database->getReference('mobile_incidents/' . $incidentId)->getValue();
+            if ($mobile) return $mobile;
             return $this->database->getReference('incidents/' . $incidentId)->getValue();
         }
     public function getSummaryData()
