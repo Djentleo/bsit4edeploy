@@ -115,6 +115,7 @@
                         <option value="">Select Role</option>
                         <option value="admin">Admin</option>
                         <option value="responder">Responder</option>
+                        <option value="cctv">CCTV</option>
                     </select>
                     @error('role') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>

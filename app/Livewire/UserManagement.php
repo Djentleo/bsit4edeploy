@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Livewire;
 
+use App\Services\FirebaseUserService;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
@@ -19,7 +19,7 @@ class UserManagement extends Component
         'email' => 'required|email|unique:users,email',
         'password' => 'required|string|min:6',
         'mobile' => 'required|string|max:20',
-        'role' => 'required|in:admin,responder',
+        'role' => 'required|in:admin,responder,cctv',
         'position' => 'required|string|max:255',
         'assigned_area' => 'required|string|max:255',
     ];
@@ -75,6 +75,25 @@ class UserManagement extends Component
             'status' => 'active',
         ]);
 
+        // Sync to Firebase Auth and Realtime Database
+        try {
+            $firebaseService = new FirebaseUserService();
+            $firebaseService->createUser(
+                $this->email,
+                $this->password,
+                $this->name,
+                $this->role,
+                [
+                    'mobile' => $this->mobile,
+                    'position' => $this->position,
+                    'assigned_area' => $this->assigned_area,
+                    'status' => 'active',
+                ]
+            );
+        } catch (\Exception $e) {
+            // Log or handle Firebase error
+        }
+
         // Send welcome email with credentials
         try {
             Mail::to($user->email)->send(new WelcomeUserMail($user, $this->password));
@@ -94,7 +113,7 @@ class UserManagement extends Component
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'mobile' => 'required|string|max:20',
-            'role' => 'required|in:admin,responder',
+            'role' => 'required|in:admin,responder,cctv',
             'position' => 'required|string|max:255',
             'assigned_area' => 'required|string|max:255',
         ]);
