@@ -1,5 +1,21 @@
-<div class="max-w-full" x-data="mobileIncidents({{ json_encode($incidents) }})" wire:poll.10s
-    x-effect="incidents = {{ json_encode($incidents) }}">
+<!-- Firebase compat SDKs for browser -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+<div class="max-w-full" x-data="mobileIncidents()" x-init="init()">
+    <!-- Switch Source Toggle -->
+    <div class="flex justify-end mb-4">
+        <div class="inline-flex rounded-md shadow-sm border border-gray-200 bg-white">
+            <button type="button" onclick="window.location.href='{{ route('incidents.mobile') }}'"
+                class="px-4 py-2 text-sm font-medium focus:outline-none transition-all {{ request()->is('mobile-incident-table') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }} rounded-l-md"
+                {{ request()->is('mobile-incident-table') ? 'disabled' : '' }}
+                >📱 Mobile</button>
+            <button type="button" onclick="window.location.href='{{ route('incidents.cctv') }}'"
+                class="px-4 py-2 text-sm font-medium focus:outline-none transition-all {{ request()->is('cctv-incident-table') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }} rounded-r-md"
+                {{ request()->is('cctv-incident-table') ? 'disabled' : '' }}
+                >🎥 CCTV</button>
+        </div>
+    </div>
     <!-- Search & Filter Row -->
     <div class="flex flex-row gap-4 mb-6">
         <div class="relative flex-grow">
@@ -110,9 +126,38 @@
     </div>
 
     <script>
-        function mobileIncidents(initial) {
+        function mobileIncidents() {
             return {
-                incidents: initial || [],
+                incidents: [],
+                init() {
+                    this.setupFirebase();
+                },
+                setupFirebase() {
+                    // TODO: Replace with your Firebase config
+                    const firebaseConfig = {
+                        apiKey: "AIzaSyB3XyotQMmmegvcpehChurRa_t1CL3V2yU",
+                        authDomain: "incident-report--database.firebaseapp.com",
+                        databaseURL: "https://incident-report--database-default-rtdb.asia-southeast1.firebasedatabase.app",
+                        projectId: "incident-report--database",
+                        storageBucket: "incident-report--database.firebasestorage.app",
+                        messagingSenderId: "79154499994",
+                        appId: "1:79154499994:web:bfcf3600bb2ad0c58fea23",
+                        measurementId: "G-SF2623RC2F"
+                    };
+                    if (!window.firebase) {
+                        setTimeout(() => this.setupFirebase(), 500);
+                        return;
+                    }
+                    if (!window.firebase.apps || window.firebase.apps.length === 0) {
+                        window.firebase.initializeApp(firebaseConfig);
+                    }
+                    const db = window.firebase.database();
+                    const incidentsRef = db.ref('mobile_incidents');
+                    incidentsRef.on('value', (snapshot) => {
+                        const data = snapshot.val() || {};
+                        this.incidents = Object.values(data);
+                    });
+                },
                 search: '',
                 filter: '',
                 page: 0,

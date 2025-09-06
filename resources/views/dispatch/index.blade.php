@@ -108,17 +108,15 @@
                         @endif
                     </div>
 
-                    <!-- Location & Map Section -->
+                    {{-- Location & Map Section (Mobile only) --}}
+                    @if(!isset($incident['camera_name']))
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Incident Location</h3>
-
                         <div class="mb-3">
                             <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
                             <input type="text" name="address" value="{{ $incident['location'] ?? 'N/A' }}"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50" readonly>
                         </div>
-
-                        <!-- Map display -->
                         <div id="map" style="width: 100%; height: 250px; border-radius: 0.5rem; overflow: hidden;">
                         </div>
                         <!-- Mapbox CSS & JS -->
@@ -127,7 +125,10 @@
                         <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
                     </div>
 
-                    <!-- Evidence & Attachments Section -->
+                    @endif
+
+                    {{-- Evidence & Attachments Section (Mobile only) --}}
+                    @if(!isset($incident['camera_name']))
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">Evidence & Attachments</h3>
                         <div class="grid grid-cols-2 gap-4">
@@ -158,6 +159,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
 
                 <!-- Right Column -->

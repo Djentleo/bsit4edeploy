@@ -8,10 +8,39 @@ use Kreait\Firebase\Exception\Auth\EmailExists;
 use Kreait\Firebase\Exception\AuthException;
 use Illuminate\Support\Facades\Log;
 
+
 class FirebaseUserService
 {
     protected $auth;
     protected $database;
+
+
+    /**
+     * Delete a user from Firebase Auth and Realtime Database by email.
+     *
+     * @param string $email
+     * @return bool Success
+     */
+    public function deleteUserByEmail($email)
+    {
+        try {
+            // Find user by email
+            $user = $this->auth->getUserByEmail($email);
+            $uid = $user->uid;
+            // Delete from Auth
+            $this->auth->deleteUser($uid);
+            // Delete from Realtime Database
+            $this->database->getReference('users/' . $uid)->remove();
+            Log::info('Deleted user from Firebase Auth and Database', ['email' => $email, 'uid' => $uid]);
+            return true;
+        } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
+            Log::warning('Firebase user not found for deletion', ['email' => $email]);
+            return false;
+        } catch (\Exception $e) {
+            Log::error('Error deleting Firebase user', ['email' => $email, 'error' => $e->getMessage()]);
+            return false;
+        }
+    }
 
     public function __construct()
     {

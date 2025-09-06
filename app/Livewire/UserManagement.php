@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Livewire;
 
 use App\Services\FirebaseUserService;
@@ -146,6 +147,11 @@ class UserManagement extends Component
     {
         logger('Deleting user: ' . $id);
         $user = User::findOrFail($id);
+        // If user is CCTV, delete from Firebase
+        if ($user->role === 'cctv') {
+            $firebaseService = new FirebaseUserService();
+            $firebaseService->deleteUserByEmail($user->email);
+        }
         $user->delete();
         $this->dispatch('user-deleted');
     }
