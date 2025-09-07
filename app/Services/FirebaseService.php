@@ -17,9 +17,24 @@ class FirebaseService
         $this->database = $factory->createDatabase();
     }
 
-    public function getIncidents()
+    /**
+     * Get all incidents from both mobile_incidents and incidents (CCTV) as a merged array.
+     */
+    public function getAllIncidents()
     {
-    return $this->database->getReference('mobile_incidents')->getValue();
+        $mobile = $this->database->getReference('mobile_incidents')->getValue() ?? [];
+        $cctv = $this->database->getReference('incidents')->getValue() ?? [];
+        // Add a source property for each
+        $mobileList = collect($mobile)->map(function($item) {
+            $item['source'] = 'mobile';
+            return $item;
+        })->values()->all();
+        $cctvList = collect($cctv)->map(function($item) {
+            $item['source'] = 'cctv';
+            return $item;
+        })->values()->all();
+        // Merge and return
+        return array_merge($mobileList, $cctvList);
     }
         public function getIncidentById($incidentId)
         {
@@ -28,8 +43,19 @@ class FirebaseService
             if ($mobile) return $mobile;
             return $this->database->getReference('incidents/' . $incidentId)->getValue();
         }
+    /**
+     * Get summary counts for dashboard (total, current, completed issues) from both sources.
+     */
     public function getSummaryData()
     {
-        return $this->database->getReference('summary')->getValue();
+        $all = $this->getAllIncidents();
+        $total = count($all);
+        $current = collect($all)->where('status', '!=', 'resolved')->count();
+        $completed = collect($all)->where('status', 'resolved')->count();
+        return [
+            'total_cases' => $total,
+            'current_issues' => $current,
+            'completed_issues' => $completed,
+        ];
     }
 }

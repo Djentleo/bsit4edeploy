@@ -109,15 +109,26 @@
                     <input type="text" wire:model.defer="mobile" class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
                     @error('mobile') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
-                <div>
+                <div x-data="{ role: @entangle('role') }">
                     <label class="block text-gray-700 text-sm font-semibold mb-1">Assigned Role</label>
-                    <select wire:model.defer="role" class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
+                    <select x-model="role" wire:model="role" class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
                         <option value="">Select Role</option>
                         <option value="admin">Admin</option>
                         <option value="responder">Responder</option>
                         <option value="cctv">CCTV</option>
                     </select>
                     @error('role') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    <div x-show="role === 'responder'" class="mt-2" x-cloak>
+                        <label class="block text-gray-700 text-sm font-semibold mb-1">Responder Type</label>
+                        <select wire:model.defer="responder_type" class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
+                            <option value="">Select Responder Type</option>
+                            <option value="police">Police / Peace & Order</option>
+                            <option value="fire">Fire Department</option>
+                            <option value="medical">Medical / Health Services</option>
+                            <option value="tanod">Barangay Tanod / Community Responder</option>
+                        </select>
+                        @error('responder_type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-1">Barangay Position</label>

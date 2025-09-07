@@ -40,21 +40,34 @@
             <div class="bg-white rounded-lg shadow p-6 mt-8">
                 <h3 class="text-2xl font-bold text-gray-700 mb-4 border-b pb-2">Recent Incidents</h3>
                 <div class="space-y-4">
-                    @foreach (array_slice($incidents ?? [], 0, 3) as $incident)
+                    @forelse ($incidents ?? [] as $incident)
                         <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-3 shadow-sm">
                             <div class="flex items-center gap-3">
                                 <span class="h-4 w-4 rounded-full inline-block blinking-dot" style="background-color: {{ ($incident['status'] ?? '') === 'ongoing' ? '#FACC15' : (($incident['status'] ?? '') === 'resolved' ? '#4ADE80' : '#F87171') }};"></span>
                                 <div>
-                                    <div class="font-semibold text-gray-700">{{ ucfirst($incident['type'] ?? '') }}</div>
+                                    <div class="font-semibold text-gray-700 flex items-center gap-2">
+                                        {{ ucfirst($incident['type'] ?? $incident['event'] ?? '') }}
+                                        <span class="ml-2 px-2 py-0.5 rounded text-xs font-semibold {{ $incident['display_source'] === 'CCTV' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
+                                            {{ $incident['display_source'] ?? '' }}
+                                        </span>
+                                    </div>
                                     <div class="text-xs text-gray-500">{{ !empty($incident['timestamp']) ? \Carbon\Carbon::parse($incident['timestamp'])->format('Y-m-d h:i A') : '' }}</div>
                                 </div>
                             </div>
                             <div class="flex flex-col items-end">
                                 <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full mb-1" style="background-color: {{ ($incident['status'] ?? '') === 'ongoing' ? '#FEF3C7' : (($incident['status'] ?? '') === 'resolved' ? '#D1FAE5' : '#FEE2E2') }}; color: {{ ($incident['status'] ?? '') === 'ongoing' ? '#B45309' : (($incident['status'] ?? '') === 'resolved' ? '#065F46' : '#991B1B') }};">{{ ucfirst($incident['status'] ?? '') }}</span>
-                                <span class="text-xs text-gray-500">{{ $incident['reporter_name'] ?? '' }}</span>
+                                <span class="text-xs text-gray-500">
+                                    @if(($incident['display_source'] ?? '') === 'CCTV')
+                                        {{ $incident['user_name'] ?? $incident['reporter_name'] ?? '' }}
+                                    @else
+                                        {{ $incident['reporter_name'] ?? '' }}
+                                    @endif
+                                </span>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="text-center text-gray-400 py-8">No recent incidents found.</div>
+                    @endforelse
                 </div>
             </div>
         </div>
