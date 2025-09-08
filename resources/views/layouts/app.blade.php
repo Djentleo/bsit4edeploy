@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
-   
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -23,7 +23,8 @@
 <body class="font-sans antialiased">
     <x-banner />
 
-    <div class="min-h-screen bg-gray-100" x-data="{ sidebarCollapsed: false }" @sidebar-toggle.window="sidebarCollapsed = $event.detail.collapsed">
+    <div class="min-h-screen bg-gray-100" x-data="{ sidebarCollapsed: false }"
+        @sidebar-toggle.window="sidebarCollapsed = $event.detail.collapsed">
         @livewire('navigation-menu')
 
         <div :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="transition-all duration-300">

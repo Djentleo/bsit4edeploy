@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Kreait\Firebase\Factory;
 
+
 class FirebaseService
 {
     protected $database;
@@ -17,6 +18,18 @@ class FirebaseService
         $this->database = $factory->createDatabase();
     }
 
+
+
+    /**
+     * Alias for getAllIncidents for compatibility.
+     */
+    public function getIncidents()
+    {
+        return $this->getAllIncidents();
+    }
+
+
+
     /**
      * Get all incidents from both mobile_incidents and incidents (CCTV) as a merged array.
      */
@@ -25,24 +38,24 @@ class FirebaseService
         $mobile = $this->database->getReference('mobile_incidents')->getValue() ?? [];
         $cctv = $this->database->getReference('incidents')->getValue() ?? [];
         // Add a source property for each
-        $mobileList = collect($mobile)->map(function($item) {
+        $mobileList = collect($mobile)->map(function ($item) {
             $item['source'] = 'mobile';
             return $item;
         })->values()->all();
-        $cctvList = collect($cctv)->map(function($item) {
+        $cctvList = collect($cctv)->map(function ($item) {
             $item['source'] = 'cctv';
             return $item;
         })->values()->all();
         // Merge and return
         return array_merge($mobileList, $cctvList);
     }
-        public function getIncidentById($incidentId)
-        {
-            // Try mobile_incidents first, then fallback to incidents (for CCTV)
-            $mobile = $this->database->getReference('mobile_incidents/' . $incidentId)->getValue();
-            if ($mobile) return $mobile;
-            return $this->database->getReference('incidents/' . $incidentId)->getValue();
-        }
+    public function getIncidentById($incidentId)
+    {
+        // Try mobile_incidents first, then fallback to incidents (for CCTV)
+        $mobile = $this->database->getReference('mobile_incidents/' . $incidentId)->getValue();
+        if ($mobile) return $mobile;
+        return $this->database->getReference('incidents/' . $incidentId)->getValue();
+    }
     /**
      * Get summary counts for dashboard (total, current, completed issues) from both sources.
      */
