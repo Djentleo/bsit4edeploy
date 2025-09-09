@@ -7,6 +7,33 @@ use Kreait\Firebase\Factory;
 
 class FirebaseService
 {
+    /**
+     * Create a new incident in Firebase with AI-predicted severity/priority.
+     * Calls Flask API for prediction, adds fields, and pushes to mobile_incidents.
+     * Returns the new incident data (including incident_id).
+     */
+    public function createIncidentWithPrediction(array $incident)
+    {
+        // Call Flask API for severity prediction
+        try {
+            $response = \Illuminate\Support\Facades\Http::post('http://127.0.0.1:5000/predict-severity', [
+                'description' => $incident['incident_description'] ?? ''
+            ]);
+            $incident['severity'] = $response->json('severity') ?? 'unknown';
+            $incident['priority'] = $incident['severity'];
+        } catch (\Exception $e) {
+            $incident['severity'] = 'unknown';
+            $incident['priority'] = 'unknown';
+        }
+
+        // Push to Firebase
+        $ref = $this->database->getReference('mobile_incidents');
+        $newRef = $ref->push($incident);
+        $incidentId = $newRef->getKey();
+        $newRef->update(['incident_id' => $incidentId]);
+        $incident['incident_id'] = $incidentId;
+        return $incident;
+    }
     protected $database;
 
     public function __construct()

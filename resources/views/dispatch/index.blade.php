@@ -103,7 +103,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
                             <textarea rows="3" name="description"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
-                                readonly>{{ $incident['description'] ?? 'N/A' }}</textarea>
+                                readonly>{{ $incident['description'] ?? $incident['incident_description'] ?? 'N/A' }}</textarea>
                         </div>
                         @endif
                     </div>
