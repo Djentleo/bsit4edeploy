@@ -44,7 +44,6 @@ class IncidentSeeder extends Seeder
             ['address' => 'Market Area, Malabon'],
         ];
         $reporters = ['Juan Dela Cruz', 'Maria Clara', 'Jose Rizal', 'Pedro Penduko', 'Aling Nena', 'Anna Santos', 'Miguel Tan', 'Carmen Reyes'];
-        $sources = ['mobile', 'cctv_ai', 'hotline'];
         $statuses = ['new', 'dispatched', 'resolved'];
 
         for ($i = 1; $i <= 50; $i++) {
@@ -85,7 +84,6 @@ class IncidentSeeder extends Seeder
                 'reporter_name' => $reporters[array_rand($reporters)],
                 'department' => $departments[$type] ?? 'General',
                 // 'severity' => $severities[array_rand($severities)],
-                'source' => $sources[array_rand($sources)],
                 'status' => $statuses[array_rand($statuses)],
                 // spread timestamps over recent time
                 'timestamp' => now()->subMinutes(rand(0, 60 * 24 * 30))->toIso8601String(),

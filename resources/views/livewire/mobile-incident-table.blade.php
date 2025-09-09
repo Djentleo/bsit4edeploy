@@ -4,16 +4,31 @@
 
 <div class="max-w-full" x-data="mobileIncidents()" x-init="init()">
     <!-- Switch Source Toggle -->
-    <div class="flex justify-end mb-4">
-        <div class="inline-flex rounded-md shadow-sm border border-gray-200 bg-white">
+    <div class="flex justify-end mb-6">
+        <div class="relative inline-flex rounded-lg shadow-sm border border-gray-200 bg-white">
             <button type="button" onclick="window.location.href='{{ route('incidents.mobile') }}'"
-                class="px-4 py-2 text-sm font-medium focus:outline-none transition-all {{ request()->is('mobile-incident-table') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }} rounded-l-md"
-                {{ request()->is('mobile-incident-table') ? 'disabled' : '' }}
-                >📱 Mobile</button>
+                class="relative px-4 py-2.5 text-sm font-medium focus:outline-none transition-all duration-200 {{ request()->is('mobile-incident-table') ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50' }} rounded-l-lg"
+                {{ request()->is('mobile-incident-table') ? 'disabled' : '' }}>
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zM6 4a1 1 0 011-1h6a1 1 0 011 1v10H6V4z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Mobile
+                </span>
+            </button>
             <button type="button" onclick="window.location.href='{{ route('incidents.cctv') }}'"
-                class="px-4 py-2 text-sm font-medium focus:outline-none transition-all {{ request()->is('cctv-incident-table') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }} rounded-r-md"
-                {{ request()->is('cctv-incident-table') ? 'disabled' : '' }}
-                >🎥 CCTV</button>
+                class="relative px-4 py-2.5 text-sm font-medium focus:outline-none transition-all duration-200 {{ request()->is('cctv-incident-table') ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50' }} rounded-r-lg"
+                {{ request()->is('cctv-incident-table') ? 'disabled' : '' }}>
+                <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                    </svg>
+                    CCTV
+                </span>
+            </button>
         </div>
     </div>
     <!-- Search & Filter Row -->
@@ -47,72 +62,95 @@
     </div>
 
     <!-- Content Section -->
-    <div class="bg-white rounded-lg px-6 py-4">
-
-        <div class="w-full">
-            <table class="w-full">
-                <thead>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div class="min-w-full">
+            <table class="w-full table-auto">
+                <thead style="background-color: #1E3A8A;" class="border-b border-gray-200">
                     <tr class="text-left">
-                        <th class="pb-4 text-xs font-medium text-gray-500">ID</th>
-                        <th class="pb-4 text-xs font-medium text-gray-500">TYPE</th>
-                        <th class="pb-4 text-xs font-medium text-gray-500">LOCATION</th>
-                        <th class="pb-4 text-xs font-medium text-gray-500">REPORTER</th>
-                        <th class="pb-4 text-xs font-medium text-gray-500">STATUS</th>
-                        <th class="pb-4 text-xs font-medium text-gray-500">DEPARTMENT</th>
-                        <th class="pb-4 text-xs font-medium text-gray-500">TIMESTAMP</th>
-                        <th class="pb-4 text-xs font-medium text-gray-500">ACTIONS</th>
+                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ID</th>
+                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">TYPE</th>
+                        <th
+                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden sm:table-cell">
+                            LOCATION</th>
+                        <th
+                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden md:table-cell">
+                            REPORTER</th>
+                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">STATUS</th>
+                        <th
+                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden lg:table-cell">
+                            DEPARTMENT</th>
+                        <th
+                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden xl:table-cell">
+                            TIMESTAMP</th>
+                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ACTIONS</th>
                     </tr>
                 </thead>
-                <tbody class="text-sm divide-y divide-gray-100">
+                <tbody class="text-sm divide-y divide-gray-200 bg-white">
                     <template x-for="incident in paginatedIncidents" :key="incident.incident_id">
-                        <tr>
-                            <td class="py-3 text-gray-900" x-text="incident.incident_id"></td>
-                            <td class="py-3">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium"
+                        <tr class="hover:bg-gray-50 transition-colors duration-150">
+                            <td class="px-3 py-4 text-gray-900 font-medium text-sm" x-text="incident.incident_id"></td>
+                            <td class="px-3 py-4">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
                                     :class="{
-                                        'text-red-600': incident.type === 'fire',
-                                        'text-orange-600': incident.type === 'vehicle_crash' || incident.type === 'vehicular_accident',
-                                        'text-emerald-600': incident.type === 'medical_emergency',
-                                        'text-blue-600': incident.type === 'disturbance'
+                                        'bg-red-100 text-red-700': incident.type === 'fire',
+                                        'bg-orange-100 text-orange-700': incident.type === 'vehicle_crash' || incident.type === 'vehicular_accident',
+                                        'bg-emerald-100 text-emerald-700': incident.type === 'medical_emergency',
+                                        'bg-blue-100 text-blue-700': incident.type === 'disturbance'
                                     }"
                                     x-text="(incident.type || '').replace('_', ' ').replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())"></span>
                             </td>
-                            <td class="py-3 text-gray-600" x-text="incident.location"></td>
-                            <td class="py-3 text-gray-600" x-text="incident.reporter_name"></td>
-                            <td class="py-3">
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium"
+                            <td class="px-3 py-4 text-gray-600 text-sm hidden sm:table-cell" x-text="incident.location">
+                            </td>
+                            <td class="px-3 py-4 text-gray-600 text-sm hidden md:table-cell"
+                                x-text="incident.reporter_name"></td>
+                            <td class="px-3 py-4">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
                                     :class="{
-                                        'text-emerald-600': incident.status === 'new',
-                                        'text-orange-600': incident.status === 'dispatched',
-                                        'text-gray-600': incident.status === 'resolved'
+                                        'bg-green-100 text-green-700': incident.status === 'new',
+                                        'bg-yellow-100 text-yellow-700': incident.status === 'dispatched',
+                                        'bg-gray-100 text-gray-700': incident.status === 'resolved'
                                     }" x-text="(incident.status || '').replace(/\b\w/g, c => c.toUpperCase())"></span>
                             </td>
-                            <td class="py-3 text-gray-600"
+                            <td class="px-3 py-4 text-gray-600 font-medium text-sm hidden lg:table-cell"
                                 x-text="(incident.department || '').replace(/\b\w/g, c => c.toUpperCase())"></td>
-                            <td class="py-3 text-gray-500" x-text="incident.timestamp_formatted || incident.timestamp">
+                            <td class="px-3 py-4 text-gray-500 text-xs hidden xl:table-cell"
+                                x-text="incident.timestamp_formatted || incident.timestamp">
                             </td>
-                            <td class="py-3">
+                            <td class="px-3 py-4">
                                 <a :href="'/dispatch?incident_id=' + encodeURIComponent(incident.incident_id)"
-                                    class="inline-flex items-center px-3 py-1 rounded bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition">
+                                    class="inline-flex items-center px-3 py-1.5 rounded-md bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 shadow-sm">
                                     View
                                 </a>
                             </td>
                         </tr>
                     </template>
                     <tr x-show="paginatedIncidents.length === 0">
-                        <td colspan="7" class="py-4 text-center text-gray-500">No incidents found.</td>
+                        <td colspan="8" class="px-3 py-8 text-center text-gray-500 bg-gray-50">
+                            <div class="flex flex-col items-center">
+                                <svg class="w-12 h-12 text-gray-400 mb-3" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                <p class="text-sm font-medium">No incidents found</p>
+                                <p class="text-xs text-gray-400 mt-1">Try adjusting your search or filter criteria</p>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
             <!-- Pagination Controls -->
-            <div class="flex items-center justify-between mt-4">
-                <div class="text-sm text-gray-500">
-                    Page <span x-text="page + 1"></span> of <span x-text="totalPages"></span>
+            <div class="flex items-center justify-between px-3 py-4 bg-gray-50 border-t border-gray-200">
+                <div class="text-sm text-gray-600">
+                    Page <span class="font-medium" x-text="page + 1"></span> of <span class="font-medium"
+                        x-text="totalPages"></span>
                 </div>
-                <div class="space-x-2">
-                    <button type="button" class="px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm"
-                        :disabled="page === 0" @click="page = Math.max(0, page - 1)">Prev</button>
-                    <button type="button" class="px-3 py-1 rounded bg-gray-200 text-gray-600 text-sm"
+                <div class="flex space-x-2">
+                    <button type="button"
+                        class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                        :disabled="page === 0" @click="page = Math.max(0, page - 1)">Previous</button>
+                    <button type="button"
+                        class="px-3 py-2 rounded-md bg-white border border-gray-300 text-gray-700 text-sm font-medium hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
                         :disabled="page >= totalPages - 1"
                         @click="page = Math.min(totalPages - 1, page + 1)">Next</button>
                 </div>
@@ -120,8 +158,8 @@
         </div>
 
         <!-- Results Count -->
-        <div class="mt-6 text-sm text-gray-500">
-            Showing <span x-text="filteredIncidents.length"></span> results
+        <div class="px-3 py-3 bg-gray-50 border-t border-gray-200 text-sm text-gray-600">
+            Showing <span class="font-medium" x-text="filteredIncidents.length"></span> results
         </div>
     </div>
 

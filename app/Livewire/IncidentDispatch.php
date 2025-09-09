@@ -6,6 +6,10 @@ use Livewire\Component;
 use App\Models\User;
 use App\Models\Dispatch;
 use Illuminate\Support\Facades\DB;
+use App\Models\IncidentNote;
+use App\Models\IncidentTimeline;
+use Illuminate\Support\Facades\Auth;
+use App\Services\FirebaseService;
 
 class IncidentDispatch extends Component
 {
@@ -16,12 +20,67 @@ class IncidentDispatch extends Component
     public $successMessage = '';
     public $errorMessage = '';
 
+    // Notes
+    public $notes = [];
+    public $newNote = '';
+
+    // Status
+    public $status = '';
+    public $statusOptions = [
+        'dispatched' => 'Dispatched',
+        'resolved' => 'Resolved',
+        'closed' => 'Closed',
+    ];
+    // Timeline
+    public $timeline = [];
+
     public function mount($incidentId)
     {
         $this->incidentId = $incidentId;
         // Only responders (role = 'responder')
         $this->allResponders = User::where('role', 'responder')->get();
         $this->additionalResponders = [];
+
+        // Load notes for this incident
+        $this->loadNotes();
+
+        // Load current status from Firebase
+        $this->loadStatus();
+
+        // Load timeline
+        $this->loadTimeline();
+    }
+    public function loadStatus()
+    {
+        $firebase = app(FirebaseService::class);
+        $incident = $firebase->getIncidentById($this->incidentId);
+        $this->status = $incident['status'] ?? '';
+    }
+
+    public function loadTimeline()
+    {
+        $this->timeline = IncidentTimeline::where('incident_id', $this->incidentId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function updateStatus()
+    {
+        $firebase = app(FirebaseService::class);
+        $firebase->updateIncidentStatus($this->incidentId, $this->status);
+        $this->loadStatus(); // Refresh status from Firebase
+        $this->successMessage = 'Status updated.';
+
+        // Log to timeline
+        $user = Auth::user();
+        IncidentTimeline::create([
+            'incident_id' => $this->incidentId,
+            'user_id' => $user ? $user->id : null,
+            'action' => 'status_changed',
+            'details' => $this->status,
+        ]);
+        $this->loadTimeline();
     }
 
     public function addResponder()
@@ -63,6 +122,47 @@ class IncidentDispatch extends Component
             DB::rollBack();
             $this->errorMessage = 'Dispatch failed: ' . $e->getMessage();
         }
+    }
+
+    public function loadNotes()
+    {
+        $this->notes = IncidentNote::where('incident_id', $this->incidentId)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    public function addNote()
+    {
+        $this->successMessage = '';
+        $this->errorMessage = '';
+        $noteText = trim($this->newNote);
+        if ($noteText === '') {
+            $this->errorMessage = 'Note cannot be empty.';
+            return;
+        }
+        $user = Auth::user();
+        if (!$user) {
+            $this->errorMessage = 'You must be logged in to add a note.';
+            return;
+        }
+        IncidentNote::create([
+            'incident_id' => $this->incidentId,
+            'user_id' => $user->id,
+            'note' => $noteText,
+        ]);
+        $this->newNote = '';
+        $this->loadNotes();
+        $this->successMessage = 'Note added.';
+
+        // Log to timeline
+        IncidentTimeline::create([
+            'incident_id' => $this->incidentId,
+            'user_id' => $user->id,
+            'action' => 'note_added',
+            'details' => 'Note added',
+        ]);
+        $this->loadTimeline();
     }
 
     public function render()

@@ -8,6 +8,27 @@ use Kreait\Firebase\Factory;
 class FirebaseService
 {
     /**
+     * Update the status of an incident in Firebase (mobile or CCTV).
+     */
+    public function updateIncidentStatus($incidentId, $status)
+    {
+        // Try mobile_incidents first
+        $ref = $this->database->getReference('mobile_incidents/' . $incidentId);
+        $incident = $ref->getValue();
+        if ($incident) {
+            $ref->update(['status' => $status]);
+            return true;
+        }
+        // Try incidents (CCTV)
+        $ref = $this->database->getReference('incidents/' . $incidentId);
+        $incident = $ref->getValue();
+        if ($incident) {
+            $ref->update(['status' => $status]);
+            return true;
+        }
+        return false;
+    }
+    /**
      * Create a new incident in Firebase with AI-predicted severity/priority.
      * Calls Flask API for prediction, adds fields, and pushes to mobile_incidents.
      * Returns the new incident data (including incident_id).
