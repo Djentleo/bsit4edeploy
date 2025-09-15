@@ -68,19 +68,29 @@ class IncidentDispatch extends Component
     public function updateStatus()
     {
         $firebase = app(FirebaseService::class);
-        $firebase->updateIncidentStatus($this->incidentId, $this->status);
-        $this->loadStatus(); // Refresh status from Firebase
-        $this->successMessage = 'Status updated.';
-
-        // Log to timeline
-        $user = Auth::user();
-        IncidentTimeline::create([
-            'incident_id' => $this->incidentId,
-            'user_id' => $user ? $user->id : null,
-            'action' => 'status_changed',
-            'details' => $this->status,
-        ]);
-        $this->loadTimeline();
+        if ($this->status === 'resolved') {
+            $firebase->moveToResolvedAndDelete($this->incidentId);
+            $this->successMessage = 'Incident moved to resolved incidents.';
+            // Optionally clear UI state
+            $this->status = '';
+            $this->notes = [];
+            $this->timeline = [];
+            // Optionally, you could redirect or emit an event to close the modal/page
+            return;
+        } else {
+            $firebase->updateIncidentStatus($this->incidentId, $this->status);
+            $this->successMessage = 'Status updated.';
+            $this->loadStatus(); // Refresh status from Firebase
+            // Log to timeline
+            $user = Auth::user();
+            IncidentTimeline::create([
+                'incident_id' => $this->incidentId,
+                'user_id' => $user ? $user->id : null,
+                'action' => 'status_changed',
+                'details' => $this->status,
+            ]);
+            $this->loadTimeline();
+        }
     }
 
     public function addResponder()

@@ -8,6 +8,48 @@ use Kreait\Firebase\Factory;
 class FirebaseService
 {
     /**
+     * Get all resolved incidents from Firebase.
+     */
+    public function getResolvedIncidents()
+    {
+        $resolved = $this->database->getReference('resolved_incidents')->getValue() ?? [];
+        // Add a source property for each
+        $resolvedList = collect($resolved)->map(function ($item) {
+            $item['source'] = $item['source'] ?? 'resolved';
+            return $item;
+        })->values()->all();
+        return $resolvedList;
+    }
+    /**
+     * Move an incident to resolved_incidents and delete from its original node.
+     */
+    public function moveToResolvedAndDelete($incidentId)
+    {
+        // Try mobile_incidents first
+        $ref = $this->database->getReference('mobile_incidents/' . $incidentId);
+        $incident = $ref->getValue();
+        $sourceNode = null;
+        if ($incident) {
+            $sourceNode = 'mobile_incidents';
+        } else {
+            // Try incidents (CCTV)
+            $ref = $this->database->getReference('incidents/' . $incidentId);
+            $incident = $ref->getValue();
+            if ($incident) {
+                $sourceNode = 'incidents';
+            }
+        }
+        if ($incident && $sourceNode) {
+            // Write to resolved_incidents
+            $resolvedRef = $this->database->getReference('resolved_incidents/' . $incidentId);
+            $resolvedRef->set($incident);
+            // Delete from original node
+            $this->database->getReference($sourceNode . '/' . $incidentId)->remove();
+            return true;
+        }
+        return false;
+    }
+    /**
      * Update the status of an incident in Firebase (mobile or CCTV).
      */
     public function updateIncidentStatus($incidentId, $status)

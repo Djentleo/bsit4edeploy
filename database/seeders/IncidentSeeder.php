@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Kreait\Firebase\Factory;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class IncidentSeeder extends Seeder
 {
@@ -44,6 +45,17 @@ class IncidentSeeder extends Seeder
             ['address' => 'Market Area, Malabon'],
         ];
         $reporters = ['Juan Dela Cruz', 'Maria Clara', 'Jose Rizal', 'Pedro Penduko', 'Aling Nena', 'Anna Santos', 'Miguel Tan', 'Carmen Reyes'];
+        // Simulated Firebase Auth UIDs for each reporter
+        $reporterUids = [
+            'Juan Dela Cruz' => 'uid_juan_123456',
+            'Maria Clara' => 'uid_maria_234567',
+            'Jose Rizal' => 'uid_jose_345678',
+            'Pedro Penduko' => 'uid_pedro_456789',
+            'Aling Nena' => 'uid_alin_567890',
+            'Anna Santos' => 'uid_anna_678901',
+            'Miguel Tan' => 'uid_miguel_789012',
+            'Carmen Reyes' => 'uid_carmen_890123',
+        ];
         $statuses = ['new', 'dispatched', 'resolved'];
 
         for ($i = 1; $i <= 50; $i++) {
@@ -77,11 +89,13 @@ class IncidentSeeder extends Seeder
                     'Urgent medical assistance needed at ' . $loc['address'],
                 ],
             ];
+            $reporterName = $reporters[array_rand($reporters)];
             $incident = [
                 'type' => $type,
                 'incident_description' => $descTemplates[$type][array_rand($descTemplates[$type])],
                 'location' => $loc['address'],
-                'reporter_name' => $reporters[array_rand($reporters)],
+                'reporter_name' => $reporterName,
+                'reporter_id' => $reporterUids[$reporterName], // Simulated Firebase Auth UID
                 'department' => $departments[$type] ?? 'General',
                 // 'severity' => $severities[array_rand($severities)],
                 'status' => $statuses[array_rand($statuses)],

@@ -23,9 +23,10 @@ class PredictSeverityForIncidents extends Command
         $updated = 0;
 
         foreach ($incidents as $id => $incident) {
-            if (empty($incident['severity']) && !empty($incident['incident_description'])) {
+            $desc = $incident['incident_description'] ?? $incident['description'] ?? null;
+            if (empty($incident['severity']) && !empty($desc)) {
                 $response = Http::post('http://127.0.0.1:5000/predict-severity', [
-                    'description' => $incident['incident_description']
+                    'description' => $desc
                 ]);
                 $severity = $response->json('severity') ?? 'unknown';
                 $priority = $severity;

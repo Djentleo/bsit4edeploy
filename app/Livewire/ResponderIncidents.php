@@ -80,10 +80,18 @@ class ResponderIncidents extends Component
         $incidentId = $this->selectedIncident['incident_id'] ?? null;
         if (!$incidentId) return;
         $firebase = app(FirebaseService::class);
-        $firebase->updateIncidentStatus($incidentId, $this->incidentStatus);
-        // Update local state
-        $this->selectedIncident['status'] = $this->incidentStatus;
-        // Optionally reload incidents
+        if ($this->incidentStatus === 'resolved') {
+            $firebase->moveToResolvedAndDelete($incidentId);
+            // Optionally clear modal/UI state
+            $this->showModal = false;
+            $this->selectedIncident = null;
+            $this->incidentNotes = [];
+            $this->incidentStatus = '';
+        } else {
+            $firebase->updateIncidentStatus($incidentId, $this->incidentStatus);
+            $this->selectedIncident['status'] = $this->incidentStatus;
+        }
+        // Reload incidents list
         $this->mount();
     }
 
