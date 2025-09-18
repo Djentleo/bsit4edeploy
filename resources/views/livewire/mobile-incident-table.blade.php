@@ -79,9 +79,7 @@
                         <th
                             class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden lg:table-cell">
                             DEPARTMENT</th>
-                        <th
-                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden xl:table-cell">
-                            TIMESTAMP</th>
+                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">TIMESTAMP</th>
                         <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ACTIONS</th>
                     </tr>
                 </thead>
@@ -113,7 +111,7 @@
                             </td>
                             <td class="px-3 py-4 text-gray-600 font-medium text-sm hidden lg:table-cell"
                                 x-text="(incident.department || '').replace(/\b\w/g, c => c.toUpperCase())"></td>
-                            <td class="px-3 py-4 text-gray-500 text-xs hidden xl:table-cell"
+                            <td class="px-3 py-4 text-gray-500 text-xs max-w-[100px] md:max-w-[180px] truncate whitespace-normal break-words"
                                 x-text="incident.timestamp_formatted || incident.timestamp">
                             </td>
                             <td class="px-3 py-4">

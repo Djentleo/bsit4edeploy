@@ -56,9 +56,10 @@ class IncidentSeeder extends Seeder
             'Miguel Tan' => 'uid_miguel_789012',
             'Carmen Reyes' => 'uid_carmen_890123',
         ];
-        $statuses = ['new', 'dispatched', 'resolved'];
+    // All generated incidents will have status 'new'
+    $statuses = ['new'];
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $type = $types[array_rand($types)];
             $loc = $locations[array_rand($locations)];
 
@@ -98,9 +99,9 @@ class IncidentSeeder extends Seeder
                 'reporter_id' => $reporterUids[$reporterName], // Simulated Firebase Auth UID
                 'department' => $departments[$type] ?? 'General',
                 // 'severity' => $severities[array_rand($severities)],
-                'status' => $statuses[array_rand($statuses)],
-                // spread timestamps over recent time
-                'timestamp' => now()->subMinutes(rand(0, 60 * 24 * 30))->toIso8601String(),
+                'status' => 'new',
+                // Set timestamp to a random time within the last 24 hours
+                'timestamp' => now()->subMinutes(rand(0, 60 * 24))->toIso8601String(),
             ];
 
             // Call Flask API for severity prediction
