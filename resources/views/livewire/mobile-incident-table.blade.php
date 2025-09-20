@@ -69,6 +69,7 @@
                     <tr class="text-left">
                         <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ID</th>
                         <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">TYPE</th>
+                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">SEVERITY</th>
                         <th
                             class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden sm:table-cell">
                             LOCATION</th>
@@ -86,7 +87,7 @@
                 <tbody class="text-sm divide-y divide-gray-200 bg-white">
                     <template x-for="incident in paginatedIncidents" :key="incident.incident_id">
                         <tr class="hover:bg-gray-50 transition-colors duration-150">
-                            <td class="px-3 py-4 text-gray-900 font-medium text-sm" x-text="incident.incident_id"></td>
+                            <td class="px-3 py-4 text-gray-900 font-medium text-xs" x-text="incident.incident_id"></td>
                             <td class="px-3 py-4">
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
                                     :class="{
@@ -97,9 +98,19 @@
                                     }"
                                     x-text="(incident.type || '').replace('_', ' ').replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())"></span>
                             </td>
-                            <td class="px-3 py-4 text-gray-600 text-sm hidden sm:table-cell" x-text="incident.location">
+                            <td class="px-3 py-4">
+                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
+                                    :class="{
+                                        'bg-red-200 text-red-800': incident.severity === 'critical',
+                                        'bg-orange-200 text-orange-800': incident.severity === 'high',
+                                        'bg-yellow-100 text-yellow-800': incident.severity === 'medium',
+                                        'bg-green-100 text-green-800': incident.severity === 'low'
+                                    }"
+                                    x-text="(incident.severity || '').charAt(0).toUpperCase() + (incident.severity || '').slice(1)"></span>
                             </td>
-                            <td class="px-3 py-4 text-gray-600 text-sm hidden md:table-cell"
+                            <td class="px-3 py-4 text-gray-600 text-xs hidden sm:table-cell" x-text="incident.location">
+                            </td>
+                            <td class="px-3 py-4 text-gray-600 text-xs hidden md:table-cell"
                                 x-text="incident.reporter_name"></td>
                             <td class="px-3 py-4">
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
@@ -109,10 +120,16 @@
                                         'bg-gray-100 text-gray-700': incident.status === 'resolved'
                                     }" x-text="(incident.status || '').replace(/\b\w/g, c => c.toUpperCase())"></span>
                             </td>
-                            <td class="px-3 py-4 text-gray-600 font-medium text-sm hidden lg:table-cell"
+                            <td class="px-3 py-4 text-gray-600 font-medium text-xs hidden lg:table-cell"
                                 x-text="(incident.department || '').replace(/\b\w/g, c => c.toUpperCase())"></td>
-                            <td class="px-3 py-4 text-gray-500 text-xs max-w-[100px] md:max-w-[180px] truncate whitespace-normal break-words"
-                                x-text="incident.timestamp_formatted || incident.timestamp">
+                            <td
+                                class="px-3 py-4 text-gray-500 text-xs max-w-[100px] md:max-w-[180px] truncate whitespace-normal break-words">
+                                <div
+                                    x-text="(incident.timestamp ? new Date(incident.timestamp).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : '-')">
+                                </div>
+                                <div class="text-gray-400 text-xs"
+                                    x-text="(incident.timestamp ? new Date(incident.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : '')">
+                                </div>
                             </td>
                             <td class="px-3 py-4">
                                 <a :href="'/dispatch?incident_id=' + encodeURIComponent(incident.incident_id)"
@@ -200,17 +217,32 @@
                 pageSize: 10,
                 get filteredIncidents() {
                     const s = (this.search || '').toLowerCase().trim();
-                    const sortByIdDesc = arr => arr.slice().sort((a, b) => Number(b.incident_id) - Number(a.incident_id));
+                    // Severity mapping: higher value = higher severity
+                    const severityMap = { critical: 4, high: 3, medium: 2, low: 1 };
+                    const sortFn = (a, b) => {
+                        const aSeverity = (a.severity || '').toLowerCase();
+                        const bSeverity = (b.severity || '').toLowerCase();
+                        const aScore = severityMap[aSeverity] || 0;
+                        const bScore = severityMap[bSeverity] || 0;
+                        if (aScore === bScore) {
+                            // If same severity, sort by timestamp (earliest first)
+                            const aTime = a.timestamp || '';
+                            const bTime = b.timestamp || '';
+                            return aTime.localeCompare(bTime);
+                        }
+                        // Higher severity first
+                        return bScore - aScore;
+                    };
+                    let arr = this.incidents.slice();
                     if (s !== '') {
-                        return sortByIdDesc(this.incidents.filter(i => {
+                        arr = arr.filter(i => {
                             const hay = Object.values(i).join(' ').toLowerCase();
                             return hay.indexOf(s) !== -1;
-                        }));
+                        });
+                    } else if (this.filter && this.filter !== '') {
+                        arr = arr.filter(i => ((i.type || '').toLowerCase() === (this.filter || '').toLowerCase()));
                     }
-                    if (this.filter && this.filter !== '') {
-                        return sortByIdDesc(this.incidents.filter(i => ((i.type || '').toLowerCase() === (this.filter || '').toLowerCase())));
-                    }
-                    return sortByIdDesc(this.incidents);
+                    return arr.sort(sortFn);
                 },
                 get totalPages() {
                     return Math.max(1, Math.ceil(this.filteredIncidents.length / this.pageSize));

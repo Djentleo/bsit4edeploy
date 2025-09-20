@@ -90,24 +90,27 @@ class MobileIncidentTable extends Component
 
     public function render()
     {
-        // Ensure we have a Collection (Livewire may rehydrate public properties as arrays)
+        // Severity mapping: higher value = higher severity
+        $severityMap = [
+            'critical' => 4,
+            'high' => 3,
+            'medium' => 2,
+            'low' => 1,
+        ];
+
         $incidents = $this->incidents instanceof \Illuminate\Support\Collection
             ? $this->incidents
             : collect($this->incidents ?? []);
 
-        // Normalize filter input: accept display labels or raw data keys
         $rawFilter = trim((string) $this->filter);
         $filterType = '';
         if ($rawFilter !== '') {
-            // direct match to known mapping (case-insensitive)
             foreach ($this->typeMap as $label => $dataKey) {
                 if (strtolower($label) === strtolower($rawFilter) || strtolower($dataKey) === strtolower($rawFilter)) {
                     $filterType = $dataKey;
                     break;
                 }
             }
-
-            // fallback: transform human label like "Vehicle crash" -> vehicle_crash
             if ($filterType === '') {
                 $candidate = strtolower(str_replace(' ', '_', $rawFilter));
                 $filterType = $candidate;
@@ -116,7 +119,23 @@ class MobileIncidentTable extends Component
 
         $search = trim((string) $this->search);
 
-        // If search box has input, perform search across all incidents (ignore filter)
+        $sortFn = function ($a, $b) use ($severityMap) {
+            $aArr = is_array($a) ? $a : (array) $a;
+            $bArr = is_array($b) ? $b : (array) $b;
+            $aSeverity = strtolower($aArr['severity'] ?? '');
+            $bSeverity = strtolower($bArr['severity'] ?? '');
+            $aScore = $severityMap[$aSeverity] ?? 0;
+            $bScore = $severityMap[$bSeverity] ?? 0;
+            if ($aScore === $bScore) {
+                // If same severity, sort by timestamp (earliest first)
+                $aTime = $aArr['timestamp'] ?? '';
+                $bTime = $bArr['timestamp'] ?? '';
+                return strcmp($aTime, $bTime);
+            }
+            // Higher severity first
+            return $bScore <=> $aScore;
+        };
+
         if ($search !== '') {
             $s = strtolower($search);
             $filtered = $incidents->filter(function ($incident) use ($s) {
@@ -127,31 +146,20 @@ class MobileIncidentTable extends Component
                     }
                     return (string) $v;
                 })->implode(' ');
-
                 return stripos($hay, $s) !== false;
-            })->sortByDesc(function ($incident) {
-                return $incident['timestamp'] ?? '';
-            });
+            })->sort($sortFn);
         } elseif ($filterType !== '') {
-            // No search, but a filter is selected — show only filtered incidents
             $filtered = $incidents->filter(function ($incident) use ($filterType) {
                 $incidentArr = is_array($incident) ? $incident : (array) $incident;
                 $type = strtolower($incidentArr['type'] ?? '');
                 return $type === strtolower($filterType);
-            })->sortByDesc(function ($incident) {
-                return $incident['timestamp'] ?? '';
-            });
+            })->sort($sortFn);
         } else {
-            // No search and no filter — show all
-            $filtered = $incidents->sortByDesc(function ($incident) {
-                return $incident['timestamp'] ?? '';
-            });
+            $filtered = $incidents->sort($sortFn);
         }
 
-        // Build a local display list and avoid mutating the original public property
         $displayIncidents = $filtered->values()->all();
 
-        // Prepare a client-friendly incidents array (add formatted timestamp) for Alpine
         $incidentsForClient = collect($incidents)->map(function ($incident) {
             $incidentArr = is_array($incident) ? $incident : (array) $incident;
             try {
@@ -164,7 +172,6 @@ class MobileIncidentTable extends Component
             return $incidentArr;
         })->values()->all();
 
-        // Log debug info to storage/logs/laravel.log for diagnosis (use the display list)
         try {
             $allTypes = collect($displayIncidents)->pluck('type')->all();
             Log::debug('MobileIncidentTable.filter', [
@@ -174,10 +181,8 @@ class MobileIncidentTable extends Component
                 'matched_ids' => collect($displayIncidents)->pluck('incident_id')->all(),
             ]);
         } catch (\Exception $e) {
-            // ignore logging failures
         }
 
-        // Pass the computed display list to the view instead of mutating the public prop.
         return view('livewire.mobile-incident-table', [
             'displayIncidents' => $displayIncidents,
             'incidents' => $incidentsForClient,

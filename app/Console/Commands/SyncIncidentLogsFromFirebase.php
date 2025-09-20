@@ -15,7 +15,7 @@ class SyncIncidentLogsFromFirebase extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sync-incident-logs-from-firebase';
+    protected $signature = 'sync:incident-logs';
 
     /**
      * The console command description.

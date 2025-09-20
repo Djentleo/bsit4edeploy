@@ -10,7 +10,7 @@
 
                 <!-- Login Form -->
                 <div class="flex-shrink-0">
-                    <h2 class="mt-2 text-3xl font-extrabold text-gray-900 text-center">
+                    <h2 class="mt-2 text-3xl font-semibold text-gray-900 text-center">
                         Sign in to your account
                     </h2>
                     <p class="mt-2 text-sm text-gray-600 text-center">
@@ -77,7 +77,7 @@
             
             <!-- Content Overlay -->
             <div class="relative z-10 flex items-center justify-center h-full px-12">
-                <div class="text-center text-white" style="font-family: 'Raleway', sans-serif;">
+                <div class="text-center text-white w-full">
                     <h1 class="text-4xl font-bold mb-6 drop-shadow-lg">
                         AI-Based Incident Report & Management System
                     </h1>
@@ -89,6 +89,12 @@
                             "Your Community. Your Safety. Our Priority."
                         </p>
                     </div>
+                </div>
+                <!-- Credits -->
+                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-full flex justify-center pointer-events-none select-none">
+                    <span class="bg-blue-900 bg-opacity-80 px-4 py-1 rounded-full text-xs text-white shadow font-medium pointer-events-auto">
+                        &copy; {{ date('Y') }} BSIT - 4E Group 3. All rights reserved.
+                    </span>
                 </div>
             </div>
         </div>

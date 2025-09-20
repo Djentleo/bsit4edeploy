@@ -38,7 +38,16 @@
     </div>
     <!-- Dispatch Button -->
     <button type="button" wire:click="dispatchIncident"
-        class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors mt-2">
+        class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors mt-2"
+        x-data="{}" x-on:click.prevent="Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to dispatch this incident?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#2563eb',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, dispatch it!'
+        }).then((result) => { if (result.isConfirmed) { $wire.dispatchIncident(); } })">
         Dispatch
     </button>
     @if($successMessage)
@@ -57,8 +66,19 @@
                 <option value="{{ $value }}">{{ $label }}</option>
                 @endforeach
             </select>
-            <button type="submit"
-                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">Update</button>
+            <button type="button"
+                class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                x-data="{}" x-on:click.prevent="Swal.fire({
+                    title: 'Update Status?',
+                    text: 'Are you sure you want to update the status?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#2563eb',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, update!'
+                }).then((result) => { if (result.isConfirmed) { $wire.updateStatus(); } })">
+                Update
+            </button>
         </form>
         <div class="mt-2 text-xs text-gray-500">Current status: <span class="font-semibold text-gray-800">{{
                 ucfirst($status) }}</span></div>
@@ -71,12 +91,23 @@
             <textarea wire:model.defer="newNote" rows="2" placeholder="Add a note..."
                 class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
             <div class="flex justify-end mt-2">
-                <button type="submit"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                <button type="button"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    x-data="{}" x-on:click.prevent="Swal.fire({
+                        title: 'Add Note?',
+                        text: 'Are you sure you want to add this note?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#2563eb',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, add it!'
+                    }).then((result) => { if (result.isConfirmed) { $wire.addNote(); } })">
                     Add Note
                 </button>
             </div>
         </form>
+        <!-- SweetAlert2 CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <div class="space-y-3 max-h-48 overflow-y-auto">
             @forelse($notes as $note)
             <div class="bg-gray-50 border border-gray-200 rounded p-2">

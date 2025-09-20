@@ -142,8 +142,17 @@
                                 </template>
                             </template>
                         </select>
-                        <button type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                        <button type="button"
+                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                            x-data="{}" x-on:click.prevent="Swal.fire({
+                                title: 'Update Status?',
+                                text: 'Are you sure you want to update the status?',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#16a34a',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, update!'
+                            }).then((result) => { if (result.isConfirmed) { $wire.updateStatus(); } })">
                             Update
                         </button>
                     </form>
@@ -186,11 +195,22 @@
                         <input type="text" x-model="$wire.newNote"
                             class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="Add a note...">
-                        <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                        <button type="button"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                            x-data="{}" x-on:click.prevent="Swal.fire({
+                                title: 'Add Note?',
+                                text: 'Are you sure you want to add this note?',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonColor: '#2563eb',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, add it!'
+                            }).then((result) => { if (result.isConfirmed) { $wire.addNote(); } })">
                             Add
                         </button>
                     </form>
+                    <!-- SweetAlert2 CDN -->
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 </div>
             </div>
 

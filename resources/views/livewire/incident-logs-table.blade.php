@@ -81,7 +81,7 @@
             <tbody class="text-sm divide-y divide-gray-200 bg-white">
                 @forelse($logs as $incident)
                 <tr class="hover:bg-gray-50 transition-colors duration-150">
-                    <td class="px-4 py-3 text-gray-900 font-medium text-sm">{{ $incident->incident_id ?? '-' }}</td>
+                    <td class="px-4 py-3 text-gray-900 font-medium text-sm">{{ $incident->short_id ?? '-' }}</td>
                     <td class="px-4 py-3">
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
                             @if(($incident->type ?? '') === 'fire') bg-red-100 text-red-800

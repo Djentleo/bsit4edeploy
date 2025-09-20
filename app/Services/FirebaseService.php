@@ -154,7 +154,9 @@ class FirebaseService
         $all = $this->getAllIncidents();
         $total = count($all);
         $current = collect($all)->where('status', '!=', 'resolved')->count();
-        $completed = collect($all)->where('status', 'resolved')->count();
+        // Count completed issues from resolved_incidents node
+        $resolved = $this->database->getReference('resolved_incidents')->getValue() ?? [];
+        $completed = count($resolved);
         return [
             'total_cases' => $total,
             'current_issues' => $current,
