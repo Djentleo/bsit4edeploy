@@ -15,6 +15,10 @@ class UserManagement extends Component
     public $userId;
     public $name, $email, $password, $mobile, $role, $responder_type, $position, $assigned_area;
 
+    // Search and filter properties
+    public $search = '';
+    public $roleFilter = 'all';
+
     protected function rules()
     {
         $rules = [
@@ -35,26 +39,32 @@ class UserManagement extends Component
 
     public function openModal()
     {
-    $this->reset(['name', 'email', 'mobile', 'role', 'responder_type', 'position', 'assigned_area', 'userId']);
+        $this->reset(['name', 'email', 'mobile', 'role', 'responder_type', 'position', 'assigned_area', 'userId']);
         $this->password = $this->generatePassword();
         $this->editMode = false;
         $this->addUserModal = true;
     }
 
+    public function clearFilters()
+    {
+        $this->search = '';
+        $this->roleFilter = 'all';
+    }
+
     public function editUser($id)
     {
-    $user = User::findOrFail($id);
-    $this->userId = $user->id;
-    $this->name = $user->name;
-    $this->email = $user->email;
-    $this->mobile = $user->mobile;
-    $this->role = $user->role;
-    $this->responder_type = $user->responder_type;
-    $this->position = $user->position;
-    $this->assigned_area = $user->assigned_area;
-    $this->password = '********'; // Not editable
-    $this->editMode = true;
-    $this->addUserModal = true;
+        $user = User::findOrFail($id);
+        $this->userId = $user->id;
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->mobile = $user->mobile;
+        $this->role = $user->role;
+        $this->responder_type = $user->responder_type;
+        $this->position = $user->position;
+        $this->assigned_area = $user->assigned_area;
+        $this->password = '********'; // Not editable
+        $this->editMode = true;
+        $this->addUserModal = true;
     }
 
     private function generatePassword($length = 10)
@@ -65,9 +75,9 @@ class UserManagement extends Component
 
     public function closeModal()
     {
-    $this->addUserModal = false;
-    $this->editMode = false;
-    $this->reset(['name', 'email', 'password', 'mobile', 'role', 'responder_type', 'position', 'assigned_area', 'userId']);
+        $this->addUserModal = false;
+        $this->editMode = false;
+        $this->reset(['name', 'email', 'password', 'mobile', 'role', 'responder_type', 'position', 'assigned_area', 'userId']);
     }
 
     public function saveUser()
@@ -174,8 +184,29 @@ class UserManagement extends Component
 
     public function render()
     {
+        $query = User::query();
+
+        // Apply search filter
+        if (!empty($this->search)) {
+            $query->where(function ($q) {
+                $q->where('name', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('email', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('mobile', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('position', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('assigned_area', 'LIKE', '%' . $this->search . '%');
+            });
+        }
+
+        // Apply role filter
+        if ($this->roleFilter !== 'all') {
+            $query->where('role', $this->roleFilter);
+        }
+
+        // Order by created date (oldest first) - admin will appear first
+        $query->orderBy('created_at', 'asc');
+
         return view('livewire.user-management', [
-            'users' => User::all()
+            'users' => $query->get()
         ]);
     }
 }

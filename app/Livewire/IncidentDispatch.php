@@ -69,6 +69,8 @@ class IncidentDispatch extends Component
     {
         $firebase = app(FirebaseService::class);
         if ($this->status === 'resolved') {
+            // Ensure status is set to 'resolved' in Firebase before moving
+            $firebase->updateIncidentStatus($this->incidentId, 'resolved');
             $firebase->moveToResolvedAndDelete($this->incidentId);
             $this->successMessage = 'Incident moved to resolved incidents.';
             // Optionally clear UI state

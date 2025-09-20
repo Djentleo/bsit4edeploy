@@ -14,6 +14,9 @@ class Kernel extends ConsoleKernel
     {
         // Schedule the AI prediction command to run every minute
         $schedule->command('incidents:predict-severity')->everyMinute();
+
+        // Schedule the Firebase incident logs sync to run every minute
+        $schedule->command('app:sync-incident-logs-from-firebase')->everyMinute();
     }
 
     /**

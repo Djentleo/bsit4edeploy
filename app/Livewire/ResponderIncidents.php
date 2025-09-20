@@ -81,6 +81,8 @@ class ResponderIncidents extends Component
         if (!$incidentId) return;
         $firebase = app(FirebaseService::class);
         if ($this->incidentStatus === 'resolved') {
+            // Ensure status is set to 'resolved' in Firebase before moving
+            $firebase->updateIncidentStatus($incidentId, 'resolved');
             $firebase->moveToResolvedAndDelete($incidentId);
             // Optionally clear modal/UI state
             $this->showModal = false;

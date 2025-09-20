@@ -11,6 +11,13 @@ class IncidentLog extends Model
 
     protected $fillable = [
         'incident_id',
+        'type',
+        'location',
+        'reporter_name',
+        'department',
+        'status',
+        'timestamp',
+        'incident_description',
         'responder_id',
         'resolved_at',
         'remarks',
