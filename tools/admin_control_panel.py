@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import scrolledtext, messagebox
 from tkinter import ttk
 import os
+import webbrowser
 
 # Configure paths
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -344,6 +345,8 @@ class AdminControlPanel(tk.Tk):
                         self.buttons[label].configure(state=tk.DISABLED)
                 except Exception:
                     pass
+                import re
+                browser_opened = False
                 for line in iter(proc.stdout.readline, b''):
                     if not line:
                         break
@@ -352,6 +355,16 @@ class AdminControlPanel(tk.Tk):
                     except Exception:
                         decoded = str(line)
                     self.append_output(decoded)
+                    # Auto-open browser if PHP server started (parse address)
+                    if (not browser_opened and label == "Start PHP Server (serve)"):
+                        match = re.search(r"Server running on \[(http[^\]]+)\]", decoded)
+                        if match:
+                            url = match.group(1)
+                            try:
+                                webbrowser.open(url)
+                                browser_opened = True
+                            except Exception:
+                                pass
                 proc.wait()
                 self.append_output(f"\n[exit code {proc.returncode}]\n\n")
             except FileNotFoundError as e:
