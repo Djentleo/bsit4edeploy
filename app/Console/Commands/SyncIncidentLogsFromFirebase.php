@@ -30,23 +30,28 @@ class SyncIncidentLogsFromFirebase extends Command
     public function handle()
     {
         $this->info('Fetching resolved incidents from Firebase...');
-        $firebase = app(FirebaseService::class);
-        $resolved = $firebase->getResolvedIncidents();
+        // Get raw resolved_incidents with keys
+        $factory = (new \Kreait\Firebase\Factory)
+            ->withServiceAccount(config('firebase.credentials'))
+            ->withDatabaseUri(config('firebase.database_url'));
+        $database = $factory->createDatabase();
+        $resolvedRaw = $database->getReference('resolved_incidents')->getValue() ?? [];
         $count = 0;
-        foreach ($resolved as $incident) {
-            // Upsert into MySQL
+        foreach ($resolvedRaw as $firebaseKey => $incident) {
+            $incidentId = $incident['incident_id'] ?? $incident['firebase_id'] ?? $firebaseKey;
+            $isCctv = isset($incident['camera_name']) || ($incident['source'] ?? null) === 'cctv';
             DB::table('incident_logs')->updateOrInsert(
-                ['incident_id' => $incident['incident_id'] ?? null],
+                ['incident_id' => $incidentId],
                 [
-                    'type' => $incident['type'] ?? null,
-                    'location' => $incident['location'] ?? null,
-                    'reporter_name' => $incident['reporter_name'] ?? null,
-                    'reporter_id' => $incident['reporter_id'] ?? null,
+                    'type' => $isCctv ? ($incident['event'] ?? 'CCTV') : ($incident['type'] ?? null),
+                    'location' => $isCctv ? ($incident['camera_name'] ?? null) : ($incident['location'] ?? null),
+                    'reporter_name' => $isCctv ? 'CCTV' : ($incident['reporter_name'] ?? null),
+                    'reporter_id' => $isCctv ? null : ($incident['reporter_id'] ?? null),
                     'department' => $incident['department'] ?? null,
                     'status' => $incident['status'] ?? null,
                     'timestamp' => isset($incident['timestamp']) ? date('Y-m-d H:i:s', strtotime($incident['timestamp'])) : null,
-                    'source' => $incident['source'] ?? null,
-                    'incident_description' => $incident['incident_description'] ?? null,
+                    'source' => $incident['source'] ?? ($isCctv ? 'cctv' : null),
+                    'incident_description' => $isCctv ? ($incident['screenshot_path'] ?? null) : ($incident['incident_description'] ?? null),
                     'priority' => $incident['priority'] ?? null,
                     'severity' => $incident['severity'] ?? null,
                     'updated_at' => now(),

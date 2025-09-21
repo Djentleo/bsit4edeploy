@@ -25,22 +25,28 @@ class ResponderIncidents extends Component
 
     public function mount()
     {
+        $this->refreshIncidents();
+    }
+
+    public function refreshIncidents()
+    {
         $user = Auth::user();
         if (!$user) {
             $this->incidents = [];
             return;
         }
 
-        // Get all dispatches for this responder
+        // Get all dispatches for this responder from MySQL
         $dispatches = Dispatch::where('responder_id', $user->id)->get();
         $incidentIds = $dispatches->pluck('incident_id')->unique()->toArray();
 
-        // Fetch incident details from Firebase
+        // Fetch incident details from Firebase, attach firebase_id for all
         $firebase = app(FirebaseService::class);
         $incidents = [];
         foreach ($incidentIds as $incidentId) {
             $incident = $firebase->getIncidentById($incidentId);
             if ($incident) {
+                $incident['firebase_id'] = $incidentId;
                 $incidents[] = $incident;
             }
         }
@@ -53,7 +59,8 @@ class ResponderIncidents extends Component
         if (!$incident) return;
         $this->selectedIncident = $incident;
         $this->incidentStatus = $incident['status'] ?? '';
-        $this->loadNotes($incident['incident_id'] ?? null);
+        // Use firebase_id for notes (works for both types)
+        $this->loadNotes($incident['firebase_id'] ?? null);
         $this->showModal = true;
     }
 
@@ -77,7 +84,7 @@ class ResponderIncidents extends Component
     public function updateStatus()
     {
         if (!$this->selectedIncident) return;
-        $incidentId = $this->selectedIncident['incident_id'] ?? null;
+        $incidentId = $this->selectedIncident['firebase_id'] ?? null;
         if (!$incidentId) return;
         $firebase = app(FirebaseService::class);
         if ($this->incidentStatus === 'resolved') {
@@ -100,7 +107,7 @@ class ResponderIncidents extends Component
     public function addNote()
     {
         if (!$this->selectedIncident) return;
-        $incidentId = $this->selectedIncident['incident_id'] ?? null;
+        $incidentId = $this->selectedIncident['firebase_id'] ?? null;
         if (!$incidentId) return;
         $user = Auth::user();
         if (!$user) return;

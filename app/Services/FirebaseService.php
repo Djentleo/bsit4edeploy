@@ -40,6 +40,8 @@ class FirebaseService
             }
         }
         if ($incident && $sourceNode) {
+            // Always inject the incident_id field for consistency
+            $incident['incident_id'] = $incidentId;
             // Write to resolved_incidents
             $resolvedRef = $this->database->getReference('resolved_incidents/' . $incidentId);
             $resolvedRef->set($incident);

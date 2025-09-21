@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.5s="refreshIncidents">
     <h2 class="text-xl font-bold mb-4">Assigned Incidents</h2>
     @if(count($incidents) === 0)
     <div class="text-gray-500">No incidents assigned to you.</div>
