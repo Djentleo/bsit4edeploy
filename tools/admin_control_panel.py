@@ -38,6 +38,11 @@ class AdminControlPanel(tk.Tk):
         self.command_buttons = []
         self.buttons = {}
         self.processes = {}  # label -> Popen
+        # Auto Pilot state
+        self.autopilot_enabled = False
+        self.autopilot_interval_ms = 5000
+        self.autopilot_after_id = None
+        self.autopilot_btn = None
         
         # Set window icon and background
         self.configure(bg='#f0f0f0')
@@ -268,6 +273,7 @@ class AdminControlPanel(tk.Tk):
         
         # Essential control buttons with compact styling
         button_configs = [
+            ("Auto Pilot", self.toggle_autopilot, "#95a5a6"),  # toggles ON/OFF
             ("Clear", self.clear_output, "#95a5a6"),
             ("Stop All", self.stop_all_current, "#e67e22"),
             ("Stop", self.stop_current, "#e74c3c"),
@@ -292,7 +298,8 @@ class AdminControlPanel(tk.Tk):
                         "#95a5a6": "#7f8c8d",
                         "#e67e22": "#d35400", 
                         "#e74c3c": "#c0392b",
-                        "#7f8c8d": "#95a5a6"
+                        "#7f8c8d": "#95a5a6",
+                        "#27ae60": "#1e8449"
                     }
                     button.config(bg=darker_colors.get(original_color, original_color))
                 def on_leave(e):
@@ -304,12 +311,60 @@ class AdminControlPanel(tk.Tk):
             btn.bind("<Leave>", leave_func)
             
             # Store stop buttons for state management
-            if text == "Stop":
+            if text == "Auto Pilot":
+                self.autopilot_btn = btn
+            elif text == "Stop":
                 self.stop_btn = btn
                 btn.config(state=tk.DISABLED)
             elif text == "Stop All":
                 self.stop_all_btn = btn
                 btn.config(state=tk.DISABLED)
+
+    # ---------- Auto Pilot controls ----------
+    def toggle_autopilot(self):
+        if self.autopilot_enabled:
+            self.stop_autopilot()
+        else:
+            self.start_autopilot()
+
+    def start_autopilot(self):
+        self.autopilot_enabled = True
+        if self.autopilot_btn and self.autopilot_btn.winfo_exists():
+            self.autopilot_btn.configure(bg="#27ae60")
+        self.append_output(f"Auto Pilot enabled (interval {int(self.autopilot_interval_ms/1000)}s).\n")
+        # kick off first cycle when safe
+        self._schedule_autopilot_kickoff(300)
+
+    def stop_autopilot(self):
+        self.autopilot_enabled = False
+        if self.autopilot_btn and self.autopilot_btn.winfo_exists():
+            self.autopilot_btn.configure(bg="#95a5a6")
+        if self.autopilot_after_id is not None:
+            try:
+                self.after_cancel(self.autopilot_after_id)
+            except Exception:
+                pass
+            self.autopilot_after_id = None
+        self.append_output("Auto Pilot disabled.\n")
+
+    def _schedule_autopilot_kickoff(self, delay_ms: int):
+        # schedule a kickoff that waits for current short tasks to finish
+        def kickoff():
+            if not self.autopilot_enabled:
+                return
+            sync_label = "Sync Resolved to MySQL"
+            predict_label = "Predict Severity (Mobile)"
+            # Only start if neither sync nor predict is running
+            if sync_label not in self.processes and predict_label not in self.processes:
+                try:
+                    self.run_command(sync_label, COMMANDS[sync_label])
+                except Exception:
+                    # Try again shortly if something transient happens
+                    self._schedule_autopilot_kickoff(1000)
+            else:
+                # Wait and try after a second
+                self._schedule_autopilot_kickoff(1000)
+        self.autopilot_after_id = self.after(delay_ms, kickoff)
 
     def clear_output(self):
         self.output.configure(state=tk.NORMAL)
@@ -390,6 +445,22 @@ class AdminControlPanel(tk.Tk):
                     self.current_process = None
                     self.current_label = None
                 self.set_running(False, cmd, scope=("single" if long_running else "global"), label=label)
+                # Auto Pilot chaining logic: Sync -> Predict -> wait -> Sync ...
+                try:
+                    if self.autopilot_enabled:
+                        sync_label = "Sync Resolved to MySQL"
+                        predict_label = "Predict Severity (Mobile)"
+                        if label == sync_label and (predict_label not in self.processes):
+                            # chain predict shortly after sync
+                            self.append_output("Auto Pilot: starting Predict next...\n")
+                            self.autopilot_after_id = self.after(300, lambda: self.run_command(predict_label, COMMANDS[predict_label]))
+                        elif label == predict_label:
+                            # schedule next cycle after interval
+                            delay = getattr(self, 'autopilot_interval_ms', 5000)
+                            self.append_output(f"Auto Pilot: waiting {int(delay/1000)}s before next cycle...\n")
+                            self.autopilot_after_id = self.after(delay, lambda: self._schedule_autopilot_kickoff(0))
+                except Exception:
+                    pass
         threading.Thread(target=worker, daemon=True).start()
 
     def stop_current(self):
@@ -409,6 +480,9 @@ class AdminControlPanel(tk.Tk):
 
     def stop_all_current(self):
         if not self.processes:
+            # Also ensure Auto Pilot is off
+            if self.autopilot_enabled:
+                self.stop_autopilot()
             return
         self.append_output("\nStopping all running processes...\n")
         for label, proc in list(self.processes.items()):
@@ -427,6 +501,9 @@ class AdminControlPanel(tk.Tk):
         for label, b in self.buttons.items():
             if b.winfo_exists():  # Check if button still exists
                 b.configure(state=tk.NORMAL)
+        # Turn off Auto Pilot after stopping all
+        if self.autopilot_enabled:
+            self.stop_autopilot()
 
     def set_running(self, is_running: bool, cmd=None, scope: str = "global", label: str | None = None):
         self.running = is_running
