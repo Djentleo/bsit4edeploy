@@ -7,24 +7,27 @@ use Kreait\Firebase\Factory;
 
 class IncidentTable extends Component
 {
-    public $incidents;
+    public $search = '';
+    public $incidents = [];
 
     public function mount()
     {
-        $firebase = (new Factory)
-            ->withServiceAccount(config('firebase.credentials'))
-            ->withDatabaseUri(config('firebase.database_url'))
-            ->createDatabase();
-
-        $database = $firebase->getReference('incidents');
-
-        $this->incidents = $database->getValue();
+        $firebase = (new Factory)->withServiceAccount(config('firebase.credentials'))->createFirestore();
+        $database = $firebase->database();
+        $documents = $database->collection('incidents')->documents();
+        $this->incidents = [];
+        foreach ($documents as $doc) {
+            $this->incidents[] = $doc->data();
+        }
     }
 
     public function render()
     {
-        return view('livewire.incident-table', [
-            'incidents' => $this->incidents,
-        ]);
+        $filteredIncidents = collect($this->incidents)->filter(function ($incident) {
+            return str_contains(strtolower($incident['type']), strtolower($this->search)) ||
+                   str_contains(strtolower($incident['location']), strtolower($this->search));
+        });
+
+        return view('livewire.incident-table', ['incidents' => $filteredIncidents]);
     }
 }
