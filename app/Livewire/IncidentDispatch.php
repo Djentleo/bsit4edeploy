@@ -181,4 +181,11 @@ class IncidentDispatch extends Component
     {
         return view('livewire.incident-dispatch');
     }
+
+    public function pollUpdates()
+    {
+        $this->loadNotes();
+        $this->loadStatus();
+        $this->loadTimeline();
+    }
 }
