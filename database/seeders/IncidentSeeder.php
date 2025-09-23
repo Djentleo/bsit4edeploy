@@ -100,8 +100,8 @@ class IncidentSeeder extends Seeder
                 'department' => $departments[$type] ?? 'General',
                 // 'severity' => $severities[array_rand($severities)],
                 'status' => 'new',
-                // Set timestamp to a random time within the last 24 hours
-                'timestamp' => now()->subMinutes(rand(0, 60 * 24))->toIso8601String(),
+                // Set timestamp to current date and time (real-time)
+                'timestamp' => now()->toIso8601String(),
             ];
 
             // Call Flask API for severity prediction

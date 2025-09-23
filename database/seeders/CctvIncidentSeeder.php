@@ -20,7 +20,7 @@ class CctvIncidentSeeder extends Seeder
         // Delete all existing CCTV incidents before seeding
         $reference->remove();
 
-        $cameraNames = ['cam ni gab', 'cam ni boss', 'cam ni admin', 'cam ni barangay'];
+        $cameraNames = ['cam ni gab'];
         $cameraUrls = [
             'http://192.168.1.3:8700/video',
             'http://192.168.1.4:8700/video',
