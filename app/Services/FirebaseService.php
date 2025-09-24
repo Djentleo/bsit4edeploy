@@ -97,6 +97,18 @@ class FirebaseService
         $incidentId = $newRef->getKey();
         $newRef->update(['incident_id' => $incidentId]);
         $incident['incident_id'] = $incidentId;
+
+        // Send email notification to all admins
+        try {
+            $admins = \App\Models\User::where('role', 'admin')->get();
+            if ($admins->count() > 0) {
+                \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\NewIncidentNotification((object) $incident));
+            }
+        } catch (\Exception $e) {
+            // Optionally log error
+            \Illuminate\Support\Facades\Log::error('Failed to send new incident notification', ['error' => $e->getMessage()]);
+        }
+
         return $incident;
     }
     protected $database;

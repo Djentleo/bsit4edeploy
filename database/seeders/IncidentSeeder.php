@@ -56,8 +56,8 @@ class IncidentSeeder extends Seeder
             'Miguel Tan' => 'uid_miguel_789012',
             'Carmen Reyes' => 'uid_carmen_890123',
         ];
-    // All generated incidents will have status 'new'
-    $statuses = ['new'];
+        // All generated incidents will have status 'new'
+        $statuses = ['new'];
 
         for ($i = 1; $i <= 10; $i++) {
             $type = $types[array_rand($types)];
@@ -122,7 +122,18 @@ class IncidentSeeder extends Seeder
                 $newRef = $database->push($incident);
                 $incidentId = $newRef->getKey();
                 $newRef->update(['incident_id' => $incidentId]);
+                $incident['incident_id'] = $incidentId;
                 echo "Record added with id: " . $incidentId . "\n";
+
+                // Send email notification to all admins
+                try {
+                    $admins = \App\Models\User::where('role', 'admin')->get();
+                    if ($admins->count() > 0) {
+                        \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\NewIncidentNotification($incident));
+                    }
+                } catch (\Exception $e) {
+                    echo "Error sending notification: " . $e->getMessage() . "\n";
+                }
             } catch (\Exception $e) {
                 echo "Error adding record: " . $e->getMessage() . "\n";
             }
