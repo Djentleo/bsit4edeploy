@@ -1,7 +1,8 @@
 <x-guest-layout>
     <div class="h-screen flex overflow-hidden">
         <!-- Left Side - Login Form -->
-        <div class="flex-1 flex flex-col justify-center py-4 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 bg-white shadow-lg">
+        <div
+            class="flex-1 flex flex-col justify-center py-4 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24 bg-white shadow-lg">
             <div class="mx-auto w-full max-w-sm lg:w-96 max-h-full overflow-y-auto">
                 <!-- Logo -->
                 <div class="mb-4 flex-shrink-0">
@@ -22,22 +23,24 @@
                     <x-validation-errors class="mb-3" />
 
                     @session('status')
-                        <div class="mb-3 font-medium text-sm text-green-600">
-                            {{ $value }}
-                        </div>
+                    <div class="mb-3 font-medium text-sm text-green-600">
+                        {{ $value }}
+                    </div>
                     @endsession
 
                     <form method="POST" action="{{ route('login') }}" class="space-y-4">
                         @csrf
 
                         <div>
-                            <x-label for="email" value="{{ __('Email') }}" />
-                            <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                            <x-label for="login" value="{{ __('Username or Email') }}" />
+                            <x-input id="login" class="block mt-1 w-full" type="text" name="login" :value="old('login')"
+                                required autofocus autocomplete="username" />
                         </div>
 
                         <div>
                             <x-label for="password" value="{{ __('Password') }}" />
-                            <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                            <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
+                                autocomplete="current-password" />
                         </div>
 
                         <div class="flex items-center justify-between">
@@ -47,9 +50,10 @@
                             </label>
 
                             @if (Route::has('password.request'))
-                                <a class="text-sm text-indigo-600 hover:text-indigo-500" href="{{ route('password.request') }}">
-                                    {{ __('Forgot your password?') }}
-                                </a>
+                            <a class="text-sm text-indigo-600 hover:text-indigo-500"
+                                href="{{ route('password.request') }}">
+                                {{ __('Forgot your password?') }}
+                            </a>
                             @endif
                         </div>
 
@@ -70,11 +74,11 @@
                 <source src="{{ asset('videos/background-video.mp4') }}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            
+
             <!-- Blue Overlay Filter -->
             <div class="absolute inset-0 bg-blue-600 bg-opacity-70 mix-blend-multiply"></div>
             <div class="absolute inset-0 bg-blue-900 bg-opacity-30"></div>
-            
+
             <!-- Content Overlay -->
             <div class="relative z-10 flex items-center justify-center h-full px-12">
                 <div class="text-center text-white w-full">
@@ -91,8 +95,10 @@
                     </div>
                 </div>
                 <!-- Credits -->
-                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-full flex justify-center pointer-events-none select-none">
-                    <span class="bg-blue-900 bg-opacity-80 px-4 py-1 rounded-full text-xs text-white shadow font-medium pointer-events-auto">
+                <div
+                    class="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-full flex justify-center pointer-events-none select-none">
+                    <span
+                        class="bg-blue-900 bg-opacity-80 px-4 py-1 rounded-full text-xs text-white shadow font-medium pointer-events-auto">
                         &copy; {{ date('Y') }} BSIT - 4E Group 3. All rights reserved.
                     </span>
                 </div>

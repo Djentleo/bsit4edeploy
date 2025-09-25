@@ -45,14 +45,12 @@
                     <tr class="text-left">
                         <th class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider">#</th>
                         <th class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider">Name</th>
+                        <th class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider">Username</th>
                         <th class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider">Role</th>
                         <th class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider">Email</th>
                         <th
                             class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider hidden sm:table-cell">
                             Mobile</th>
-                        <th
-                            class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider hidden md:table-cell">
-                            Position</th>
                         <th
                             class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider hidden lg:table-cell">
                             Area</th>
@@ -64,8 +62,10 @@
                     @foreach ($users as $user)
                     <tr class="hover:bg-gray-50">
                         <td class="px-2 py-2 text-center text-xs">{{ $loop->iteration }}</td>
-                        <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->name }}">{{ $user->name }}</td>
-                        <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->role ?? '-' }}">
+                        <td class="px-2 py-2 text-center text-xs truncate max-w-20" title="{{ $user->name }}">{{ $user->name }}</td>
+                        <td class="px-2 py-2 text-center text-xs truncate max-w-20" title="{{ $user->username }}">{{ $user->username
+                            }}</td>
+                        <td class="px-2 py-2 text-center text-xs truncate max-w-16" title="{{ $user->role ?? '-' }}">
                             @if($user->role)
                             <span
                                 class="inline-block px-2 py-1 text-xs font-semibold rounded-full
@@ -78,22 +78,20 @@
                             <span class="text-gray-400">-</span>
                             @endif
                         </td>
-                        <td class="px-2 py-2 text-xs truncate max-w-32" title="{{ $user->email }}">{{ $user->email }}
+                        <td class="px-2 py-2 text-center text-xs truncate max-w-32" title="{{ $user->email }}">{{ $user->email }}
                         </td>
-                        <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->mobile ?? '-' }}">{{
+                        <td class="px-2 py-2 text-center text-xs truncate max-w-20" title="{{ $user->mobile ?? '-' }}">{{
                             $user->mobile ?? '-' }}</td>
-                        <td class="px-2 py-2 text-xs truncate max-w-20" title="{{ $user->position ?? '-' }}">{{
-                            $user->position ?? '-' }}</td>
-                        <td class="px-2 py-2 text-xs truncate max-w-16" title="{{ $user->assigned_area ?? '-' }}">{{
+                        <td class="px-2 py-2 text-center text-xs truncate max-w-16" title="{{ $user->assigned_area ?? '-' }}">{{
                             $user->assigned_area ?? '-' }}</td>
-                        <td class="px-2 py-2">
+                        <td class="px-2 py-2 text-center">
                             <span
                                 class="inline-block px-2 py-1 text-xs font-semibold rounded-full
                                     {{ $user->status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
                                 {{ ucfirst($user->status ?? 'Active') }}
                             </span>
                         </td>
-                        <td class="px-2 py-2 flex items-center gap-2">
+                        <td class="px-2 py-2 flex items-center justify-center gap-2">
                             <button
                                 class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50 transition-colors"
                                 title="Edit" wire:click="editUser({{ $user->id }})">
@@ -166,12 +164,18 @@
             </button>
             <h2 class="text-2xl font-bold mb-6 text-blue-800">{{ $editMode ? 'Edit User' : 'Add New User' }}</h2>
             <form wire:submit.prevent="{{ $editMode ? 'updateUser' : 'saveUser' }}"
-                class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-1">Full Name</label>
                     <input type="text" wire:model.defer="name"
                         class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
                     @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                </div>
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-1">Username</label>
+                    <input type="text" wire:model.defer="username"
+                        class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
+                    @error('username') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div>
                     <label class="block text-gray-700 text-sm font-semibold mb-1">Email Address</label>
@@ -203,24 +207,19 @@
                         <option value="cctv">CCTV</option>
                     </select>
                     @error('role') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    <div x-show="role === 'responder'" class="mt-2" x-cloak>
-                        <label class="block text-gray-700 text-sm font-semibold mb-1">Responder Type</label>
-                        <select wire:model.defer="responder_type"
-                            class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
-                            <option value="">Select Responder Type</option>
-                            <option value="police">Police / Peace & Order</option>
-                            <option value="fire">Fire Department</option>
-                            <option value="medical">Medical / Health Services</option>
-                            <option value="tanod">Barangay Tanod / Community Responder</option>
-                        </select>
-                        @error('responder_type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                    </div>
                 </div>
-                <div>
-                    <label class="block text-gray-700 text-sm font-semibold mb-1">Barangay Position</label>
-                    <input type="text" wire:model.defer="position"
-                        class="border border-gray-300 rounded-lg w-full py-2 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
-                    @error('position') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                <div x-data="{ role: @entangle('role') }" x-show="role === 'responder'" class="md:col-span-2 -mt-2"
+                    x-cloak>
+                    <label class="block text-gray-700 text-sm font-semibold mb-1">Responder Type</label>
+                    <select wire:model.defer="responder_type"
+                        class="border border-gray-300 rounded-lg w-full py-0 px-3 focus:ring-2 focus:ring-blue-400 focus:outline-none text-gray-700">
+                        <option value="">Select Responder Type</option>
+                        <option value="police">Police / Peace & Order</option>
+                        <option value="fire">Fire Department</option>
+                        <option value="medical">Medical / Health Services</option>
+                        <option value="tanod">Barangay Tanod / Community Responder</option>
+                    </select>
+                    @error('responder_type') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                 </div>
                 <div class="md:col-span-2">
                     <label class="block text-gray-700 text-sm font-semibold mb-1">Assigned Area (Department)</label>

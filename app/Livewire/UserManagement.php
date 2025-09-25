@@ -13,7 +13,7 @@ class UserManagement extends Component
     public $addUserModal = false;
     public $editMode = false;
     public $userId;
-    public $name, $email, $password, $mobile, $role, $responder_type, $position, $assigned_area;
+    public $name, $username, $email, $password, $mobile, $role, $responder_type, $assigned_area;
 
     // Search and filter properties
     public $search = '';
@@ -23,11 +23,11 @@ class UserManagement extends Component
     {
         $rules = [
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:50|alpha_dash|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'mobile' => 'required|string|max:20',
             'role' => 'required|in:admin,responder,cctv',
-            'position' => 'required|string|max:255',
             'assigned_area' => 'required|string|max:255',
         ];
         if ($this->role === 'responder') {
@@ -39,7 +39,7 @@ class UserManagement extends Component
 
     public function openModal()
     {
-        $this->reset(['name', 'email', 'mobile', 'role', 'responder_type', 'position', 'assigned_area', 'userId']);
+        $this->reset(['name', 'username', 'email', 'mobile', 'role', 'responder_type', 'assigned_area', 'userId']);
         $this->password = $this->generatePassword();
         $this->editMode = false;
         $this->addUserModal = true;
@@ -56,11 +56,11 @@ class UserManagement extends Component
         $user = User::findOrFail($id);
         $this->userId = $user->id;
         $this->name = $user->name;
+        $this->username = $user->username;
         $this->email = $user->email;
         $this->mobile = $user->mobile;
         $this->role = $user->role;
         $this->responder_type = $user->responder_type;
-        $this->position = $user->position;
         $this->assigned_area = $user->assigned_area;
         $this->password = '********'; // Not editable
         $this->editMode = true;
@@ -77,7 +77,7 @@ class UserManagement extends Component
     {
         $this->addUserModal = false;
         $this->editMode = false;
-        $this->reset(['name', 'email', 'password', 'mobile', 'role', 'responder_type', 'position', 'assigned_area', 'userId']);
+        $this->reset(['name', 'username', 'email', 'password', 'mobile', 'role', 'responder_type', 'assigned_area', 'userId']);
     }
 
     public function saveUser()
@@ -85,12 +85,12 @@ class UserManagement extends Component
         $this->validate($this->rules());
         $user = User::create([
             'name' => $this->name,
+            'username' => $this->username,
             'email' => $this->email,
             'password' => bcrypt($this->password),
             'mobile' => $this->mobile,
             'role' => $this->role,
             'responder_type' => $this->role === 'responder' ? $this->responder_type : null,
-            'position' => $this->position,
             'assigned_area' => $this->assigned_area,
             'status' => 'active',
         ]);
@@ -106,7 +106,6 @@ class UserManagement extends Component
                     $this->role,
                     [
                         'mobile' => $this->mobile,
-                        'position' => $this->position,
                         'assigned_area' => $this->assigned_area,
                         'status' => 'active',
                     ]
@@ -124,7 +123,7 @@ class UserManagement extends Component
         }
 
         $this->closeModal();
-        $this->reset(['name', 'email', 'password', 'mobile', 'role', 'position', 'assigned_area']);
+        $this->reset(['name', 'email', 'password', 'mobile', 'role', 'assigned_area']);
         $this->dispatch('user-added');
     }
 
@@ -133,10 +132,10 @@ class UserManagement extends Component
         $user = User::findOrFail($this->userId);
         $rules = [
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:50|alpha_dash|unique:users,username,' . $user->id,
             'email' => 'required|email|unique:users,email,' . $user->id,
             'mobile' => 'required|string|max:20',
             'role' => 'required|in:admin,responder,cctv',
-            'position' => 'required|string|max:255',
             'assigned_area' => 'required|string|max:255',
         ];
         if ($this->role === 'responder') {
@@ -145,11 +144,11 @@ class UserManagement extends Component
         $this->validate($rules);
         $user->update([
             'name' => $this->name,
+            'username' => $this->username,
             'email' => $this->email,
             'mobile' => $this->mobile,
             'role' => $this->role,
             'responder_type' => $this->role === 'responder' ? $this->responder_type : null,
-            'position' => $this->position,
             'assigned_area' => $this->assigned_area,
         ]);
         $this->closeModal();
@@ -191,8 +190,8 @@ class UserManagement extends Component
             $query->where(function ($q) {
                 $q->where('name', 'LIKE', '%' . $this->search . '%')
                     ->orWhere('email', 'LIKE', '%' . $this->search . '%')
+                    ->orWhere('username', 'LIKE', '%' . $this->search . '%')
                     ->orWhere('mobile', 'LIKE', '%' . $this->search . '%')
-                    ->orWhere('position', 'LIKE', '%' . $this->search . '%')
                     ->orWhere('assigned_area', 'LIKE', '%' . $this->search . '%');
             });
         }
