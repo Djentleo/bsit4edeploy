@@ -11,12 +11,17 @@ import webbrowser
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PHP_ARTISAN = os.path.join(REPO_ROOT, 'artisan')
 PYTHON_EXE = sys.executable or 'python'
+# Try to locate cloudflared; allow override via env var
+CLOUDFLARED_EXE = os.environ.get('CLOUDFLARED_EXE')
+if not CLOUDFLARED_EXE:
+    _cf_default = os.path.join('C:\\', 'cloudflared', 'cloudflared.exe')
+    CLOUDFLARED_EXE = _cf_default if os.path.exists(_cf_default) else 'cloudflared'
 
 COMMANDS = {
     "Sync Resolved to MySQL": ["php", "artisan", "sync:incident-logs"],
     "Predict Severity (Mobile)": ["php", "artisan", "incidents:predict-severity"],
     # Long-running dev servers/tools
-    "Start PHP Server (serve)": ["php", "artisan", "serve"],
+    "Start PHP Server (serve)": ["php", "artisan", "serve", "--host=127.0.0.1", "--port=8000"],
     "Start Severity API (python)": [PYTHON_EXE, "predict_severity_api.py"],
 }
 
@@ -24,6 +29,7 @@ COMMANDS = {
 LONG_RUNNING_LABELS = {
     "Start PHP Server (serve)",
     "Start Severity API (python)",
+    "Start Cloudflare Tunnel",
 }
 
 class AdminControlPanel(tk.Tk):
@@ -274,6 +280,7 @@ class AdminControlPanel(tk.Tk):
         # Essential control buttons with compact styling
         button_configs = [
             ("Auto Pilot", self.toggle_autopilot, "#95a5a6"),  # toggles ON/OFF
+            ("Tunnel", self.start_tunnel, "#2ecc71"),
             ("Clear", self.clear_output, "#95a5a6"),
             ("Stop All", self.stop_all_current, "#e67e22"),
             ("Stop", self.stop_current, "#e74c3c"),
@@ -299,7 +306,8 @@ class AdminControlPanel(tk.Tk):
                         "#e67e22": "#d35400", 
                         "#e74c3c": "#c0392b",
                         "#7f8c8d": "#95a5a6",
-                        "#27ae60": "#1e8449"
+                        "#27ae60": "#1e8449",
+                        "#2ecc71": "#27ae60",
                     }
                     button.config(bg=darker_colors.get(original_color, original_color))
                 def on_leave(e):
@@ -313,6 +321,8 @@ class AdminControlPanel(tk.Tk):
             # Store stop buttons for state management
             if text == "Auto Pilot":
                 self.autopilot_btn = btn
+            elif text == "Tunnel":
+                self.tunnel_btn = btn
             elif text == "Stop":
                 self.stop_btn = btn
                 btn.config(state=tk.DISABLED)
@@ -420,6 +430,47 @@ class AdminControlPanel(tk.Tk):
                                 browser_opened = True
                             except Exception:
                                 pass
+                    elif (not browser_opened and label == "Start Cloudflare Tunnel"):
+                        # Try to detect the generated trycloudflare URL and open it
+                        m2 = re.search(r"(https://[-a-z0-9.]*trycloudflare\.com)", decoded, re.IGNORECASE)
+                        if m2:
+                            turl = m2.group(1)
+                            # Wait for DNS/edge readiness to avoid NXDOMAIN right after start
+                            self.append_output(f"Tunnel URL detected: {turl}\nWaiting for Cloudflare to be ready...\n")
+                            def wait_and_open():
+                                import time
+                                from urllib import request, error
+                                nonlocal browser_opened
+                                deadline = time.time() + 45  # max wait 45s
+                                last_err = None
+                                while time.time() < deadline and not browser_opened:
+                                    try:
+                                        req = request.Request(turl, method="HEAD")
+                                        with request.urlopen(req, timeout=3) as resp:
+                                            status = getattr(resp, 'status', resp.getcode())
+                                        # Any HTTP status means DNS/TLS worked; open browser
+                                        try:
+                                            webbrowser.open(turl)
+                                        except Exception:
+                                            pass
+                                        browser_opened = True
+                                        self.append_output("Tunnel is ready. Opened browser.\n")
+                                        return
+                                    except error.HTTPError as he:
+                                        # Domain resolved and server responded; treat as ready
+                                        try:
+                                            webbrowser.open(turl)
+                                        except Exception:
+                                            pass
+                                        browser_opened = True
+                                        self.append_output("Tunnel is ready. Opened browser.\n")
+                                        return
+                                    except Exception as e:
+                                        last_err = e
+                                    time.sleep(1.0)
+                                # If we exit loop without success, still print the URL for manual attempt
+                                self.append_output(f"Tunnel URL may still be propagating. Try manually: {turl}\n")
+                            threading.Thread(target=wait_and_open, daemon=True).start()
                 proc.wait()
                 self.append_output(f"\n[exit code {proc.returncode}]\n\n")
             except FileNotFoundError as e:
@@ -445,6 +496,12 @@ class AdminControlPanel(tk.Tk):
                     self.current_process = None
                     self.current_label = None
                 self.set_running(False, cmd, scope=("single" if long_running else "global"), label=label)
+                # Re-enable Tunnel button if the Cloudflare process finished
+                try:
+                    if label == "Start Cloudflare Tunnel" and hasattr(self, 'tunnel_btn') and self.tunnel_btn.winfo_exists():
+                        self.tunnel_btn.configure(state=tk.NORMAL)
+                except Exception:
+                    pass
                 # Auto Pilot chaining logic: Sync -> Predict -> wait -> Sync ...
                 try:
                     if self.autopilot_enabled:
@@ -462,6 +519,18 @@ class AdminControlPanel(tk.Tk):
                 except Exception:
                     pass
         threading.Thread(target=worker, daemon=True).start()
+
+    def start_tunnel(self):
+        # Start a quick Cloudflare Tunnel to 127.0.0.1:8000
+        try:
+            if hasattr(self, 'tunnel_btn') and self.tunnel_btn.winfo_exists():
+                self.tunnel_btn.configure(state=tk.DISABLED)
+        except Exception:
+            pass
+        self.run_command(
+            "Start Cloudflare Tunnel",
+            [CLOUDFLARED_EXE, "tunnel", "--url", "http://127.0.0.1:8000"]
+        )
 
     def stop_current(self):
         # Attempt to stop the currently running process (and its children on Windows)
