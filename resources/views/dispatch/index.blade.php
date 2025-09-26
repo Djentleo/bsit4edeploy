@@ -181,18 +181,67 @@
     <script>
         // Mapbox integration for incident location (with geocoding if needed)
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGplbnRsZW8iLCJhIjoiY21mNnoxMDgzMGt3NjJyb20zY3dqdnRjdSJ9.OKI8RAGo7e9eRRXejMLfOA';
+
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [120.9532, 14.6562], // Default center (Malabon)
-        zoom: 13
+        zoom: 13,
+        pitch: 45, // tilt for 3D
+        bearing: -17.6 // slight rotation for effect
     });
 
-    // Get address from Blade variable
-    const address = @json($incident['location'] ?? '');
+    // Add navigation controls (zoom, rotate)
+    map.addControl(new mapboxgl.NavigationControl());
+    // Add fullscreen control
+    map.addControl(new mapboxgl.FullscreenControl());
+    // Add geolocate control (shows user's location)
+    map.addControl(new mapboxgl.GeolocateControl({
+        positionOptions: { enableHighAccuracy: true },
+        trackUserLocation: true,
+        showUserHeading: true
+    }));
 
-    if (address) {
-        // Use Mapbox Geocoding API to get coordinates
+    // Add 3D buildings layer after map loads
+    map.on('load', function () {
+        // Insert the 3D buildings layer below label layers
+        const layers = map.getStyle().layers;
+        let labelLayerId;
+        for (let i = 0; i < layers.length; i++) {
+            if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                labelLayerId = layers[i].id;
+                break;
+            }
+        }
+        map.addLayer({
+            'id': '3d-buildings',
+            'source': 'composite',
+            'source-layer': 'building',
+            'filter': ['==', 'extrude', 'true'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+                'fill-extrusion-color': '#aaa',
+                'fill-extrusion-height': ["get", "height"],
+                'fill-extrusion-base': ["get", "min_height"],
+                'fill-extrusion-opacity': 0.6
+            }
+        }, labelLayerId);
+    });
+
+    // Get address and lat/lng from Blade variables
+    const address = @json($incident['location'] ?? '');
+    const lat = @json($incident['latitude'] ?? null);
+    const lng = @json($incident['longitude'] ?? null);
+
+    if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+        // Use provided coordinates
+        map.setCenter([lng, lat]);
+        new mapboxgl.Marker({ color: 'red' })
+            .setLngLat([lng, lat])
+            .addTo(map);
+    } else if (address) {
+        // Use Mapbox Geocoding API to get coordinates from address
         const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
         mapboxClient.geocoding
             .forwardGeocode({

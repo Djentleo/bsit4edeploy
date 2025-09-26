@@ -6,6 +6,8 @@ from tkinter import scrolledtext, messagebox
 from tkinter import ttk
 import os
 import webbrowser
+import socket
+import time
 
 # Configure paths
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -16,6 +18,11 @@ CLOUDFLARED_EXE = os.environ.get('CLOUDFLARED_EXE')
 if not CLOUDFLARED_EXE:
     _cf_default = os.path.join('C:\\', 'cloudflared', 'cloudflared.exe')
     CLOUDFLARED_EXE = _cf_default if os.path.exists(_cf_default) else 'cloudflared'
+
+# XAMPP locations (override with XAMPP_DIR env if needed)
+XAMPP_DIR = os.environ.get('XAMPP_DIR', r'C:\\xampp')
+APACHE_START_BAT = os.path.join(XAMPP_DIR, 'apache_start.bat')
+MYSQL_START_BAT  = os.path.join(XAMPP_DIR, 'mysql_start.bat')
 
 COMMANDS = {
     "Sync Resolved to MySQL": ["php", "artisan", "sync:incident-logs"],
@@ -49,6 +56,7 @@ class AdminControlPanel(tk.Tk):
         self.autopilot_interval_ms = 5000
         self.autopilot_after_id = None
         self.autopilot_btn = None
+        self.xampp_btn = None
         
         # Set window icon and background
         self.configure(bg='#f0f0f0')
@@ -280,6 +288,7 @@ class AdminControlPanel(tk.Tk):
         # Essential control buttons with compact styling
         button_configs = [
             ("Auto Pilot", self.toggle_autopilot, "#95a5a6"),  # toggles ON/OFF
+            ("XAMPP", self.start_xampp, "#8e44ad"),
             ("Tunnel", self.start_tunnel, "#2ecc71"),
             ("Clear", self.clear_output, "#95a5a6"),
             ("Stop All", self.stop_all_current, "#e67e22"),
@@ -308,6 +317,7 @@ class AdminControlPanel(tk.Tk):
                         "#7f8c8d": "#95a5a6",
                         "#27ae60": "#1e8449",
                         "#2ecc71": "#27ae60",
+                        "#8e44ad": "#6c3483",
                     }
                     button.config(bg=darker_colors.get(original_color, original_color))
                 def on_leave(e):
@@ -321,6 +331,8 @@ class AdminControlPanel(tk.Tk):
             # Store stop buttons for state management
             if text == "Auto Pilot":
                 self.autopilot_btn = btn
+            elif text == "XAMPP":
+                self.xampp_btn = btn
             elif text == "Tunnel":
                 self.tunnel_btn = btn
             elif text == "Stop":
@@ -531,6 +543,94 @@ class AdminControlPanel(tk.Tk):
             "Start Cloudflare Tunnel",
             [CLOUDFLARED_EXE, "tunnel", "--url", "http://127.0.0.1:8000"]
         )
+
+    # ---------- XAMPP controls ----------
+    def _port_open(self, host: str, port: int, timeout: float = 1.0) -> bool:
+        try:
+            with socket.create_connection((host, port), timeout=timeout):
+                return True
+        except Exception:
+            return False
+
+    def _try_start_service(self, service_names: list[str]) -> bool:
+        """Attempt to start a Windows service by names; return True if command accepted.
+        We don't rely solely on service return; we'll verify with port probes later.
+        """
+        for name in service_names:
+            try:
+                r = subprocess.run(["sc", "start", name], capture_output=True, text=True)
+                if r.returncode == 0 or (r.stdout and "RUNNING" in r.stdout.upper()) or (r.stderr and "SERVICE HAS NOT BEEN STARTED" not in r.stderr.upper()):
+                    self.append_output(f"Tried starting service '{name}'.\n")
+                    return True
+            except Exception:
+                pass
+        return False
+
+    def _start_bat(self, bat_path: str) -> bool:
+        if os.path.exists(bat_path):
+            try:
+                # Run .bat via cmd; don't block UI
+                subprocess.Popen(["cmd.exe", "/c", bat_path], cwd=os.path.dirname(bat_path), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                self.append_output(f"Launched: {bat_path}\n")
+                return True
+            except Exception as e:
+                self.append_output(f"Failed to launch {bat_path}: {e}\n")
+        else:
+            self.append_output(f"Not found: {bat_path}\n")
+        return False
+
+    def start_xampp(self):
+        """Start Apache (80) and MySQL (3306) from XAMPP. Tries Windows services first,
+        then falls back to XAMPP batch files. Verifies by probing ports.
+        """
+        # Disable button while working
+        try:
+            if self.xampp_btn and self.xampp_btn.winfo_exists():
+                self.xampp_btn.configure(state=tk.DISABLED)
+        except Exception:
+            pass
+
+        def worker():
+            self.append_output("Starting XAMPP services (Apache + MySQL)...\n")
+            # Apache
+            if self._port_open("127.0.0.1", 80) or self._port_open("127.0.0.1", 443):
+                self.append_output("Apache appears to be already running (port 80/443 is in use).\n")
+            else:
+                started = self._try_start_service(["Apache2.4", "apache2.4"]) or self._start_bat(APACHE_START_BAT)
+                # Wait up to 20s for port 80/443
+                deadline = time.time() + 20
+                while time.time() < deadline:
+                    if self._port_open("127.0.0.1", 80) or self._port_open("127.0.0.1", 443):
+                        self.append_output("Apache is running.\n")
+                        break
+                    time.sleep(1)
+                else:
+                    self.append_output("Warning: Apache did not start within 20s. Check XAMPP Control Panel.\n")
+
+            # MySQL
+            if self._port_open("127.0.0.1", 3306):
+                self.append_output("MySQL appears to be already running (port 3306 is in use).\n")
+            else:
+                started = self._try_start_service(["mysql", "MySQL", "xamppmysql", "xamppmysqlservice"]) or self._start_bat(MYSQL_START_BAT)
+                # Wait up to 20s for port 3306
+                deadline = time.time() + 20
+                while time.time() < deadline:
+                    if self._port_open("127.0.0.1", 3306):
+                        self.append_output("MySQL is running.\n")
+                        break
+                    time.sleep(1)
+                else:
+                    self.append_output("Warning: MySQL did not start within 20s. Check XAMPP Control Panel.\n")
+
+            self.append_output("XAMPP start routine finished.\n")
+            # Re-enable button
+            try:
+                if self.xampp_btn and self.xampp_btn.winfo_exists():
+                    self.xampp_btn.configure(state=tk.NORMAL)
+            except Exception:
+                pass
+
+        threading.Thread(target=worker, daemon=True).start()
 
     def stop_current(self):
         # Attempt to stop the currently running process (and its children on Windows)
