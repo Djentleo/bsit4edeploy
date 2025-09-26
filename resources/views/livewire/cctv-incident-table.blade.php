@@ -4,16 +4,24 @@
 
 <div class="max-w-full" x-data="cctvIncidents()" x-init="init()">
     <!-- Switch Source Toggle -->
-    <div class="flex justify-end mb-4">
-        <div class="inline-flex rounded-md shadow-sm border border-gray-200 bg-white">
+    <div class="flex justify-end mb-6">
+        <div class="relative inline-flex rounded-lg shadow-sm border border-gray-200 bg-white">
             <button type="button" onclick="window.location.href='{{ route('incidents.mobile') }}'"
-                class="px-4 py-2 text-sm font-medium focus:outline-none transition-all {{ request()->is('mobile-incident-table') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }} rounded-l-md"
-                {{ request()->is('mobile-incident-table') ? 'disabled' : '' }}
-                >📱 Mobile</button>
+                class="relative px-4 py-2.5 text-sm font-medium focus:outline-none transition-all duration-200 {{ request()->is('mobile-incident-table') ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50' }} rounded-l-lg"
+                {{ request()->is('mobile-incident-table') ? 'disabled' : '' }}>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-mobile-alt"></i>
+                    Mobile
+                </span>
+            </button>
             <button type="button" onclick="window.location.href='{{ route('incidents.cctv') }}'"
-                class="px-4 py-2 text-sm font-medium focus:outline-none transition-all {{ request()->is('cctv-incident-table') ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }} rounded-r-md"
-                {{ request()->is('cctv-incident-table') ? 'disabled' : '' }}
-                >🎥 CCTV</button>
+                class="relative px-4 py-2.5 text-sm font-medium focus:outline-none transition-all duration-200 {{ request()->is('cctv-incident-table') ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50' }} rounded-r-lg"
+                {{ request()->is('cctv-incident-table') ? 'disabled' : '' }}>
+                <span class="flex items-center gap-2">
+                    <i class="fas fa-video"></i>
+                    CCTV
+                </span>
+            </button>
         </div>
     </div>
     <!-- Search Row -->
