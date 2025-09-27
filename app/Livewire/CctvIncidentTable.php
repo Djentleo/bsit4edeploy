@@ -43,6 +43,15 @@ class CctvIncidentTable extends Component
             foreach ($data as $key => $value) {
                 if (is_array($value)) {
                     $value['firebase_id'] = $key;
+                    // Ensure status is set to 'new' if missing or N/A
+                    if (!isset($value['status']) || $value['status'] === 'N/A') {
+                        $value['status'] = 'new';
+                        // Update Firebase so status is reflected in DB
+                        try {
+                            $reference->getChild($key)->update(['status' => 'new']);
+                        } catch (\Exception $e) {
+                        }
+                    }
                     $incidentsArr[] = $value;
                 }
             }
