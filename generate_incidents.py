@@ -3,7 +3,7 @@ import random
 
 # General, realistic, non-location-specific templates for each department/type
 TEMPLATES = {
-    'fire': [
+    "fire": [
         "Fire alarm triggered",
         "Sunog na kailangan ng bumbero",
         "Smoke and flames seen",
@@ -15,7 +15,7 @@ TEMPLATES = {
         "Fire in the kitchen",
         "Fireworks caused a fire",
     ],
-    'medical': [
+    "medical": [
         "Medical emergency",
         "Ambulansya kailangan, may nahimatay",
         "Person collapsed",
@@ -27,7 +27,7 @@ TEMPLATES = {
         "Heart attack reported",
         "May tumawag ng ambulansya",
     ],
-    'police': [
+    "police": [
         "Unauthorized access attempt",
         "Magnanakaw nahuli sa tindahan",
         "Street fight reported",
@@ -39,7 +39,7 @@ TEMPLATES = {
         "Vehicular collision, may sugatan, emergency response needed",
         "Car collision reported",
     ],
-    'tanod': [
+    "tanod": [
         "Flooding in the basement",
         "Malakas na baha, hindi madaanan",
         "Basurang nagbara sa kanal, nagdulot ng pagbaha",
@@ -50,22 +50,69 @@ TEMPLATES = {
         "Overflowing river causing flooding",
         "Flooding due to heavy rain",
         "Malakas na sigawan at away",
-    ]
+    ],
 }
 
-SEVERITIES = ['low', 'medium', 'high']
+SEVERITIES = ["low", "medium", "high", "critical"]
 TYPES = {
-    'fire': 'fire',
-    'medical': 'healthcare',
-    'police': random.choice(['vehicle_crash', 'public_disturbance']),
-    'tanod': random.choice(['flood', 'public_disturbance'])
+    "fire": "fire",
+    "medical": "healthcare",
+    "police": random.choice(["vehicle_crash", "public_disturbance"]),
+    "tanod": random.choice(["flood", "public_disturbance"]),
 }
-DEPARTMENTS = ['fire', 'medical', 'police', 'tanod']
+DEPARTMENTS = ["fire", "medical", "police", "tanod"]
 
 
-with open('incidents.csv', 'w', newline='', encoding='utf-8') as csvfile:
+def infer_severity(desc: str, dept: str) -> str:
+    d = desc.lower()
+    # Strong indicators for critical
+    critical_kw = [
+        "explosion",
+        "barilan",
+        "gunshot",
+        "heart attack",
+        "sunog na kailangan",
+        "flames seen",
+    ]
+    if any(k in d for k in critical_kw):
+        return "critical"
+    # High severity indicators
+    high_kw = [
+        "smoke",
+        "fire",
+        "sunog",
+        "vehicular",
+        "collision",
+        "injury",
+        "collapsed",
+        "ambulansya",
+        "baha",
+        "flooding",
+    ]
+    if any(k in d for k in high_kw):
+        return "high"
+    # Medium severity
+    medium_kw = [
+        "protest",
+        "away",
+        "sigawan",
+        "unauthorized access",
+        "noise",
+        "malakas na ingay",
+    ]
+    if any(k in d for k in medium_kw):
+        return "medium"
+    # Department-based fallback
+    if dept in ["fire", "medical"]:
+        return "high"
+    if dept in ["police"]:
+        return "medium"
+    return "low"
+
+
+with open("incidents.csv", "w", newline="", encoding="utf-8") as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['incident_description', 'type', 'department', 'severity'])
+    writer.writerow(["incident_description", "type", "department", "severity"])
     for _ in range(1000):
         dept = random.choice(DEPARTMENTS)
         desc = random.choice(TEMPLATES[dept])
@@ -75,14 +122,16 @@ with open('incidents.csv', 'w', newline='', encoding='utf-8') as csvfile:
         else:
             desc = desc.upper()
         # Map department to type
-        if dept == 'fire':
-            typ = 'fire'
-        elif dept == 'medical':
-            typ = 'healthcare'
-        elif dept == 'police':
-            typ = random.choice(['vehicle_crash', 'public_disturbance'])
+        if dept == "fire":
+            typ = "fire"
+        elif dept == "medical":
+            typ = "healthcare"
+        elif dept == "police":
+            typ = random.choice(["vehicle_crash", "public_disturbance"])
         else:
-            typ = random.choice(['flood', 'public_disturbance'])
-        severity = random.choices(SEVERITIES, weights=[0.3, 0.4, 0.3])[0]
+            typ = random.choice(["flood", "public_disturbance"])
+        severity = infer_severity(desc, dept)
         writer.writerow([desc, typ, dept, severity])
-print('Generated 1000 general, realistic, multilingual incident samples in incidents.csv')
+print(
+    "Generated 1000 general, realistic, multilingual incident samples in incidents.csv"
+)

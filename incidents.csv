@@ -1,1001 +1,1001 @@
 incident_description,type,department,severity
-MAY LASING NA NAGWAWALA,vehicle_crash,police,low
-Smoke and flames seen,fire,fire,medium
-STREET FIGHT REPORTED,vehicle_crash,police,medium
-Fire alarm triggered,fire,fire,medium
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
-"May batang nawala, hinahanap ng magulang",flood,tanod,high
-Building fire reported,fire,fire,high
-UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,low
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,medium
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
-Fire alarm triggered,fire,fire,high
-FLOODING IN THE BASEMENT,public_disturbance,tanod,medium
-Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,medium
-BUILDING FIRE REPORTED,fire,fire,medium
-Barilan sa pagitan ng dalawang grupo,public_disturbance,police,medium
-Unauthorized access attempt,vehicle_crash,police,medium
-"May batang nawala, hinahanap ng magulang",flood,tanod,low
-Protest blocking the street,public_disturbance,police,low
-FIRE ALARM TRIGGERED,fire,fire,medium
-MAY NASUSUNOG NA BAHAY,fire,fire,high
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-Protest blocking the street,vehicle_crash,police,low
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
-"May batang nawala, hinahanap ng magulang",flood,tanod,high
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,high
-CAR COLLISION REPORTED,public_disturbance,police,low
-Car collision reported,vehicle_crash,police,medium
-Person collapsed,healthcare,medical,low
-Fireworks caused a fire,fire,fire,high
-BUILDING FIRE REPORTED,fire,fire,low
-Loud noise complaint,flood,tanod,low
-Heart attack reported,healthcare,medical,low
-Multi-vehicle accident,public_disturbance,police,medium
-Fire alarm triggered,fire,fire,medium
-Nanakawan ng cellphone,vehicle_crash,police,low
-Protest blocking the street,vehicle_crash,police,low
-Unauthorized access attempt,vehicle_crash,police,low
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-CAR COLLISION REPORTED,vehicle_crash,police,low
-Malakas na ingay,flood,tanod,low
-MAY NASUSUNOG NA BAHAY,fire,fire,high
-Malakas na sigawan at away,public_disturbance,tanod,low
-Loud noise complaint,public_disturbance,tanod,high
-Fire in the kitchen,fire,fire,medium
-MAY NASUSUNOG NA BAHAY,fire,fire,low
-OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,low
-Unauthorized access attempt,public_disturbance,police,medium
-"Malakas na baha, hindi madaanan",public_disturbance,tanod,low
-Person collapsed,healthcare,medical,medium
 FIRE ALARM TRIGGERED,fire,fire,high
-Heart attack reported,healthcare,medical,high
-MAY NASUSUNOG NA BAHAY,fire,fire,low
-SUNOG SA RESIDENTIAL AREA,fire,fire,high
-FIRE ALARM TRIGGERED,fire,fire,high
-Injury reported,healthcare,medical,high
-CAR COLLISION REPORTED,vehicle_crash,police,medium
-May sugatan,healthcare,medical,low
-FIRE IN THE KITCHEN,fire,fire,medium
-Sunog sa residential area,fire,fire,low
-Fire outbreak in the area,fire,fire,medium
-"Explosion heard, possible fire",fire,fire,medium
-Flooding due to heavy rain,public_disturbance,tanod,low
-"Malakas na baha, hindi madaanan",flood,tanod,medium
-SMOKE AND FLAMES SEEN,fire,fire,high
-"Senior citizen nadulas, sugatan",healthcare,medical,medium
-PERSON COLLAPSED,healthcare,medical,medium
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
-MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
-Person collapsed,healthcare,medical,medium
-Street fight reported,vehicle_crash,police,low
-Street fight reported,vehicle_crash,police,medium
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,medium
-Person collapsed,healthcare,medical,high
-Overflowing river causing flooding,public_disturbance,tanod,medium
-"Ambulansya kailangan, may nahimatay",healthcare,medical,low
-MAY LASING NA NAGWAWALA,public_disturbance,police,medium
-Ambulansya tumulong sa aksidente,healthcare,medical,medium
-FIRE OUTBREAK IN THE AREA,fire,fire,low
-MEDICAL EMERGENCY,healthcare,medical,medium
-CAR COLLISION REPORTED,public_disturbance,police,high
-Barangay tanod assisted in crowd control,public_disturbance,tanod,low
-LOUD NOISE COMPLAINT,flood,tanod,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,high
-Injury reported,healthcare,medical,low
-BUILDING FIRE REPORTED,fire,fire,low
-"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,low
-Urgent medical assistance needed,healthcare,medical,low
-AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,low
-Malakas na sigawan at away,public_disturbance,tanod,medium
-May nasusunog na bahay,fire,fire,low
-PROTEST BLOCKING THE STREET,vehicle_crash,police,high
-Barangay tanod assisted in crowd control,flood,tanod,high
-Sunog sa residential area,fire,fire,high
-Ambulansya tumulong sa aksidente,healthcare,medical,low
-"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,medium
-Heart attack reported,healthcare,medical,medium
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,medium
-PERSON COLLAPSED,healthcare,medical,high
-FIRE OUTBREAK IN THE AREA,fire,fire,high
-Heart attack reported,healthcare,medical,medium
-Flooding due to heavy rain,public_disturbance,tanod,low
-May lasing na nagwawala,vehicle_crash,police,high
-Nanakawan ng cellphone,public_disturbance,police,medium
-Sunog na kailangan ng bumbero,fire,fire,low
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,medium
-OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,low
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,medium
-Fire outbreak in the area,fire,fire,high
-BUILDING FIRE REPORTED,fire,fire,medium
-Loud noise complaint,flood,tanod,high
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,high
-Street fight reported,vehicle_crash,police,high
-Building fire reported,fire,fire,high
-Fireworks caused a fire,fire,fire,medium
-"Senior citizen nadulas, sugatan",healthcare,medical,medium
-INJURY REPORTED,healthcare,medical,high
-Fire outbreak in the area,fire,fire,high
-"Malakas na baha, hindi madaanan",public_disturbance,tanod,low
-Person collapsed,healthcare,medical,medium
-"Malakas na baha, hindi madaanan",flood,tanod,medium
-Flooding due to heavy rain,public_disturbance,tanod,high
-HEART ATTACK REPORTED,healthcare,medical,low
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,low
-Multi-vehicle accident,public_disturbance,police,high
-FIREWORKS CAUSED A FIRE,fire,fire,low
-Fire alarm triggered,fire,fire,high
-Flooding in the basement,flood,tanod,medium
-Magnanakaw nahuli sa tindahan,public_disturbance,police,high
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
-UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
-Malakas na ingay,public_disturbance,tanod,medium
-May tumawag ng ambulansya,healthcare,medical,high
-Protest blocking the street,vehicle_crash,police,medium
-INJURY REPORTED,healthcare,medical,medium
-"Senior citizen nadulas, sugatan",healthcare,medical,medium
-Street fight reported,public_disturbance,police,high
-Multi-vehicle accident,public_disturbance,police,high
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,medium
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
-Smoke and flames seen,fire,fire,low
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,high
-FIRE OUTBREAK IN THE AREA,fire,fire,high
-"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,low
-STREET FIGHT REPORTED,vehicle_crash,police,low
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,medium
-"Malakas na baha, hindi madaanan",public_disturbance,tanod,high
-FIRE ALARM TRIGGERED,fire,fire,high
-Smoke and flames seen,fire,fire,low
-Person collapsed,healthcare,medical,low
-Smoke and flames seen,fire,fire,high
-May sugatan,healthcare,medical,high
-"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,high
-PROTEST BLOCKING THE STREET,public_disturbance,police,medium
-Protest blocking the street,vehicle_crash,police,low
-Fire alarm triggered,fire,fire,low
-Injury reported,healthcare,medical,medium
-May sugatan,healthcare,medical,medium
-BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,medium
-Fireworks caused a fire,fire,fire,high
-FLOODING DUE TO HEAVY RAIN,flood,tanod,high
-Malakas na ingay,flood,tanod,low
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,medium
-Malakas na ingay,public_disturbance,tanod,low
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
-FIRE ALARM TRIGGERED,fire,fire,medium
-Malakas na ingay,flood,tanod,medium
-Heart attack reported,healthcare,medical,high
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
-PROTEST BLOCKING THE STREET,vehicle_crash,police,low
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
-FLOODING IN THE BASEMENT,flood,tanod,medium
-SMOKE AND FLAMES SEEN,fire,fire,high
-MEDICAL EMERGENCY,healthcare,medical,medium
-"Explosion heard, possible fire",fire,fire,low
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,medium
-PROTEST BLOCKING THE STREET,public_disturbance,police,medium
-Flooding in the basement,flood,tanod,medium
-"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
-Loud noise complaint,public_disturbance,tanod,high
-FIRE ALARM TRIGGERED,fire,fire,medium
-PROTEST BLOCKING THE STREET,public_disturbance,police,low
-"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,medium
-FIRE ALARM TRIGGERED,fire,fire,high
-Multi-vehicle accident,public_disturbance,police,medium
-Flooding in the basement,public_disturbance,tanod,low
-FLOODING DUE TO HEAVY RAIN,flood,tanod,low
-BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,high
-Fire outbreak in the area,fire,fire,high
-UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,high
-CAR COLLISION REPORTED,vehicle_crash,police,high
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
-Loud noise complaint,flood,tanod,low
-Ambulansya tumulong sa aksidente,healthcare,medical,medium
-Flooding due to heavy rain,flood,tanod,medium
-MALAKAS NA INGAY,public_disturbance,tanod,high
-FIREWORKS CAUSED A FIRE,fire,fire,high
-May nasusunog na bahay,fire,fire,low
-Flooding due to heavy rain,public_disturbance,tanod,medium
-MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
-"Ambulansya kailangan, may nahimatay",healthcare,medical,medium
-FLOODING DUE TO HEAVY RAIN,flood,tanod,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,medium
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,high
-SMOKE AND FLAMES SEEN,fire,fire,low
-"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,low
-Car collision reported,public_disturbance,police,high
-MEDICAL EMERGENCY,healthcare,medical,high
-May nasusunog na bahay,fire,fire,low
-Medical emergency,healthcare,medical,low
-FIREWORKS CAUSED A FIRE,fire,fire,medium
-SUNOG SA RESIDENTIAL AREA,fire,fire,low
-MAY SUGATAN,healthcare,medical,low
-Car collision reported,public_disturbance,police,high
-OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,medium
-CAR COLLISION REPORTED,public_disturbance,police,medium
-MALAKAS NA INGAY,public_disturbance,tanod,medium
-May tumawag ng ambulansya,healthcare,medical,medium
-MULTI-VEHICLE ACCIDENT,vehicle_crash,police,high
-LOUD NOISE COMPLAINT,flood,tanod,low
-Street fight reported,public_disturbance,police,high
-Injury reported,healthcare,medical,medium
-FLOODING IN THE BASEMENT,flood,tanod,high
-Multi-vehicle accident,public_disturbance,police,medium
-FLOODING IN THE BASEMENT,public_disturbance,tanod,low
-Fire in the kitchen,fire,fire,medium
-SUNOG SA RESIDENTIAL AREA,fire,fire,medium
-Smoke and flames seen,fire,fire,low
-Protest blocking the street,vehicle_crash,police,low
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,low
-MULTI-VEHICLE ACCIDENT,vehicle_crash,police,high
-Fire alarm triggered,fire,fire,medium
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
-FLOODING IN THE BASEMENT,public_disturbance,tanod,high
-Sunog sa residential area,fire,fire,medium
-May lasing na nagwawala,vehicle_crash,police,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,medium
 May nasusunog na bahay,fire,fire,high
-PROTEST BLOCKING THE STREET,vehicle_crash,police,high
-FIREWORKS CAUSED A FIRE,fire,fire,low
-Building fire reported,fire,fire,high
-Malakas na sigawan at away,flood,tanod,low
-Malakas na ingay,public_disturbance,tanod,high
-Multi-vehicle accident,vehicle_crash,police,high
-NANAKAWAN NG CELLPHONE,vehicle_crash,police,low
-MALAKAS NA INGAY,public_disturbance,tanod,medium
-STREET FIGHT REPORTED,public_disturbance,police,high
-Malakas na ingay,flood,tanod,low
-"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,medium
-FLOODING IN THE BASEMENT,public_disturbance,tanod,high
-"Explosion heard, possible fire",fire,fire,high
-Overflowing river causing flooding,flood,tanod,medium
-FIRE IN THE KITCHEN,fire,fire,high
-Barangay tanod assisted in crowd control,public_disturbance,tanod,medium
-"Ambulansya kailangan, may nahimatay",healthcare,medical,low
-Flooding due to heavy rain,public_disturbance,tanod,high
-Overflowing river causing flooding,flood,tanod,low
-BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,high
-Sunog na kailangan ng bumbero,fire,fire,high
-MAY SUGATAN,healthcare,medical,medium
-SMOKE AND FLAMES SEEN,fire,fire,high
-MAY SUGATAN,healthcare,medical,high
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,medium
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,medium
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,medium
-May sugatan,healthcare,medical,medium
-Car collision reported,vehicle_crash,police,medium
-Flooding due to heavy rain,public_disturbance,tanod,low
-Car collision reported,vehicle_crash,police,low
-STREET FIGHT REPORTED,vehicle_crash,police,medium
-BUILDING FIRE REPORTED,fire,fire,high
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,medium
-Sunog na kailangan ng bumbero,fire,fire,medium
-Multi-vehicle accident,vehicle_crash,police,medium
-MAY SUGATAN,healthcare,medical,medium
-Fire in the kitchen,fire,fire,medium
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,low
-Barangay tanod assisted in crowd control,flood,tanod,medium
-SMOKE AND FLAMES SEEN,fire,fire,medium
-Fire alarm triggered,fire,fire,low
-STREET FIGHT REPORTED,vehicle_crash,police,low
-Magnanakaw nahuli sa tindahan,public_disturbance,police,high
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,medium
-"Ambulansya kailangan, may nahimatay",healthcare,medical,low
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,medium
-"Vehicular collision, may sugatan, emergency response needed",vehicle_crash,police,low
-Medical emergency,healthcare,medical,medium
-"Malakas na baha, hindi madaanan",flood,tanod,medium
-Fire alarm triggered,fire,fire,low
-Nanakawan ng cellphone,vehicle_crash,police,medium
-FIREWORKS CAUSED A FIRE,fire,fire,medium
-PERSON COLLAPSED,healthcare,medical,medium
-MAY LASING NA NAGWAWALA,vehicle_crash,police,high
-FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,medium
-Injury reported,healthcare,medical,medium
-Nanakawan ng cellphone,public_disturbance,police,medium
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,low
-MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,medium
-MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,high
-Heart attack reported,healthcare,medical,high
-Building fire reported,fire,fire,medium
-PERSON COLLAPSED,healthcare,medical,medium
-Car collision reported,vehicle_crash,police,low
-MAY NASUSUNOG NA BAHAY,fire,fire,high
-"Ambulansya kailangan, may nahimatay",healthcare,medical,medium
-Medical emergency,healthcare,medical,low
-Urgent medical assistance needed,healthcare,medical,low
-UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,medium
-Fire alarm triggered,fire,fire,medium
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,low
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-Injury reported,healthcare,medical,low
-Fireworks caused a fire,fire,fire,medium
-SMOKE AND FLAMES SEEN,fire,fire,low
-MALAKAS NA INGAY,flood,tanod,medium
-Fire in the kitchen,fire,fire,low
 "Ambulansya kailangan, may nahimatay",healthcare,medical,high
-"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,low
-Urgent medical assistance needed,healthcare,medical,low
-Loud noise complaint,public_disturbance,tanod,high
-Person collapsed,healthcare,medical,low
-Car collision reported,vehicle_crash,police,medium
-Protest blocking the street,public_disturbance,police,high
-Malakas na sigawan at away,public_disturbance,tanod,low
-Injury reported,healthcare,medical,high
-Barilan sa pagitan ng dalawang grupo,public_disturbance,police,high
-"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,low
-"Malakas na baha, hindi madaanan",public_disturbance,tanod,low
-MALAKAS NA INGAY,public_disturbance,tanod,low
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,medium
-May lasing na nagwawala,vehicle_crash,police,medium
-MAY LASING NA NAGWAWALA,public_disturbance,police,medium
-FLOODING IN THE BASEMENT,public_disturbance,tanod,low
-PROTEST BLOCKING THE STREET,vehicle_crash,police,medium
-BUILDING FIRE REPORTED,fire,fire,medium
-Car collision reported,public_disturbance,police,medium
-May tumawag ng ambulansya,healthcare,medical,medium
-Person collapsed,healthcare,medical,medium
-Barangay tanod assisted in crowd control,public_disturbance,tanod,medium
-MAY NASUSUNOG NA BAHAY,fire,fire,low
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,low
-May nasusunog na bahay,fire,fire,medium
-FLOODING IN THE BASEMENT,flood,tanod,high
-Fire in the kitchen,fire,fire,high
-MULTI-VEHICLE ACCIDENT,vehicle_crash,police,high
-Sunog sa residential area,fire,fire,medium
-Barangay tanod assisted in crowd control,flood,tanod,low
-FLOODING DUE TO HEAVY RAIN,flood,tanod,high
-FIRE ALARM TRIGGERED,fire,fire,medium
-Injury reported,healthcare,medical,low
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
-Building fire reported,fire,fire,high
-"Vehicular collision, may sugatan, emergency response needed",vehicle_crash,police,low
-Smoke and flames seen,fire,fire,high
-Unauthorized access attempt,public_disturbance,police,low
-Nanakawan ng cellphone,public_disturbance,police,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
-Heart attack reported,healthcare,medical,medium
-PROTEST BLOCKING THE STREET,public_disturbance,police,low
-Urgent medical assistance needed,healthcare,medical,medium
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,medium
-INJURY REPORTED,healthcare,medical,high
-Protest blocking the street,vehicle_crash,police,high
-May nasusunog na bahay,fire,fire,high
-Car collision reported,vehicle_crash,police,medium
-Barangay tanod assisted in crowd control,flood,tanod,medium
-Street fight reported,public_disturbance,police,medium
-Street fight reported,vehicle_crash,police,high
-MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,low
-Barangay tanod assisted in crowd control,public_disturbance,tanod,medium
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
-AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,low
-BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,low
-"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
-Person collapsed,healthcare,medical,low
-INJURY REPORTED,healthcare,medical,low
-MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,high
-FIRE IN THE KITCHEN,fire,fire,medium
-Fire alarm triggered,fire,fire,medium
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,low
-Sunog sa residential area,fire,fire,high
-Injury reported,healthcare,medical,medium
-FIREWORKS CAUSED A FIRE,fire,fire,medium
-HEART ATTACK REPORTED,healthcare,medical,medium
-Barangay tanod assisted in crowd control,flood,tanod,medium
-HEART ATTACK REPORTED,healthcare,medical,low
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,low
-Car collision reported,public_disturbance,police,low
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,medium
-Person collapsed,healthcare,medical,medium
-Injury reported,healthcare,medical,low
-Fireworks caused a fire,fire,fire,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,medium
-May sugatan,healthcare,medical,high
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,low
-Car collision reported,vehicle_crash,police,low
-HEART ATTACK REPORTED,healthcare,medical,high
-"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,medium
-Sunog sa residential area,fire,fire,high
-MEDICAL EMERGENCY,healthcare,medical,high
-FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,medium
-CAR COLLISION REPORTED,public_disturbance,police,medium
-Medical emergency,healthcare,medical,high
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,medium
-Person collapsed,healthcare,medical,high
-May sugatan,healthcare,medical,medium
-MAY LASING NA NAGWAWALA,vehicle_crash,police,high
-FIRE ALARM TRIGGERED,fire,fire,medium
-"Explosion heard, possible fire",fire,fire,high
-May tumawag ng ambulansya,healthcare,medical,high
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,medium
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-SUNOG SA RESIDENTIAL AREA,fire,fire,medium
-FLOODING IN THE BASEMENT,flood,tanod,medium
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,high
-Protest blocking the street,public_disturbance,police,low
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,medium
-Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,low
-"Senior citizen nadulas, sugatan",healthcare,medical,medium
-"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,high
-Malakas na sigawan at away,flood,tanod,high
-INJURY REPORTED,healthcare,medical,medium
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
-MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
-Nanakawan ng cellphone,public_disturbance,police,medium
-"May batang nawala, hinahanap ng magulang",flood,tanod,low
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-Barangay tanod assisted in crowd control,flood,tanod,low
-LOUD NOISE COMPLAINT,flood,tanod,low
-Fireworks caused a fire,fire,fire,medium
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
-Barilan sa pagitan ng dalawang grupo,public_disturbance,police,medium
-PROTEST BLOCKING THE STREET,public_disturbance,police,high
-NANAKAWAN NG CELLPHONE,vehicle_crash,police,low
-"Ambulansya kailangan, may nahimatay",healthcare,medical,medium
-Heart attack reported,healthcare,medical,medium
-MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,high
-LOUD NOISE COMPLAINT,flood,tanod,medium
-"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,low
-BUILDING FIRE REPORTED,fire,fire,medium
-MEDICAL EMERGENCY,healthcare,medical,medium
-HEART ATTACK REPORTED,healthcare,medical,medium
-Barangay tanod assisted in crowd control,public_disturbance,tanod,high
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,medium
-FIRE OUTBREAK IN THE AREA,fire,fire,low
-NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
-HEART ATTACK REPORTED,healthcare,medical,low
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,medium
-"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,medium
-CAR COLLISION REPORTED,vehicle_crash,police,medium
-Fire outbreak in the area,fire,fire,medium
-SUNOG SA RESIDENTIAL AREA,fire,fire,medium
-"Senior citizen nadulas, sugatan",healthcare,medical,low
-Fire alarm triggered,fire,fire,low
-Smoke and flames seen,fire,fire,high
-FLOODING IN THE BASEMENT,public_disturbance,tanod,high
-May tumawag ng ambulansya,healthcare,medical,medium
-Multi-vehicle accident,vehicle_crash,police,medium
-HEART ATTACK REPORTED,healthcare,medical,medium
-Smoke and flames seen,fire,fire,high
-INJURY REPORTED,healthcare,medical,high
-Protest blocking the street,public_disturbance,police,low
-"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,low
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,medium
-Fireworks caused a fire,fire,fire,medium
-"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,medium
-Street fight reported,vehicle_crash,police,low
-Fire outbreak in the area,fire,fire,high
-Flooding in the basement,flood,tanod,medium
-FIRE IN THE KITCHEN,fire,fire,low
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,medium
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-Street fight reported,public_disturbance,police,high
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,medium
-Magnanakaw nahuli sa tindahan,vehicle_crash,police,medium
-Fireworks caused a fire,fire,fire,high
-"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,medium
-Loud noise complaint,public_disturbance,tanod,low
-Loud noise complaint,flood,tanod,high
-Malakas na ingay,flood,tanod,medium
-UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
-May tumawag ng ambulansya,healthcare,medical,low
-Person collapsed,healthcare,medical,medium
-MAY LASING NA NAGWAWALA,public_disturbance,police,high
-FIRE ALARM TRIGGERED,fire,fire,medium
-MAY LASING NA NAGWAWALA,public_disturbance,police,high
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,low
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,medium
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,medium
-Malakas na sigawan at away,public_disturbance,tanod,medium
-FIRE OUTBREAK IN THE AREA,fire,fire,medium
-Heart attack reported,healthcare,medical,high
-Urgent medical assistance needed,healthcare,medical,medium
-"May batang nawala, hinahanap ng magulang",flood,tanod,high
-UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,high
-MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
-Multi-vehicle accident,vehicle_crash,police,medium
-OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,medium
-MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
-"Explosion heard, possible fire",fire,fire,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,high
-Building fire reported,fire,fire,low
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,medium
-Flooding in the basement,public_disturbance,tanod,high
-PROTEST BLOCKING THE STREET,public_disturbance,police,medium
-Fire in the kitchen,fire,fire,low
-Flooding in the basement,public_disturbance,tanod,high
-HEART ATTACK REPORTED,healthcare,medical,medium
-Street fight reported,public_disturbance,police,low
-May tumawag ng ambulansya,healthcare,medical,medium
-Multi-vehicle accident,vehicle_crash,police,low
-NANAKAWAN NG CELLPHONE,vehicle_crash,police,low
-May lasing na nagwawala,vehicle_crash,police,low
-"Senior citizen nadulas, sugatan",healthcare,medical,low
-Sunog sa residential area,fire,fire,medium
-Nanakawan ng cellphone,vehicle_crash,police,high
-MEDICAL EMERGENCY,healthcare,medical,low
-FIRE OUTBREAK IN THE AREA,fire,fire,low
-Fire outbreak in the area,fire,fire,medium
-MAY LASING NA NAGWAWALA,public_disturbance,police,medium
-Barangay tanod assisted in crowd control,public_disturbance,tanod,low
-"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,medium
-Multi-vehicle accident,public_disturbance,police,high
-FLOODING DUE TO HEAVY RAIN,flood,tanod,high
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,high
-Barangay tanod assisted in crowd control,public_disturbance,tanod,medium
-MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,high
-"Ambulansya kailangan, may nahimatay",healthcare,medical,high
-Fire alarm triggered,fire,fire,high
-Building fire reported,fire,fire,medium
-"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,medium
-May lasing na nagwawala,vehicle_crash,police,low
-Malakas na sigawan at away,public_disturbance,tanod,medium
-OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,high
-May tumawag ng ambulansya,healthcare,medical,medium
-Flooding in the basement,public_disturbance,tanod,medium
-NANAKAWAN NG CELLPHONE,vehicle_crash,police,medium
-"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,low
-"Explosion heard, possible fire",fire,fire,high
-BUILDING FIRE REPORTED,fire,fire,low
-Unauthorized access attempt,vehicle_crash,police,medium
-Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,medium
-Malakas na sigawan at away,flood,tanod,medium
-Sunog sa residential area,fire,fire,high
-"Senior citizen nadulas, sugatan",healthcare,medical,low
-BUILDING FIRE REPORTED,fire,fire,medium
-MALAKAS NA INGAY,flood,tanod,medium
-NANAKAWAN NG CELLPHONE,public_disturbance,police,high
-"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
-"Explosion heard, possible fire",fire,fire,low
-Loud noise complaint,flood,tanod,high
-Flooding in the basement,public_disturbance,tanod,low
-Flooding in the basement,flood,tanod,high
-Fire in the kitchen,fire,fire,medium
-May nasusunog na bahay,fire,fire,high
-May nasusunog na bahay,fire,fire,high
-Ambulansya tumulong sa aksidente,healthcare,medical,medium
-SUNOG SA RESIDENTIAL AREA,fire,fire,high
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,medium
-May nasusunog na bahay,fire,fire,low
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,high
-MEDICAL EMERGENCY,healthcare,medical,medium
-CAR COLLISION REPORTED,vehicle_crash,police,high
-OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,low
-Car collision reported,vehicle_crash,police,low
-"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,medium
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,low
-UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,low
-Barangay tanod assisted in crowd control,flood,tanod,medium
-"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,high
-MALAKAS NA INGAY,flood,tanod,medium
-May tumawag ng ambulansya,healthcare,medical,high
-Barangay tanod assisted in crowd control,flood,tanod,low
-FLOODING IN THE BASEMENT,flood,tanod,high
-May tumawag ng ambulansya,healthcare,medical,high
-May sugatan,healthcare,medical,high
-Building fire reported,fire,fire,medium
-OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,medium
-Building fire reported,fire,fire,medium
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,medium
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
-Heart attack reported,healthcare,medical,low
-BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,high
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,high
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
-Fireworks caused a fire,fire,fire,medium
-May sugatan,healthcare,medical,medium
-Fire outbreak in the area,fire,fire,low
-Medical emergency,healthcare,medical,high
-"Malakas na baha, hindi madaanan",flood,tanod,medium
-CAR COLLISION REPORTED,vehicle_crash,police,high
-STREET FIGHT REPORTED,public_disturbance,police,medium
-"Ambulansya kailangan, may nahimatay",healthcare,medical,low
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
-Unauthorized access attempt,vehicle_crash,police,medium
-MAY LASING NA NAGWAWALA,vehicle_crash,police,high
-Sunog sa residential area,fire,fire,low
-Person collapsed,healthcare,medical,medium
-Overflowing river causing flooding,public_disturbance,tanod,medium
-Loud noise complaint,flood,tanod,medium
-CAR COLLISION REPORTED,public_disturbance,police,high
-Medical emergency,healthcare,medical,medium
-FIREWORKS CAUSED A FIRE,fire,fire,low
-Malakas na sigawan at away,flood,tanod,medium
-Sunog na kailangan ng bumbero,fire,fire,medium
-"Senior citizen nadulas, sugatan",healthcare,medical,high
-LOUD NOISE COMPLAINT,flood,tanod,medium
-Person collapsed,healthcare,medical,medium
-Injury reported,healthcare,medical,high
-Flooding due to heavy rain,public_disturbance,tanod,medium
-MALAKAS NA SIGAWAN AT AWAY,flood,tanod,high
-Building fire reported,fire,fire,high
-HEART ATTACK REPORTED,healthcare,medical,medium
-INJURY REPORTED,healthcare,medical,medium
-Smoke and flames seen,fire,fire,medium
-MEDICAL EMERGENCY,healthcare,medical,high
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,medium
-SUNOG SA RESIDENTIAL AREA,fire,fire,medium
-May lasing na nagwawala,public_disturbance,police,high
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
-Sunog na kailangan ng bumbero,fire,fire,medium
-Fireworks caused a fire,fire,fire,high
-MAY NASUSUNOG NA BAHAY,fire,fire,high
-Fire alarm triggered,fire,fire,medium
-Heart attack reported,healthcare,medical,medium
-INJURY REPORTED,healthcare,medical,medium
-May tumawag ng ambulansya,healthcare,medical,medium
-May lasing na nagwawala,public_disturbance,police,medium
-MAY SUGATAN,healthcare,medical,low
-Malakas na sigawan at away,flood,tanod,low
-Street fight reported,vehicle_crash,police,high
-Smoke and flames seen,fire,fire,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,medium
-Sunog na kailangan ng bumbero,fire,fire,medium
-MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
-Protest blocking the street,public_disturbance,police,low
-MAY NASUSUNOG NA BAHAY,fire,fire,high
-Smoke and flames seen,fire,fire,low
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,high
-Sunog na kailangan ng bumbero,fire,fire,high
-Sunog na kailangan ng bumbero,fire,fire,high
-OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
-"Ambulansya kailangan, may nahimatay",healthcare,medical,high
-PERSON COLLAPSED,healthcare,medical,low
-"Explosion heard, possible fire",fire,fire,low
-Protest blocking the street,public_disturbance,police,medium
-Unauthorized access attempt,public_disturbance,police,low
-FLOODING IN THE BASEMENT,flood,tanod,medium
-INJURY REPORTED,healthcare,medical,medium
-CAR COLLISION REPORTED,vehicle_crash,police,low
-MAY LASING NA NAGWAWALA,vehicle_crash,police,low
-"Explosion heard, possible fire",fire,fire,high
-Urgent medical assistance needed,healthcare,medical,medium
-Overflowing river causing flooding,public_disturbance,tanod,medium
-FLOODING IN THE BASEMENT,public_disturbance,tanod,medium
-HEART ATTACK REPORTED,healthcare,medical,low
-Sunog sa residential area,fire,fire,low
-MAY LASING NA NAGWAWALA,vehicle_crash,police,high
-SMOKE AND FLAMES SEEN,fire,fire,medium
-Smoke and flames seen,fire,fire,medium
-Unauthorized access attempt,public_disturbance,police,high
-May tumawag ng ambulansya,healthcare,medical,medium
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,medium
-"Senior citizen nadulas, sugatan",healthcare,medical,low
-SMOKE AND FLAMES SEEN,fire,fire,low
-Fire alarm triggered,fire,fire,low
-Nanakawan ng cellphone,public_disturbance,police,medium
-Barilan sa pagitan ng dalawang grupo,public_disturbance,police,high
-May tumawag ng ambulansya,healthcare,medical,low
-UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,high
-Injury reported,healthcare,medical,low
-Unauthorized access attempt,vehicle_crash,police,medium
-Barangay tanod assisted in crowd control,flood,tanod,low
-OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,medium
-Building fire reported,fire,fire,low
-SMOKE AND FLAMES SEEN,fire,fire,low
-CAR COLLISION REPORTED,vehicle_crash,police,low
-Loud noise complaint,flood,tanod,high
-"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,low
-MAY NASUSUNOG NA BAHAY,fire,fire,high
-Fireworks caused a fire,fire,fire,low
-BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,medium
-Loud noise complaint,flood,tanod,low
-MALAKAS NA INGAY,public_disturbance,tanod,low
-"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,medium
-May sugatan,healthcare,medical,low
-May lasing na nagwawala,public_disturbance,police,low
-MALAKAS NA INGAY,public_disturbance,tanod,low
-"May batang nawala, hinahanap ng magulang",flood,tanod,medium
-SUNOG SA RESIDENTIAL AREA,fire,fire,medium
-Fireworks caused a fire,fire,fire,high
-PROTEST BLOCKING THE STREET,vehicle_crash,police,low
-INJURY REPORTED,healthcare,medical,low
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,medium
-"May batang nawala, hinahanap ng magulang",flood,tanod,medium
-"Senior citizen nadulas, sugatan",healthcare,medical,medium
-"Ambulansya kailangan, may nahimatay",healthcare,medical,low
-FLOODING IN THE BASEMENT,public_disturbance,tanod,high
-FLOODING IN THE BASEMENT,public_disturbance,tanod,high
-Barangay tanod assisted in crowd control,flood,tanod,medium
-"Explosion heard, possible fire",fire,fire,high
-Magnanakaw nahuli sa tindahan,public_disturbance,police,low
-May nasusunog na bahay,fire,fire,medium
-Injury reported,healthcare,medical,high
-May tumawag ng ambulansya,healthcare,medical,high
-"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,medium
-Barangay tanod assisted in crowd control,flood,tanod,high
-Urgent medical assistance needed,healthcare,medical,medium
-MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
-"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
-Flooding in the basement,public_disturbance,tanod,high
-STREET FIGHT REPORTED,public_disturbance,police,medium
-Flooding in the basement,public_disturbance,tanod,medium
-HEART ATTACK REPORTED,healthcare,medical,high
-PERSON COLLAPSED,healthcare,medical,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,medium
 BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,low
-Magnanakaw nahuli sa tindahan,public_disturbance,police,high
-Injury reported,healthcare,medical,low
-FIREWORKS CAUSED A FIRE,fire,fire,low
+Medical emergency,healthcare,medical,high
+Smoke and flames seen,fire,fire,critical
+Fire outbreak in the area,fire,fire,high
+Overflowing river causing flooding,flood,tanod,high
+Street fight reported,public_disturbance,police,medium
+May lasing na nagwawala,public_disturbance,police,medium
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Building fire reported,fire,fire,high
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+Fire in the kitchen,fire,fire,high
+BUILDING FIRE REPORTED,fire,fire,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+CAR COLLISION REPORTED,public_disturbance,police,high
+FIRE IN THE KITCHEN,fire,fire,high
+FIRE ALARM TRIGGERED,fire,fire,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+SUNOG SA RESIDENTIAL AREA,fire,fire,high
+May lasing na nagwawala,vehicle_crash,police,medium
 May sugatan,healthcare,medical,high
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,low
-Unauthorized access attempt,vehicle_crash,police,high
-SMOKE AND FLAMES SEEN,fire,fire,high
-"Explosion heard, possible fire",fire,fire,low
-Fireworks caused a fire,fire,fire,high
+FLOODING IN THE BASEMENT,flood,tanod,high
+Unauthorized access attempt,vehicle_crash,police,medium
+FIRE ALARM TRIGGERED,fire,fire,high
+Magnanakaw nahuli sa tindahan,public_disturbance,police,medium
+FLOODING IN THE BASEMENT,flood,tanod,high
+Nanakawan ng cellphone,public_disturbance,police,medium
+Injury reported,healthcare,medical,high
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+Overflowing river causing flooding,public_disturbance,tanod,high
+Malakas na ingay,flood,tanod,medium
+May sugatan,healthcare,medical,high
+Fire in the kitchen,fire,fire,high
+Fire in the kitchen,fire,fire,high
+INJURY REPORTED,healthcare,medical,high
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+MALAKAS NA INGAY,flood,tanod,medium
+Flooding due to heavy rain,public_disturbance,tanod,high
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,high
+Street fight reported,vehicle_crash,police,medium
 NANAKAWAN NG CELLPHONE,vehicle_crash,police,medium
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,high
-OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,medium
-MAY LASING NA NAGWAWALA,public_disturbance,police,high
-FIRE OUTBREAK IN THE AREA,fire,fire,high
-CAR COLLISION REPORTED,vehicle_crash,police,low
+MALAKAS NA INGAY,flood,tanod,medium
+PERSON COLLAPSED,healthcare,medical,high
+Injury reported,healthcare,medical,high
+FLOODING IN THE BASEMENT,public_disturbance,tanod,high
+MAY LASING NA NAGWAWALA,public_disturbance,police,medium
+STREET FIGHT REPORTED,public_disturbance,police,medium
+Unauthorized access attempt,vehicle_crash,police,medium
+Sunog na kailangan ng bumbero,fire,fire,critical
+FIREWORKS CAUSED A FIRE,fire,fire,high
+Nanakawan ng cellphone,public_disturbance,police,medium
+FLOODING IN THE BASEMENT,public_disturbance,tanod,high
+Protest blocking the street,vehicle_crash,police,medium
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+Malakas na sigawan at away,flood,tanod,medium
+Urgent medical assistance needed,healthcare,medical,high
+Fire alarm triggered,fire,fire,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+BUILDING FIRE REPORTED,fire,fire,high
+MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
+LOUD NOISE COMPLAINT,flood,tanod,medium
+Unauthorized access attempt,public_disturbance,police,medium
+Fire in the kitchen,fire,fire,high
+UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,medium
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
+"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Loud noise complaint,public_disturbance,tanod,medium
+MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,medium
+Unauthorized access attempt,vehicle_crash,police,medium
+Smoke and flames seen,fire,fire,critical
+Person collapsed,healthcare,medical,high
+"Malakas na baha, hindi madaanan",flood,tanod,high
+Magnanakaw nahuli sa tindahan,vehicle_crash,police,medium
+"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
+May nasusunog na bahay,fire,fire,high
+Flooding in the basement,public_disturbance,tanod,high
+Malakas na sigawan at away,flood,tanod,medium
+"Senior citizen nadulas, sugatan",healthcare,medical,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+Flooding due to heavy rain,flood,tanod,high
+Protest blocking the street,vehicle_crash,police,medium
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+Sunog na kailangan ng bumbero,fire,fire,critical
+CAR COLLISION REPORTED,vehicle_crash,police,high
+Sunog sa residential area,fire,fire,high
+Protest blocking the street,public_disturbance,police,medium
+INJURY REPORTED,healthcare,medical,high
+FIRE IN THE KITCHEN,fire,fire,high
+Sunog sa residential area,fire,fire,high
+CAR COLLISION REPORTED,vehicle_crash,police,high
+FIREWORKS CAUSED A FIRE,fire,fire,high
+Nanakawan ng cellphone,public_disturbance,police,medium
+Urgent medical assistance needed,healthcare,medical,high
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+Flooding in the basement,flood,tanod,high
+"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+May tumawag ng ambulansya,healthcare,medical,high
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+Malakas na ingay,public_disturbance,tanod,medium
+Injury reported,healthcare,medical,high
+Injury reported,healthcare,medical,high
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+Fireworks caused a fire,fire,fire,high
+Car collision reported,public_disturbance,police,high
+Loud noise complaint,flood,tanod,medium
+Building fire reported,fire,fire,high
+FIRE ALARM TRIGGERED,fire,fire,high
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,high
+Barilan sa pagitan ng dalawang grupo,public_disturbance,police,critical
+"Malakas na baha, hindi madaanan",flood,tanod,high
+OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,high
+INJURY REPORTED,healthcare,medical,high
+Malakas na sigawan at away,public_disturbance,tanod,medium
+INJURY REPORTED,healthcare,medical,high
+Street fight reported,vehicle_crash,police,medium
+May lasing na nagwawala,vehicle_crash,police,medium
+FIRE IN THE KITCHEN,fire,fire,high
+May nasusunog na bahay,fire,fire,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,high
+"Vehicular collision, may sugatan, emergency response needed",vehicle_crash,police,high
+Sunog sa residential area,fire,fire,high
+UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,medium
+SUNOG SA RESIDENTIAL AREA,fire,fire,high
+STREET FIGHT REPORTED,vehicle_crash,police,medium
+MAY SUGATAN,healthcare,medical,high
+May lasing na nagwawala,public_disturbance,police,medium
+STREET FIGHT REPORTED,public_disturbance,police,medium
+Heart attack reported,healthcare,medical,critical
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+Heart attack reported,healthcare,medical,critical
+Fire outbreak in the area,fire,fire,high
+SMOKE AND FLAMES SEEN,fire,fire,critical
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+"Malakas na baha, hindi madaanan",flood,tanod,high
+MAY LASING NA NAGWAWALA,public_disturbance,police,medium
+Medical emergency,healthcare,medical,high
+Overflowing river causing flooding,public_disturbance,tanod,high
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+MEDICAL EMERGENCY,healthcare,medical,high
+Car collision reported,vehicle_crash,police,high
+Medical emergency,healthcare,medical,high
+May tumawag ng ambulansya,healthcare,medical,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+Injury reported,healthcare,medical,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,high
+"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
+Flooding due to heavy rain,public_disturbance,tanod,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+MEDICAL EMERGENCY,healthcare,medical,high
+MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,medium
+SMOKE AND FLAMES SEEN,fire,fire,critical
+FIRE ALARM TRIGGERED,fire,fire,high
+MEDICAL EMERGENCY,healthcare,medical,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+STREET FIGHT REPORTED,vehicle_crash,police,medium
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
+"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+Multi-vehicle accident,vehicle_crash,police,medium
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+Flooding in the basement,flood,tanod,high
+Person collapsed,healthcare,medical,high
+May sugatan,healthcare,medical,high
+Protest blocking the street,public_disturbance,police,medium
+Smoke and flames seen,fire,fire,critical
+Multi-vehicle accident,public_disturbance,police,medium
+Barangay tanod assisted in crowd control,public_disturbance,tanod,low
+MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+Sunog sa residential area,fire,fire,high
+Malakas na sigawan at away,flood,tanod,medium
+NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+Overflowing river causing flooding,flood,tanod,high
+MAY SUGATAN,healthcare,medical,high
+MAY SUGATAN,healthcare,medical,high
+May tumawag ng ambulansya,healthcare,medical,high
+MAY LASING NA NAGWAWALA,public_disturbance,police,medium
+"Malakas na baha, hindi madaanan",public_disturbance,tanod,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Multi-vehicle accident,vehicle_crash,police,medium
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+PERSON COLLAPSED,healthcare,medical,high
+Magnanakaw nahuli sa tindahan,vehicle_crash,police,medium
+FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,high
+Medical emergency,healthcare,medical,high
+Fire outbreak in the area,fire,fire,high
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+Building fire reported,fire,fire,high
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+"Malakas na baha, hindi madaanan",flood,tanod,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+"Vehicular collision, may sugatan, emergency response needed",vehicle_crash,police,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,medium
+Fire in the kitchen,fire,fire,high
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+"Senior citizen nadulas, sugatan",healthcare,medical,high
+Car collision reported,vehicle_crash,police,high
+"Malakas na baha, hindi madaanan",flood,tanod,high
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
+Heart attack reported,healthcare,medical,critical
+OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,high
+"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,low
+"May batang nawala, hinahanap ng magulang",flood,tanod,low
+Flooding in the basement,public_disturbance,tanod,high
+FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,high
+FIRE IN THE KITCHEN,fire,fire,high
+Flooding in the basement,public_disturbance,tanod,high
+Person collapsed,healthcare,medical,high
+Injury reported,healthcare,medical,high
+STREET FIGHT REPORTED,public_disturbance,police,medium
+May tumawag ng ambulansya,healthcare,medical,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+May tumawag ng ambulansya,healthcare,medical,high
+"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,low
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,high
+Sunog sa residential area,fire,fire,high
+"Explosion heard, possible fire",fire,fire,critical
+Loud noise complaint,public_disturbance,tanod,medium
+INJURY REPORTED,healthcare,medical,high
+FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,high
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
+"Vehicular collision, may sugatan, emergency response needed",vehicle_crash,police,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+Flooding in the basement,flood,tanod,high
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
+Heart attack reported,healthcare,medical,critical
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+CAR COLLISION REPORTED,vehicle_crash,police,high
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+MEDICAL EMERGENCY,healthcare,medical,high
+Person collapsed,healthcare,medical,high
+INJURY REPORTED,healthcare,medical,high
+May lasing na nagwawala,public_disturbance,police,medium
+HEART ATTACK REPORTED,healthcare,medical,critical
+Heart attack reported,healthcare,medical,critical
+Unauthorized access attempt,vehicle_crash,police,medium
+Unauthorized access attempt,public_disturbance,police,medium
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+FIREWORKS CAUSED A FIRE,fire,fire,high
+Fire alarm triggered,fire,fire,high
+"Malakas na baha, hindi madaanan",flood,tanod,high
+Barilan sa pagitan ng dalawang grupo,public_disturbance,police,critical
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+Person collapsed,healthcare,medical,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+Street fight reported,public_disturbance,police,medium
+May tumawag ng ambulansya,healthcare,medical,high
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+PERSON COLLAPSED,healthcare,medical,high
+Flooding in the basement,flood,tanod,high
+Fire outbreak in the area,fire,fire,high
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+MALAKAS NA INGAY,public_disturbance,tanod,medium
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+BUILDING FIRE REPORTED,fire,fire,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,high
+Fire in the kitchen,fire,fire,high
+May lasing na nagwawala,public_disturbance,police,medium
+May sugatan,healthcare,medical,high
+Loud noise complaint,public_disturbance,tanod,medium
+Barangay tanod assisted in crowd control,public_disturbance,tanod,low
+HEART ATTACK REPORTED,healthcare,medical,critical
+STREET FIGHT REPORTED,public_disturbance,police,medium
+"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,low
+Overflowing river causing flooding,flood,tanod,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+Malakas na ingay,public_disturbance,tanod,medium
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Flooding in the basement,flood,tanod,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,medium
+CAR COLLISION REPORTED,public_disturbance,police,high
+FIRE ALARM TRIGGERED,fire,fire,high
+Smoke and flames seen,fire,fire,critical
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+Multi-vehicle accident,vehicle_crash,police,medium
+Fire in the kitchen,fire,fire,high
+MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,medium
+Multi-vehicle accident,public_disturbance,police,medium
+Sunog na kailangan ng bumbero,fire,fire,critical
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
+Injury reported,healthcare,medical,high
 "Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
 "Ambulansya kailangan, may nahimatay",healthcare,medical,high
-Protest blocking the street,vehicle_crash,police,low
-MEDICAL EMERGENCY,healthcare,medical,low
-FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,low
-Heart attack reported,healthcare,medical,medium
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,low
-FIRE IN THE KITCHEN,fire,fire,low
-Street fight reported,public_disturbance,police,low
-MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,medium
-Fire in the kitchen,fire,fire,high
-Building fire reported,fire,fire,high
-MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
-MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
-Medical emergency,healthcare,medical,low
-SMOKE AND FLAMES SEEN,fire,fire,high
-"Vehicular collision, may sugatan, emergency response needed",vehicle_crash,police,low
-"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,medium
-AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
-MEDICAL EMERGENCY,healthcare,medical,medium
-LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
-SMOKE AND FLAMES SEEN,fire,fire,high
-LOUD NOISE COMPLAINT,flood,tanod,high
-Magnanakaw nahuli sa tindahan,vehicle_crash,police,high
-FIRE OUTBREAK IN THE AREA,fire,fire,medium
-Loud noise complaint,public_disturbance,tanod,low
-FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,medium
-BUILDING FIRE REPORTED,fire,fire,medium
-FLOODING IN THE BASEMENT,public_disturbance,tanod,medium
-Protest blocking the street,vehicle_crash,police,high
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,medium
-FIRE IN THE KITCHEN,fire,fire,medium
-Injury reported,healthcare,medical,medium
-May nasusunog na bahay,fire,fire,low
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-Injury reported,healthcare,medical,medium
-Sunog sa residential area,fire,fire,low
-Protest blocking the street,vehicle_crash,police,high
-FIRE ALARM TRIGGERED,fire,fire,medium
-May nasusunog na bahay,fire,fire,high
-MAY LASING NA NAGWAWALA,vehicle_crash,police,low
-FIREWORKS CAUSED A FIRE,fire,fire,medium
-"Ambulansya kailangan, may nahimatay",healthcare,medical,low
-Malakas na ingay,flood,tanod,medium
-Fire outbreak in the area,fire,fire,medium
-Multi-vehicle accident,public_disturbance,police,medium
-Smoke and flames seen,fire,fire,low
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,medium
-Heart attack reported,healthcare,medical,low
-Smoke and flames seen,fire,fire,high
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
-SUNOG SA RESIDENTIAL AREA,fire,fire,high
-Injury reported,healthcare,medical,low
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,medium
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,medium
-Injury reported,healthcare,medical,low
-Heart attack reported,healthcare,medical,high
-Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,medium
-Fire outbreak in the area,fire,fire,low
-Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,low
-AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,medium
-Street fight reported,public_disturbance,police,high
-FIRE IN THE KITCHEN,fire,fire,medium
-"Explosion heard, possible fire",fire,fire,medium
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,medium
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-Urgent medical assistance needed,healthcare,medical,high
-Flooding in the basement,flood,tanod,medium
-Person collapsed,healthcare,medical,low
-May sugatan,healthcare,medical,low
-Street fight reported,vehicle_crash,police,high
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,medium
-Ambulansya tumulong sa aksidente,healthcare,medical,medium
-FIRE OUTBREAK IN THE AREA,fire,fire,medium
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
-FIRE ALARM TRIGGERED,fire,fire,low
-"Explosion heard, possible fire",fire,fire,low
-AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,medium
-FLOODING DUE TO HEAVY RAIN,flood,tanod,high
-FIRE ALARM TRIGGERED,fire,fire,low
-May lasing na nagwawala,vehicle_crash,police,low
-Multi-vehicle accident,vehicle_crash,police,low
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,medium
-Nanakawan ng cellphone,public_disturbance,police,medium
-FIRE IN THE KITCHEN,fire,fire,high
-Injury reported,healthcare,medical,medium
-"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,medium
-FLOODING DUE TO HEAVY RAIN,flood,tanod,high
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,medium
-BUILDING FIRE REPORTED,fire,fire,high
-FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,low
-Injury reported,healthcare,medical,low
-Malakas na sigawan at away,public_disturbance,tanod,medium
-"Malakas na baha, hindi madaanan",flood,tanod,medium
-May nasusunog na bahay,fire,fire,high
-Fire alarm triggered,fire,fire,low
-Person collapsed,healthcare,medical,medium
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,medium
-MALAKAS NA INGAY,public_disturbance,tanod,medium
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,medium
-MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
-SUNOG SA RESIDENTIAL AREA,fire,fire,high
-Unauthorized access attempt,vehicle_crash,police,high
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,low
-SMOKE AND FLAMES SEEN,fire,fire,low
-Urgent medical assistance needed,healthcare,medical,high
-Urgent medical assistance needed,healthcare,medical,low
-STREET FIGHT REPORTED,public_disturbance,police,high
-"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,medium
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
-Car collision reported,vehicle_crash,police,medium
-MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,medium
-MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,medium
-INJURY REPORTED,healthcare,medical,high
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,low
-Malakas na sigawan at away,public_disturbance,tanod,medium
-Protest blocking the street,vehicle_crash,police,high
-May sugatan,healthcare,medical,high
-FLOODING IN THE BASEMENT,public_disturbance,tanod,medium
-Injury reported,healthcare,medical,low
-Flooding in the basement,public_disturbance,tanod,medium
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
-Sunog sa residential area,fire,fire,high
-Fire in the kitchen,fire,fire,medium
-Building fire reported,fire,fire,medium
-Street fight reported,public_disturbance,police,low
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,high
-May tumawag ng ambulansya,healthcare,medical,medium
-OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
-Flooding in the basement,public_disturbance,tanod,low
-LOUD NOISE COMPLAINT,flood,tanod,high
-Overflowing river causing flooding,public_disturbance,tanod,high
-FLOODING IN THE BASEMENT,public_disturbance,tanod,low
-MALAKAS NA INGAY,flood,tanod,low
-FIRE OUTBREAK IN THE AREA,fire,fire,medium
-STREET FIGHT REPORTED,vehicle_crash,police,medium
-Flooding due to heavy rain,public_disturbance,tanod,low
-Heart attack reported,healthcare,medical,medium
-Building fire reported,fire,fire,low
-May lasing na nagwawala,public_disturbance,police,high
-Fireworks caused a fire,fire,fire,medium
-LOUD NOISE COMPLAINT,flood,tanod,medium
-Injury reported,healthcare,medical,high
-Building fire reported,fire,fire,medium
-HEART ATTACK REPORTED,healthcare,medical,medium
-CAR COLLISION REPORTED,public_disturbance,police,high
-Car collision reported,vehicle_crash,police,medium
-MAY LASING NA NAGWAWALA,vehicle_crash,police,low
-MAY NASUSUNOG NA BAHAY,fire,fire,low
-May nasusunog na bahay,fire,fire,medium
-May lasing na nagwawala,public_disturbance,police,high
-CAR COLLISION REPORTED,vehicle_crash,police,high
-May lasing na nagwawala,public_disturbance,police,medium
-Ambulansya tumulong sa aksidente,healthcare,medical,medium
-Sunog na kailangan ng bumbero,fire,fire,low
-Flooding due to heavy rain,public_disturbance,tanod,low
-MALAKAS NA SIGAWAN AT AWAY,flood,tanod,high
-"Explosion heard, possible fire",fire,fire,high
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,medium
-Flooding in the basement,flood,tanod,medium
-MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
-NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
-"Senior citizen nadulas, sugatan",healthcare,medical,low
-Person collapsed,healthcare,medical,low
-MAY LASING NA NAGWAWALA,public_disturbance,police,high
-Multi-vehicle accident,public_disturbance,police,high
-SMOKE AND FLAMES SEEN,fire,fire,high
-May tumawag ng ambulansya,healthcare,medical,high
-Flooding due to heavy rain,public_disturbance,tanod,low
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,medium
-STREET FIGHT REPORTED,vehicle_crash,police,high
-URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,medium
-Protest blocking the street,public_disturbance,police,low
-Fireworks caused a fire,fire,fire,high
-Barangay tanod assisted in crowd control,flood,tanod,medium
-Car collision reported,public_disturbance,police,high
-MAY NASUSUNOG NA BAHAY,fire,fire,high
-CAR COLLISION REPORTED,vehicle_crash,police,medium
-May tumawag ng ambulansya,healthcare,medical,low
-Malakas na sigawan at away,public_disturbance,tanod,medium
-Building fire reported,fire,fire,low
-"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,medium
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,low
-May nasusunog na bahay,fire,fire,medium
-INJURY REPORTED,healthcare,medical,medium
-FIREWORKS CAUSED A FIRE,fire,fire,low
-FIRE OUTBREAK IN THE AREA,fire,fire,high
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,high
-INJURY REPORTED,healthcare,medical,high
-SUNOG SA RESIDENTIAL AREA,fire,fire,high
-Barangay tanod assisted in crowd control,flood,tanod,medium
-Car collision reported,public_disturbance,police,medium
-"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,high
-SMOKE AND FLAMES SEEN,fire,fire,low
-MAY LASING NA NAGWAWALA,vehicle_crash,police,low
-MALAKAS NA INGAY,public_disturbance,tanod,high
-Flooding in the basement,flood,tanod,low
-"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,low
 Unauthorized access attempt,public_disturbance,police,medium
-Malakas na ingay,public_disturbance,tanod,medium
-Street fight reported,public_disturbance,police,medium
-"Malakas na baha, hindi madaanan",public_disturbance,tanod,high
-SMOKE AND FLAMES SEEN,fire,fire,high
-MALAKAS NA INGAY,public_disturbance,tanod,low
-FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,medium
-MAY LASING NA NAGWAWALA,public_disturbance,police,medium
-May lasing na nagwawala,public_disturbance,police,medium
-PERSON COLLAPSED,healthcare,medical,high
-"Senior citizen nadulas, sugatan",healthcare,medical,high
-MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
-Fire outbreak in the area,fire,fire,high
-MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,high
-SUNOG NA KAILANGAN NG BUMBERO,fire,fire,low
-Unauthorized access attempt,public_disturbance,police,medium
-Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,high
-Multi-vehicle accident,vehicle_crash,police,low
-Smoke and flames seen,fire,fire,high
-FLOODING DUE TO HEAVY RAIN,flood,tanod,medium
-Barilan sa pagitan ng dalawang grupo,public_disturbance,police,medium
-"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
-Ambulansya tumulong sa aksidente,healthcare,medical,low
-"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,medium
-FLOODING IN THE BASEMENT,public_disturbance,tanod,medium
-Building fire reported,fire,fire,low
-Sunog na kailangan ng bumbero,fire,fire,high
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,low
-Flooding in the basement,flood,tanod,low
-Ambulansya tumulong sa aksidente,healthcare,medical,high
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
-Flooding due to heavy rain,public_disturbance,tanod,medium
-Fire outbreak in the area,fire,fire,high
-BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,medium
-May tumawag ng ambulansya,healthcare,medical,high
 "AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
-"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
-Flooding in the basement,public_disturbance,tanod,medium
-MAY SUGATAN,healthcare,medical,low
-Car collision reported,vehicle_crash,police,high
-MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,low
-MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
-INJURY REPORTED,healthcare,medical,low
-MAY TUMAWAG NG AMBULANSYA,healthcare,medical,medium
-CAR COLLISION REPORTED,public_disturbance,police,low
-STREET FIGHT REPORTED,vehicle_crash,police,low
-PROTEST BLOCKING THE STREET,vehicle_crash,police,medium
-FIRE IN THE KITCHEN,fire,fire,high
-"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,low
-FLOODING IN THE BASEMENT,flood,tanod,medium
-AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,medium
-Person collapsed,healthcare,medical,high
-May tumawag ng ambulansya,healthcare,medical,medium
-Protest blocking the street,vehicle_crash,police,low
-"Malakas na baha, hindi madaanan",public_disturbance,tanod,low
-STREET FIGHT REPORTED,public_disturbance,police,high
+STREET FIGHT REPORTED,vehicle_crash,police,medium
+Fire alarm triggered,fire,fire,high
+Sunog sa residential area,fire,fire,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+Fire alarm triggered,fire,fire,high
+"May batang nawala, hinahanap ng magulang",flood,tanod,low
+SMOKE AND FLAMES SEEN,fire,fire,critical
+MAY SUGATAN,healthcare,medical,high
+Barilan sa pagitan ng dalawang grupo,public_disturbance,police,critical
 "Ambulansya kailangan, may nahimatay",healthcare,medical,high
-Car collision reported,public_disturbance,police,medium
-Loud noise complaint,public_disturbance,tanod,high
-May lasing na nagwawala,vehicle_crash,police,high
+Protest blocking the street,vehicle_crash,police,medium
+Magnanakaw nahuli sa tindahan,vehicle_crash,police,medium
+HEART ATTACK REPORTED,healthcare,medical,critical
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+Car collision reported,public_disturbance,police,high
+Smoke and flames seen,fire,fire,critical
+Smoke and flames seen,fire,fire,critical
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+Flooding due to heavy rain,flood,tanod,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+HEART ATTACK REPORTED,healthcare,medical,critical
+BUILDING FIRE REPORTED,fire,fire,high
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+Person collapsed,healthcare,medical,high
+MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+HEART ATTACK REPORTED,healthcare,medical,critical
+"Explosion heard, possible fire",fire,fire,critical
+Sunog sa residential area,fire,fire,high
+Loud noise complaint,public_disturbance,tanod,medium
+HEART ATTACK REPORTED,healthcare,medical,critical
+FIRE OUTBREAK IN THE AREA,fire,fire,high
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+Street fight reported,public_disturbance,police,medium
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+Nanakawan ng cellphone,vehicle_crash,police,medium
+HEART ATTACK REPORTED,healthcare,medical,critical
+Unauthorized access attempt,vehicle_crash,police,medium
+Building fire reported,fire,fire,high
+Protest blocking the street,public_disturbance,police,medium
+Barangay tanod assisted in crowd control,flood,tanod,low
+Loud noise complaint,public_disturbance,tanod,medium
+Multi-vehicle accident,public_disturbance,police,medium
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+MEDICAL EMERGENCY,healthcare,medical,high
+"Malakas na baha, hindi madaanan",public_disturbance,tanod,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+Urgent medical assistance needed,healthcare,medical,high
+"Malakas na baha, hindi madaanan",flood,tanod,high
+Heart attack reported,healthcare,medical,critical
+Flooding in the basement,public_disturbance,tanod,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
+Person collapsed,healthcare,medical,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
+"Explosion heard, possible fire",fire,fire,critical
+Flooding due to heavy rain,public_disturbance,tanod,high
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,low
+OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,high
+Unauthorized access attempt,vehicle_crash,police,medium
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+Flooding due to heavy rain,flood,tanod,high
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+FIRE IN THE KITCHEN,fire,fire,high
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+Car collision reported,public_disturbance,police,high
+NANAKAWAN NG CELLPHONE,vehicle_crash,police,medium
+LOUD NOISE COMPLAINT,flood,tanod,medium
+Smoke and flames seen,fire,fire,critical
+Flooding in the basement,public_disturbance,tanod,high
+Overflowing river causing flooding,flood,tanod,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+Heart attack reported,healthcare,medical,critical
+CAR COLLISION REPORTED,public_disturbance,police,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+Fireworks caused a fire,fire,fire,high
+CAR COLLISION REPORTED,public_disturbance,police,high
+Urgent medical assistance needed,healthcare,medical,high
+Sunog sa residential area,fire,fire,high
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+MEDICAL EMERGENCY,healthcare,medical,high
+May lasing na nagwawala,public_disturbance,police,medium
+Smoke and flames seen,fire,fire,critical
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+FIRE OUTBREAK IN THE AREA,fire,fire,high
+Fire outbreak in the area,fire,fire,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
+"Explosion heard, possible fire",fire,fire,critical
+LOUD NOISE COMPLAINT,flood,tanod,medium
+MEDICAL EMERGENCY,healthcare,medical,high
+Injury reported,healthcare,medical,high
+Malakas na sigawan at away,public_disturbance,tanod,medium
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+Multi-vehicle accident,vehicle_crash,police,medium
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+CAR COLLISION REPORTED,vehicle_crash,police,high
+Sunog sa residential area,fire,fire,high
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+FIRE IN THE KITCHEN,fire,fire,high
+FIRE ALARM TRIGGERED,fire,fire,high
+MEDICAL EMERGENCY,healthcare,medical,high
+SMOKE AND FLAMES SEEN,fire,fire,critical
+NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
+PROTEST BLOCKING THE STREET,vehicle_crash,police,medium
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+Overflowing river causing flooding,flood,tanod,high
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
+FLOODING IN THE BASEMENT,flood,tanod,high
+Flooding due to heavy rain,flood,tanod,high
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
+Sunog sa residential area,fire,fire,high
+SUNOG SA RESIDENTIAL AREA,fire,fire,high
+"May batang nawala, hinahanap ng magulang",flood,tanod,low
+Medical emergency,healthcare,medical,high
+Flooding due to heavy rain,flood,tanod,high
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+MALAKAS NA INGAY,flood,tanod,medium
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+Overflowing river causing flooding,flood,tanod,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,high
+Overflowing river causing flooding,public_disturbance,tanod,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+Fireworks caused a fire,fire,fire,high
+Overflowing river causing flooding,public_disturbance,tanod,high
+Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,critical
+Overflowing river causing flooding,flood,tanod,high
+Fireworks caused a fire,fire,fire,high
+Multi-vehicle accident,public_disturbance,police,medium
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+May lasing na nagwawala,vehicle_crash,police,medium
+Loud noise complaint,flood,tanod,medium
+NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,high
+Protest blocking the street,vehicle_crash,police,medium
+Fire outbreak in the area,fire,fire,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+MEDICAL EMERGENCY,healthcare,medical,high
+Loud noise complaint,public_disturbance,tanod,medium
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+Unauthorized access attempt,public_disturbance,police,medium
+"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+Barangay tanod assisted in crowd control,public_disturbance,tanod,low
+MAY SUGATAN,healthcare,medical,high
+May nasusunog na bahay,fire,fire,high
+Urgent medical assistance needed,healthcare,medical,high
+Building fire reported,fire,fire,high
+"Senior citizen nadulas, sugatan",healthcare,medical,high
+BUILDING FIRE REPORTED,fire,fire,high
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,low
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+INJURY REPORTED,healthcare,medical,high
+Multi-vehicle accident,public_disturbance,police,medium
 Street fight reported,vehicle_crash,police,medium
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+FIRE ALARM TRIGGERED,fire,fire,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+Urgent medical assistance needed,healthcare,medical,high
+Malakas na ingay,public_disturbance,tanod,medium
+Person collapsed,healthcare,medical,high
+Unauthorized access attempt,vehicle_crash,police,medium
+Overflowing river causing flooding,flood,tanod,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,high
+MAY LASING NA NAGWAWALA,public_disturbance,police,medium
+INJURY REPORTED,healthcare,medical,high
+"May batang nawala, hinahanap ng magulang",flood,tanod,low
+FIRE OUTBREAK IN THE AREA,fire,fire,high
+Car collision reported,vehicle_crash,police,high
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,high
+FIREWORKS CAUSED A FIRE,fire,fire,high
+Injury reported,healthcare,medical,high
+Person collapsed,healthcare,medical,high
+Barangay tanod assisted in crowd control,public_disturbance,tanod,low
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,high
+Building fire reported,fire,fire,high
+Flooding in the basement,flood,tanod,high
+MALAKAS NA INGAY,public_disturbance,tanod,medium
+Protest blocking the street,vehicle_crash,police,medium
+Unauthorized access attempt,public_disturbance,police,medium
+Nanakawan ng cellphone,vehicle_crash,police,medium
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+MAY SUGATAN,healthcare,medical,high
+Sunog sa residential area,fire,fire,high
+FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,high
+FLOODING IN THE BASEMENT,flood,tanod,high
+Unauthorized access attempt,vehicle_crash,police,medium
+May tumawag ng ambulansya,healthcare,medical,high
+Fire outbreak in the area,fire,fire,high
+MEDICAL EMERGENCY,healthcare,medical,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+SUNOG SA RESIDENTIAL AREA,fire,fire,high
+INJURY REPORTED,healthcare,medical,high
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+MAY SUGATAN,healthcare,medical,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+Magnanakaw nahuli sa tindahan,public_disturbance,police,medium
+NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
+BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,critical
+Nanakawan ng cellphone,vehicle_crash,police,medium
+FIREWORKS CAUSED A FIRE,fire,fire,high
+OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,high
+SMOKE AND FLAMES SEEN,fire,fire,critical
+MEDICAL EMERGENCY,healthcare,medical,high
+Overflowing river causing flooding,public_disturbance,tanod,high
+Nanakawan ng cellphone,public_disturbance,police,medium
+May sugatan,healthcare,medical,high
+Nanakawan ng cellphone,vehicle_crash,police,medium
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
+STREET FIGHT REPORTED,public_disturbance,police,medium
+Protest blocking the street,public_disturbance,police,medium
+MALAKAS NA INGAY,public_disturbance,tanod,medium
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+Fireworks caused a fire,fire,fire,high
+Urgent medical assistance needed,healthcare,medical,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+FLOODING IN THE BASEMENT,flood,tanod,high
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+CAR COLLISION REPORTED,public_disturbance,police,high
+SMOKE AND FLAMES SEEN,fire,fire,critical
+Urgent medical assistance needed,healthcare,medical,high
+Medical emergency,healthcare,medical,high
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+Person collapsed,healthcare,medical,high
+PERSON COLLAPSED,healthcare,medical,high
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+PERSON COLLAPSED,healthcare,medical,high
+MAY LASING NA NAGWAWALA,public_disturbance,police,medium
+"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
+Multi-vehicle accident,vehicle_crash,police,medium
+Barangay tanod assisted in crowd control,public_disturbance,tanod,low
+Person collapsed,healthcare,medical,high
+FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+Medical emergency,healthcare,medical,high
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+Person collapsed,healthcare,medical,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+MAY SUGATAN,healthcare,medical,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+STREET FIGHT REPORTED,public_disturbance,police,medium
+Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,critical
+Urgent medical assistance needed,healthcare,medical,high
+Nanakawan ng cellphone,public_disturbance,police,medium
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
+Malakas na ingay,public_disturbance,tanod,medium
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+Unauthorized access attempt,vehicle_crash,police,medium
+Nanakawan ng cellphone,public_disturbance,police,medium
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+Unauthorized access attempt,public_disturbance,police,medium
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,high
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+FIRE ALARM TRIGGERED,fire,fire,high
+PERSON COLLAPSED,healthcare,medical,high
+Loud noise complaint,public_disturbance,tanod,medium
+Magnanakaw nahuli sa tindahan,vehicle_crash,police,medium
+Fire alarm triggered,fire,fire,high
+BUILDING FIRE REPORTED,fire,fire,high
+May nasusunog na bahay,fire,fire,high
+Person collapsed,healthcare,medical,high
+Nanakawan ng cellphone,vehicle_crash,police,medium
+Sunog na kailangan ng bumbero,fire,fire,critical
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
+MEDICAL EMERGENCY,healthcare,medical,high
+Street fight reported,public_disturbance,police,medium
+Smoke and flames seen,fire,fire,critical
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,critical
+Sunog sa residential area,fire,fire,high
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+May sugatan,healthcare,medical,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,medium
+Barangay tanod assisted in crowd control,flood,tanod,low
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
+Malakas na sigawan at away,public_disturbance,tanod,medium
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+May nasusunog na bahay,fire,fire,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,high
+Fireworks caused a fire,fire,fire,high
+BUILDING FIRE REPORTED,fire,fire,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+Barangay tanod assisted in crowd control,public_disturbance,tanod,low
+LOUD NOISE COMPLAINT,flood,tanod,medium
+Building fire reported,fire,fire,high
+Flooding due to heavy rain,public_disturbance,tanod,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+FIREWORKS CAUSED A FIRE,fire,fire,high
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,medium
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+INJURY REPORTED,healthcare,medical,high
+MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
+Magnanakaw nahuli sa tindahan,public_disturbance,police,medium
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+Barangay tanod assisted in crowd control,flood,tanod,low
+MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
 Fire in the kitchen,fire,fire,high
+FLOODING IN THE BASEMENT,flood,tanod,high
+Car collision reported,vehicle_crash,police,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
 Malakas na sigawan at away,flood,tanod,medium
-Injury reported,healthcare,medical,low
-Smoke and flames seen,fire,fire,low
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
+Street fight reported,public_disturbance,police,medium
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+Malakas na sigawan at away,public_disturbance,tanod,medium
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+Injury reported,healthcare,medical,high
+"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
+Multi-vehicle accident,public_disturbance,police,medium
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+MALAKAS NA INGAY,flood,tanod,medium
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+Medical emergency,healthcare,medical,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,high
+Injury reported,healthcare,medical,high
+MALAKAS NA SIGAWAN AT AWAY,public_disturbance,tanod,medium
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+MAY SUGATAN,healthcare,medical,high
+Fire alarm triggered,fire,fire,high
+Flooding due to heavy rain,flood,tanod,high
+Magnanakaw nahuli sa tindahan,vehicle_crash,police,medium
+"Senior citizen nadulas, sugatan",healthcare,medical,high
+Heart attack reported,healthcare,medical,critical
+Barilan sa pagitan ng dalawang grupo,public_disturbance,police,critical
+FIRE IN THE KITCHEN,fire,fire,high
+Nanakawan ng cellphone,public_disturbance,police,medium
+"May batang nawala, hinahanap ng magulang",flood,tanod,low
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+May tumawag ng ambulansya,healthcare,medical,high
+Medical emergency,healthcare,medical,high
+MALAKAS NA INGAY,flood,tanod,medium
+INJURY REPORTED,healthcare,medical,high
+FLOODING DUE TO HEAVY RAIN,public_disturbance,tanod,high
+Building fire reported,fire,fire,high
+May tumawag ng ambulansya,healthcare,medical,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,high
+May nasusunog na bahay,fire,fire,high
+May sugatan,healthcare,medical,high
+"Senior citizen nadulas, sugatan",healthcare,medical,high
+FIRE OUTBREAK IN THE AREA,fire,fire,high
+May nasusunog na bahay,fire,fire,high
+Street fight reported,public_disturbance,police,medium
+Street fight reported,vehicle_crash,police,medium
+Heart attack reported,healthcare,medical,critical
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Smoke and flames seen,fire,fire,critical
+BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,critical
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+MAY SUGATAN,healthcare,medical,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+"Malakas na baha, hindi madaanan",flood,tanod,high
+Multi-vehicle accident,vehicle_crash,police,medium
+FIREWORKS CAUSED A FIRE,fire,fire,high
+Unauthorized access attempt,vehicle_crash,police,medium
+MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,medium
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+OVERFLOWING RIVER CAUSING FLOODING,public_disturbance,tanod,high
+FLOODING IN THE BASEMENT,flood,tanod,high
+CAR COLLISION REPORTED,vehicle_crash,police,high
+SUNOG SA RESIDENTIAL AREA,fire,fire,high
+"May batang nawala, hinahanap ng magulang",flood,tanod,low
+PERSON COLLAPSED,healthcare,medical,high
+Building fire reported,fire,fire,high
+Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,critical
+Fireworks caused a fire,fire,fire,high
+Nanakawan ng cellphone,public_disturbance,police,medium
+Flooding due to heavy rain,flood,tanod,high
+May tumawag ng ambulansya,healthcare,medical,high
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+Injury reported,healthcare,medical,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",public_disturbance,tanod,low
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+Heart attack reported,healthcare,medical,critical
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+PERSON COLLAPSED,healthcare,medical,high
+LOUD NOISE COMPLAINT,flood,tanod,medium
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+Unauthorized access attempt,vehicle_crash,police,medium
+May sugatan,healthcare,medical,high
+Heart attack reported,healthcare,medical,critical
+Fire alarm triggered,fire,fire,high
+CAR COLLISION REPORTED,public_disturbance,police,high
+SMOKE AND FLAMES SEEN,fire,fire,critical
+Medical emergency,healthcare,medical,high
+SUNOG SA RESIDENTIAL AREA,fire,fire,high
+Fireworks caused a fire,fire,fire,high
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+Magnanakaw nahuli sa tindahan,public_disturbance,police,medium
+BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,critical
+Fire in the kitchen,fire,fire,high
+Medical emergency,healthcare,medical,high
+Loud noise complaint,public_disturbance,tanod,medium
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+"Malakas na baha, hindi madaanan",public_disturbance,tanod,high
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,high
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+May tumawag ng ambulansya,healthcare,medical,high
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+Fireworks caused a fire,fire,fire,high
+INJURY REPORTED,healthcare,medical,high
+Multi-vehicle accident,vehicle_crash,police,medium
+Malakas na ingay,flood,tanod,medium
+FIREWORKS CAUSED A FIRE,fire,fire,high
+Barilan sa pagitan ng dalawang grupo,vehicle_crash,police,critical
+Unauthorized access attempt,public_disturbance,police,medium
+Urgent medical assistance needed,healthcare,medical,high
+BARILAN SA PAGITAN NG DALAWANG GRUPO,public_disturbance,police,critical
+Protest blocking the street,vehicle_crash,police,medium
+Nanakawan ng cellphone,vehicle_crash,police,medium
+Overflowing river causing flooding,flood,tanod,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Urgent medical assistance needed,healthcare,medical,high
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+Loud noise complaint,flood,tanod,medium
+Medical emergency,healthcare,medical,high
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+"Malakas na baha, hindi madaanan",public_disturbance,tanod,high
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+SUNOG NA KAILANGAN NG BUMBERO,fire,fire,critical
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+Smoke and flames seen,fire,fire,critical
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+Protest blocking the street,vehicle_crash,police,medium
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+Urgent medical assistance needed,healthcare,medical,high
+Fire outbreak in the area,fire,fire,high
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+PERSON COLLAPSED,healthcare,medical,high
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+Malakas na sigawan at away,public_disturbance,tanod,medium
+CAR COLLISION REPORTED,public_disturbance,police,high
+Multi-vehicle accident,public_disturbance,police,medium
+SMOKE AND FLAMES SEEN,fire,fire,critical
+NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
+May nasusunog na bahay,fire,fire,high
+SMOKE AND FLAMES SEEN,fire,fire,critical
+MAY SUGATAN,healthcare,medical,high
+"EXPLOSION HEARD, POSSIBLE FIRE",fire,fire,critical
+SMOKE AND FLAMES SEEN,fire,fire,critical
+Medical emergency,healthcare,medical,high
+Overflowing river causing flooding,flood,tanod,high
+"Explosion heard, possible fire",fire,fire,critical
+May nasusunog na bahay,fire,fire,high
+Flooding due to heavy rain,flood,tanod,high
+May tumawag ng ambulansya,healthcare,medical,high
+"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,high
+BUILDING FIRE REPORTED,fire,fire,high
+MAY SUGATAN,healthcare,medical,high
+MEDICAL EMERGENCY,healthcare,medical,high
+SMOKE AND FLAMES SEEN,fire,fire,critical
+BARILAN SA PAGITAN NG DALAWANG GRUPO,vehicle_crash,police,critical
+May lasing na nagwawala,vehicle_crash,police,medium
+FIREWORKS CAUSED A FIRE,fire,fire,high
+MAY SUGATAN,healthcare,medical,high
+MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
+Nanakawan ng cellphone,vehicle_crash,police,medium
+"Vehicular collision, may sugatan, emergency response needed",vehicle_crash,police,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,high
+May sugatan,healthcare,medical,high
+Fire in the kitchen,fire,fire,high
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+MAY LASING NA NAGWAWALA,vehicle_crash,police,medium
+Sunog na kailangan ng bumbero,fire,fire,critical
+Street fight reported,public_disturbance,police,medium
+PERSON COLLAPSED,healthcare,medical,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",flood,tanod,high
+Multi-vehicle accident,public_disturbance,police,medium
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",vehicle_crash,police,high
+Person collapsed,healthcare,medical,high
+MEDICAL EMERGENCY,healthcare,medical,high
+MAY LASING NA NAGWAWALA,public_disturbance,police,medium
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",public_disturbance,tanod,high
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+FLOODING IN THE BASEMENT,flood,tanod,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+May lasing na nagwawala,public_disturbance,police,medium
+Fireworks caused a fire,fire,fire,high
+Urgent medical assistance needed,healthcare,medical,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+MAY SUGATAN,healthcare,medical,high
+SUNOG SA RESIDENTIAL AREA,fire,fire,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+Urgent medical assistance needed,healthcare,medical,high
+MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
+Unauthorized access attempt,public_disturbance,police,medium
+MAGNANAKAW NAHULI SA TINDAHAN,vehicle_crash,police,medium
+UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,medium
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+Person collapsed,healthcare,medical,high
+"Basurang nagbara sa kanal, nagdulot ng pagbaha",public_disturbance,tanod,high
+Urgent medical assistance needed,healthcare,medical,high
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+Car collision reported,vehicle_crash,police,high
+"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,high
+Loud noise complaint,flood,tanod,medium
+MULTI-VEHICLE ACCIDENT,vehicle_crash,police,medium
+PERSON COLLAPSED,healthcare,medical,high
+Malakas na sigawan at away,flood,tanod,medium
+Street fight reported,public_disturbance,police,medium
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,high
+NANAKAWAN NG CELLPHONE,public_disturbance,police,medium
+Unauthorized access attempt,public_disturbance,police,medium
+May nasusunog na bahay,fire,fire,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+May lasing na nagwawala,vehicle_crash,police,medium
+BUILDING FIRE REPORTED,fire,fire,high
+MAY SUGATAN,healthcare,medical,high
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+Loud noise complaint,public_disturbance,tanod,medium
+Medical emergency,healthcare,medical,high
+Smoke and flames seen,fire,fire,critical
+Flooding in the basement,flood,tanod,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+Fire in the kitchen,fire,fire,high
+May nasusunog na bahay,fire,fire,high
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+CAR COLLISION REPORTED,public_disturbance,police,high
+Person collapsed,healthcare,medical,high
+MAY SUGATAN,healthcare,medical,high
+Malakas na sigawan at away,public_disturbance,tanod,medium
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+FIRE OUTBREAK IN THE AREA,fire,fire,high
+"Malakas na baha, hindi madaanan",flood,tanod,high
+BUILDING FIRE REPORTED,fire,fire,high
+MAY NASUSUNOG NA BAHAY,fire,fire,high
+May nasusunog na bahay,fire,fire,high
+FLOODING IN THE BASEMENT,flood,tanod,high
+"Malakas na baha, hindi madaanan",flood,tanod,high
+Malakas na ingay,public_disturbance,tanod,medium
+STREET FIGHT REPORTED,vehicle_crash,police,medium
+Fire outbreak in the area,fire,fire,high
+Smoke and flames seen,fire,fire,critical
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,flood,tanod,low
+MEDICAL EMERGENCY,healthcare,medical,high
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+Medical emergency,healthcare,medical,high
+FLOODING IN THE BASEMENT,flood,tanod,high
+FLOODING IN THE BASEMENT,public_disturbance,tanod,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+UNAUTHORIZED ACCESS ATTEMPT,vehicle_crash,police,medium
+Sunog sa residential area,fire,fire,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+MAGNANAKAW NAHULI SA TINDAHAN,public_disturbance,police,medium
+Smoke and flames seen,fire,fire,critical
+Nanakawan ng cellphone,vehicle_crash,police,medium
+MALAKAS NA SIGAWAN AT AWAY,flood,tanod,medium
+CAR COLLISION REPORTED,public_disturbance,police,high
+Sunog na kailangan ng bumbero,fire,fire,critical
+"SENIOR CITIZEN NADULAS, SUGATAN",healthcare,medical,high
+Malakas na sigawan at away,public_disturbance,tanod,medium
+"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,high
+May nasusunog na bahay,fire,fire,high
+AMBULANSYA TUMULONG SA AKSIDENTE,healthcare,medical,high
+Ambulansya tumulong sa aksidente,healthcare,medical,high
+Urgent medical assistance needed,healthcare,medical,high
+OVERFLOWING RIVER CAUSING FLOODING,flood,tanod,high
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+Heart attack reported,healthcare,medical,critical
+Barangay tanod assisted in crowd control,flood,tanod,low
+Person collapsed,healthcare,medical,high
+URGENT MEDICAL ASSISTANCE NEEDED,healthcare,medical,high
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+Nanakawan ng cellphone,public_disturbance,police,medium
+"Vehicular collision, may sugatan, emergency response needed",public_disturbance,police,high
+Person collapsed,healthcare,medical,high
+Fire outbreak in the area,fire,fire,high
+Fire alarm triggered,fire,fire,high
+FIRE IN THE KITCHEN,fire,fire,high
+MULTI-VEHICLE ACCIDENT,public_disturbance,police,medium
+"MALAKAS NA BAHA, HINDI MADAANAN",flood,tanod,high
+MALAKAS NA INGAY,public_disturbance,tanod,medium
+Flooding due to heavy rain,flood,tanod,high
+Medical emergency,healthcare,medical,high
+PERSON COLLAPSED,healthcare,medical,high
+"May batang nawala, hinahanap ng magulang",public_disturbance,tanod,low
+Person collapsed,healthcare,medical,high
+Injury reported,healthcare,medical,high
+MEDICAL EMERGENCY,healthcare,medical,high
+May tumawag ng ambulansya,healthcare,medical,high
+PROTEST BLOCKING THE STREET,public_disturbance,police,medium
+Malakas na sigawan at away,flood,tanod,medium
+Multi-vehicle accident,vehicle_crash,police,medium
+"MALAKAS NA BAHA, HINDI MADAANAN",public_disturbance,tanod,high
+"Explosion heard, possible fire",fire,fire,critical
+Street fight reported,vehicle_crash,police,medium
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,high
+"Explosion heard, possible fire",fire,fire,critical
+FLOODING DUE TO HEAVY RAIN,flood,tanod,high
+May nasusunog na bahay,fire,fire,high
+"Explosion heard, possible fire",fire,fire,critical
+FIRE ALARM TRIGGERED,fire,fire,high
+Loud noise complaint,flood,tanod,medium
+MAY SUGATAN,healthcare,medical,high
+May lasing na nagwawala,public_disturbance,police,medium
+"VEHICULAR COLLISION, MAY SUGATAN, EMERGENCY RESPONSE NEEDED",public_disturbance,police,high
+"AMBULANSYA KAILANGAN, MAY NAHIMATAY",healthcare,medical,high
+May tumawag ng ambulansya,healthcare,medical,high
+May sugatan,healthcare,medical,high
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+INJURY REPORTED,healthcare,medical,high
+FIRE IN THE KITCHEN,fire,fire,high
+MALAKAS NA INGAY,public_disturbance,tanod,medium
+FIRE ALARM TRIGGERED,fire,fire,high
+"Senior citizen nadulas, sugatan",healthcare,medical,high
+Magnanakaw nahuli sa tindahan,public_disturbance,police,medium
+"Ambulansya kailangan, may nahimatay",healthcare,medical,high
+FIREWORKS CAUSED A FIRE,fire,fire,high
+HEART ATTACK REPORTED,healthcare,medical,critical
+"MAY BATANG NAWALA, HINAHANAP NG MAGULANG",flood,tanod,low
+LOUD NOISE COMPLAINT,public_disturbance,tanod,medium
+"Explosion heard, possible fire",fire,fire,critical
+Malakas na sigawan at away,public_disturbance,tanod,medium
+UNAUTHORIZED ACCESS ATTEMPT,public_disturbance,police,medium
+BARANGAY TANOD ASSISTED IN CROWD CONTROL,public_disturbance,tanod,low
+"Explosion heard, possible fire",fire,fire,critical
+Injury reported,healthcare,medical,high
+BUILDING FIRE REPORTED,fire,fire,high
+Fireworks caused a fire,fire,fire,high
+Fire alarm triggered,fire,fire,high
+"BASURANG NAGBARA SA KANAL, NAGDULOT NG PAGBAHA",flood,tanod,high
+Barilan sa pagitan ng dalawang grupo,public_disturbance,police,critical
+Fireworks caused a fire,fire,fire,high
+MAY TUMAWAG NG AMBULANSYA,healthcare,medical,high
+MEDICAL EMERGENCY,healthcare,medical,high
+Fireworks caused a fire,fire,fire,high
+Barilan sa pagitan ng dalawang grupo,public_disturbance,police,critical
+Injury reported,healthcare,medical,high
+May sugatan,healthcare,medical,high
+PROTEST BLOCKING THE STREET,vehicle_crash,police,medium
+Unauthorized access attempt,vehicle_crash,police,medium

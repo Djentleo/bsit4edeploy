@@ -8,8 +8,9 @@ app = Flask(__name__)
 # Load trained model and vectorizer
 model = joblib.load("severity_classifier.joblib")
 vectorizer = joblib.load("severity_vectorizer.joblib")
+cat_columns = joblib.load("severity_cat_columns.joblib")
 
-# Define possible types and departments for one-hot encoding
+# Define possible types and departments for one-hot encoding (fallback)
 ALL_TYPES = ["fire", "healthcare", "vehicle_crash", "public_disturbance", "flood"]
 ALL_DEPARTMENTS = ["fire", "medical", "police", "tanod"]
 
@@ -17,14 +18,13 @@ ALL_DEPARTMENTS = ["fire", "medical", "police", "tanod"]
 def encode_features(description, typ, department):
     # Vectorize description
     X_text = vectorizer.transform([description])
-    # One-hot encode type and department
-    type_vec = [1 if typ == t else 0 for t in ALL_TYPES]
-    dept_vec = [1 if department == d else 0 for d in ALL_DEPARTMENTS]
-    # Combine all features
-    import numpy as np
-
-    X_cat = np.array(type_vec + dept_vec).reshape(1, -1)
-    X = hstack([X_text, X_cat])
+    # Build a single-row DataFrame and get_dummies with training-time columns
+    df = pd.DataFrame([[typ, department]], columns=["type", "department"])
+    X_cat = pd.get_dummies(df)
+    # Reindex to match training columns, filling missing with 0
+    X_cat = X_cat.reindex(columns=cat_columns, fill_value=0)
+    # Convert to float to avoid scipy.sparse dtype error
+    X = hstack([X_text, X_cat.values.astype(float)])
     return X
 
 

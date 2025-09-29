@@ -1,7 +1,8 @@
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score, classification_report
 import joblib
 
 # Load the generated incidents data
@@ -9,11 +10,17 @@ import joblib
 df = pd.read_csv("incidents.csv")
 
 # Use incident_description as text feature
-vectorizer = TfidfVectorizer(max_features=200)
-X_text = vectorizer.fit_transform(df["incident_description"])
+vectorizer = TfidfVectorizer(
+    max_features=5000,
+    ngram_range=(1, 2),
+    min_df=2,
+    lowercase=True,
+)
+X_text = vectorizer.fit_transform(df["incident_description"].astype(str))
 
 # Combine text features with one-hot encoded type and department
 X_cat = pd.get_dummies(df[["type", "department"]])
+cat_columns = X_cat.columns.tolist()
 from scipy.sparse import hstack
 
 X = hstack([X_text, X_cat.values])
@@ -22,20 +29,24 @@ y = df["severity"]
 
 # Split data for training/testing
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
+    X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-# Train a classifier
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
+# Train a classifier (linear SVM works well with TF-IDF and sparse features)
+clf = LinearSVC(class_weight="balanced", random_state=42)
 clf.fit(X_train, y_train)
 
 # Evaluate accuracy
-accuracy = clf.score(X_test, y_test)
-print(f"Test accuracy: {accuracy:.2f}")
+preds = clf.predict(X_test)
+accuracy = accuracy_score(y_test, preds)
+print(f"Test accuracy: {accuracy:.3f}")
+print("\nClassification report:\n")
+print(classification_report(y_test, preds))
 
 # Save the trained model and vectorizer for later use
 joblib.dump(clf, "severity_classifier.joblib")
 joblib.dump(vectorizer, "severity_vectorizer.joblib")
+joblib.dump(cat_columns, "severity_cat_columns.joblib")
 print(
-    "Model and vectorizer saved as severity_classifier.joblib and severity_vectorizer.joblib"
+    "Model, vectorizer, and categorical columns saved (severity_classifier.joblib, severity_vectorizer.joblib, severity_cat_columns.joblib)"
 )
