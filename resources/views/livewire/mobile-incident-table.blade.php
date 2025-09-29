@@ -59,7 +59,7 @@
         <div class="min-w-full">
             <table class="w-full table-auto">
                 <thead style="background-color: #1E3A8A;" class="border-b border-gray-200">
-                    <tr class="text-left">
+                    <tr class="text-center">
                         <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ID</th>
                         <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">TYPE</th>
                         <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">SEVERITY</th>
@@ -79,7 +79,7 @@
                 </thead>
                 <tbody class="text-sm divide-y divide-gray-200 bg-white">
                     <template x-for="incident in paginatedIncidents" :key="incident.incident_id">
-                        <tr class="hover:bg-gray-50 transition-colors duration-150">
+                        <tr class="hover:bg-gray-50 transition-colors text-center duration-150">
                             <td class="px-3 py-4 text-gray-900 font-medium text-xs" x-text="incident.incident_id"></td>
                             <td class="px-3 py-4">
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
