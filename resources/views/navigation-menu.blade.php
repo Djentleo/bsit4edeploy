@@ -1,10 +1,10 @@
 <nav x-data="{ open: false, collapsed: false }" :class="collapsed ? 'w-16' : 'w-64'"
-    class="h-screen bg-blue-900 border-r border-gray-200 fixed top-0 left-0 z-30 flex flex-col transition-all duration-300">
+    class="h-screen bg-[#1C3A5B] dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed top-0 left-0 z-30 flex flex-col transition-all duration-300">
 
     <!-- Toggle Button -->
     <div class="absolute -right-3 top-6 z-40">
         <button @click="collapsed = !collapsed; $dispatch('sidebar-toggle', { collapsed: collapsed })"
-            class="bg-blue-900 text-white rounded-full p-1 border-2 border-white hover:bg-blue-800 transition-colors">
+            class="bg-[#1C3A5B] dark:bg-gray-900 text-white dark:text-gray-200 rounded-full p-1 border-2 border-white dark:border-gray-700 hover:bg-[#1C3A5B] dark:hover:bg-gray-800 transition-colors">
             <svg :class="collapsed ? 'rotate-180' : ''" class="w-4 h-4 transition-transform duration-300" fill="none"
                 stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -20,8 +20,17 @@
                 class="block transition-all duration-300" />
         </a>
     </div>
+    <!-- Theme Switcher (Dark/Light) -->
+    <div class="px-6 pb-2 mt-auto mb-[-15px]" x-show="!collapsed" x-transition>
+        <button @click="$store.theme.toggle()"
+            class="w-100 rounded-full flex items-center gap-2 px-2 py-2 border shadow bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors">
+            <i class="fa-solid fa-moon" x-show="!$store.theme.isDark"></i>
+            <i class="fa-solid fa-sun" x-show="$store.theme.isDark"></i>
+        </button>
+    </div>
     <!-- Navigation Links -->
     <div class="flex-1 flex flex-col py-6">
+
         <div class="flex flex-col space-y-2 px-6" x-show="!collapsed" x-transition>
             @if (Auth::user()->role === 'admin')
             <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
@@ -32,7 +41,7 @@
             </x-nav-link>
             <div x-data="{ open: false }">
                 <button @click="open = !open"
-                    class="w-full flex items-center justify-between px-1 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-blue-800 transition-colors focus:outline-none">
+                    class="w-full flex items-center justify-between px-1 py-2 text-sm font-medium rounded-md text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-gray-100 hover:bg-blue-800 dark:hover:bg-gray-800 transition-colors focus:outline-none">
                     <span>{{ __('Incident Tables') }}</span>
                     <svg :class="open ? 'rotate-180' : ''" class="w-4 h-4 transition-transform duration-300" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
@@ -150,11 +159,13 @@
         </div>
         @endif
     </div>
+
+
     <!-- Settings Dropdown at bottom -->
-    <div class="px-6 py-4  mt-auto" x-data="{ dropdownOpen: false }" class="relative" x-show="!collapsed" x-transition>
+    <div class="px-6 py-4" x-data="{ dropdownOpen: false }" class="relative" x-show="!collapsed" x-transition>
         <div class="relative">
             <button @click="dropdownOpen = !dropdownOpen"
-                class="w-full inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">
+                class="w-full inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-100 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                 <img class="size-8 rounded-full object-cover mr-2" src="{{ Auth::user()->profile_photo_url }}"
                     alt="{{ Auth::user()->name }}" />
@@ -174,27 +185,28 @@
                 x-transition:leave="transition ease-in duration-75"
                 x-transition:leave-start="transform opacity-100 scale-100"
                 x-transition:leave-end="transform opacity-0 scale-95" @click.away="dropdownOpen = false"
-                class="absolute bottom-full mb-2 right-0 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
+                class="absolute bottom-full mb-2 right-0 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
 
                 <!-- Account Management -->
-                <div class="block px-4 py-2 text-xs text-gray-400">
+                <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-500">
                     {{ __('Manage Account') }}
                 </div>
-                <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <a href="{{ route('profile.show') }}"
+                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                     {{ __('Profile') }}
                 </a>
                 @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                 <a href="{{ route('api-tokens.index') }}"
-                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                     {{ __('API Tokens') }}
                 </a>
                 @endif
-                <div class="border-t border-gray-200"></div>
+                <div class="border-t border-gray-200 dark:border-gray-700"></div>
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                         {{ __('Log Out') }}
                     </button>
                 </form>
@@ -203,10 +215,10 @@
     </div>
 
     <!-- Collapsed Settings Button -->
-    <div class="px-4 py-4 border-t border-gray-100 mt-auto" x-show="collapsed" x-transition
-        x-data="{ dropdownOpen: false }" class="relative">
+    <div class="px-4 py-4 dark:border-gray-700 mt-auto" x-show="collapsed" x-transition x-data="{ dropdownOpen: false }"
+        class="relative">
         <button @click="dropdownOpen = !dropdownOpen"
-            class="w-full flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-blue-800 transition-colors"
+            class="w-full flex items-center justify-center p-2 rounded-md text-gray-300 dark:text-gray-400 hover:text-white dark:hover:text-gray-100 hover:bg-blue-800 dark:hover:bg-gray-800 transition-colors"
             title="{{ Auth::user()->name }}">
             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <img class="size-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
@@ -222,25 +234,28 @@
             x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75"
             x-transition:leave-start="transform opacity-100 scale-100"
             x-transition:leave-end="transform opacity-0 scale-95" @click.away="dropdownOpen = false"
-            class="fixed bottom-1 left-20 w-48 bg-white rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
+            class="fixed bottom-1 left-20 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 z-50 ring-1 ring-black ring-opacity-5">
 
             <!-- Account Management -->
-            <div class="block px-4 py-2 text-xs text-gray-400">
+            <div class="block px-4 py-2 text-xs text-gray-400 dark:text-gray-500">
                 {{ __('Manage Account') }}
             </div>
-            <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('profile.show') }}"
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                 {{ __('Profile') }}
             </a>
             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
-            <a href="{{ route('api-tokens.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            <a href="{{ route('api-tokens.index') }}"
+                class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                 {{ __('API Tokens') }}
             </a>
             @endif
-            <div class="border-t border-gray-200"></div>
+            <div class="border-t border-gray-200 dark:border-gray-700"></div>
             <!-- Authentication -->
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                <button type="submit"
+                    class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
                     {{ __('Log Out') }}
                 </button>
             </form>

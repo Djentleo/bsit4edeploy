@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Permanently delete your account.') }}
+        <span class="dark:text-white">{{ __('Permanently delete your account.') }}</span>
     </x-slot>
 
     <x-slot name="content">

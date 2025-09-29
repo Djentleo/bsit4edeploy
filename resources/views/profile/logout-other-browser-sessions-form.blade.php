@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Manage and log out your active sessions on other browsers and devices.') }}
+        <span class="dark:text-white">{{ __('Manage and log out your active sessions on other browsers and devices.') }}</span>
     </x-slot>
 
     <x-slot name="content">

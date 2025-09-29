@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-white leading-tight">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
@@ -9,29 +9,29 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Summary Cards with Counter-Up Animation -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="bg-blue-100 rounded-lg shadow p-6 flex flex-col items-center">
+                <div class="bg-blue-100 dark:bg-blue-900 rounded-lg shadow p-6 flex flex-col items-center">
                     <span x-data="{ count: 0, target: {{ $summaryData['total_cases'] ?? 0 }} }"
                         x-init="let i = setInterval(() => { if(count < target) count++; else clearInterval(i); }, 10)"
-                        class="text-3xl font-bold text-blue-900" x-text="count"></span>
-                    <span class="mt-2 text-blue-700">Total Cases</span>
+                        class="text-3xl font-bold text-blue-900 dark:text-white" x-text="count"></span>
+                    <span class="mt-2 text-blue-700 dark:text-blue-200">Total Cases</span>
                 </div>
-                <div class="bg-yellow-100 rounded-lg shadow p-6 flex flex-col items-center">
+                <div class="bg-yellow-100 dark:bg-yellow-900 rounded-lg shadow p-6 flex flex-col items-center">
                     <span x-data="{ count: 0, target: {{ $summaryData['current_issues'] ?? 0 }} }"
                         x-init="let i = setInterval(() => { if(count < target) count++; else clearInterval(i); }, 30)"
-                        class="text-3xl font-bold text-yellow-900" x-text="count"></span>
-                    <span class="mt-2 text-yellow-700">Current Issues</span>
+                        class="text-3xl font-bold text-yellow-900 dark:text-white" x-text="count"></span>
+                    <span class="mt-2 text-yellow-700 dark:text-yellow-200">Current Issues</span>
                 </div>
-                <div class="bg-green-100 rounded-lg shadow p-6 flex flex-col items-center">
+                <div class="bg-green-100 dark:bg-green-900 rounded-lg shadow p-6 flex flex-col items-center">
                     <span x-data="{ count: 0, target: {{ $summaryData['completed_issues'] ?? 0 }} }"
                         x-init="let i = setInterval(() => { if(count < target) count++; else clearInterval(i); }, 10)"
-                        class="text-3xl font-bold text-green-900" x-text="count"></span>
-                    <span class="mt-2 text-green-700">Completed Issues</span>
+                        class="text-3xl font-bold text-green-900 dark:text-white" x-text="count"></span>
+                    <span class="mt-2 text-green-700 dark:text-green-200">Completed Issues</span>
                 </div>
-                <div class="bg-indigo-100 rounded-lg shadow p-6 flex flex-col items-center">
+                <div class="bg-indigo-100 dark:bg-indigo-900 rounded-lg shadow p-6 flex flex-col items-center">
                     <span x-data="{ count: 0, target: {{ $summaryData['responders'] ?? 0 }} }"
                         x-init="let i = setInterval(() => { if(count < target) count++; else clearInterval(i); }, 80)"
-                        class="text-3xl font-bold text-indigo-900" x-text="count"></span>
-                    <span class="mt-2 text-indigo-700">Responders</span>
+                        class="text-3xl font-bold text-indigo-900 dark:text-white" x-text="count"></span>
+                    <span class="mt-2 text-indigo-700 dark:text-indigo-200">Responders</span>
                 </div>
             </div>
 
@@ -39,10 +39,10 @@
             <div class="mt-8">
                 <div class="grid grid-cols-2 gap-6">
                     <!-- Top Left: Incidents Over Time -->
-                    <div class="bg-white rounded-lg shadow-lg p-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-3">
                             <div class="flex items-center gap-6">
-                                <h3 class="text-sm font-bold text-gray-700">Incidents Over Time</h3>
+                                <h3 class="text-sm font-bold text-gray-700 dark:text-white">Incidents Over Time</h3>
                                 <div class="flex items-center gap-3">
                                     <div class="relative">
                                         <select id="groupingSelect"
@@ -81,24 +81,25 @@
                     </div>
 
                     <!-- Bottom Left: By Type -->
-                    <div class="bg-white rounded-lg shadow-lg p-6">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">By Type</h3>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4 text-center">By Type</h3>
                         <div style="height: 300px;">
                             <canvas id="incidentTypeChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Top Right: By Status -->
-                    <div class="bg-white rounded-lg shadow-lg p-6">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">By Status</h3>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4 text-center">By Status</h3>
                         <div style="height: 300px;">
                             <canvas id="incidentStatusChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Bottom Right: By Severity -->
-                    <div class="bg-white rounded-lg shadow-lg p-6">
-                        <h3 class="text-lg font-semibold text-gray-700 mb-4 text-center">By Severity</h3>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-white mb-4 text-center">By Severity
+                        </h3>
                         <div style="height: 300px;">
                             <canvas id="incidentSeverityChart"></canvas>
                         </div>
@@ -124,23 +125,25 @@
                 }
             </style>
             <!-- Recent Incidents (Wireframe Style) -->
-            <div class="bg-white rounded-lg shadow p-6 mt-8">
-                <h3 class="text-2xl font-bold text-gray-700 mb-4 border-b pb-2">Recent Incidents</h3>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mt-8">
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-white mb-4 border-b pb-2">Recent Incidents</h3>
                 <div class="space-y-4">
                     @forelse ($incidents ?? [] as $incident)
-                    <div class="flex items-center justify-between bg-gray-50 rounded-lg px-4 py-3 shadow-sm">
+                    <div
+                        class="flex items-center justify-between bg-gray-50 dark:bg-gray-700 rounded-lg px-4 py-3 shadow-sm">
                         <div class="flex items-center gap-3">
                             <span class="h-4 w-4 rounded-full inline-block blinking-dot"
                                 style="background-color: {{ ($incident['status'] ?? '') === 'ongoing' ? '#FACC15' : (($incident['status'] ?? '') === 'resolved' ? '#4ADE80' : '#F87171') }};"></span>
                             <div>
-                                <div class="font-semibold text-gray-700 flex items-center gap-2">
+                                <div class="font-semibold text-gray-700 dark:text-white flex items-center gap-2">
                                     {{ ucfirst($incident['type'] ?? $incident['event'] ?? '') }}
                                     <span
-                                        class="ml-2 px-2 py-0.5 rounded text-xs font-semibold {{ $incident['display_source'] === 'CCTV' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700' }}">
+                                        class="ml-2 px-2 py-0.5 rounded text-xs font-semibold {{ $incident['display_source'] === 'CCTV' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200' : 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200' }}">
                                         {{ $incident['display_source'] ?? '' }}
                                     </span>
                                 </div>
-                                <div class="text-xs text-gray-500">{{ !empty($incident['timestamp']) ?
+                                <div class="text-xs text-gray-500 dark:text-gray-200">{{ !empty($incident['timestamp'])
+                                    ?
                                     \Carbon\Carbon::parse($incident['timestamp'])->format('Y-m-d h:i A') : '' }}</div>
                             </div>
                         </div>
@@ -148,7 +151,7 @@
                             <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full mb-1"
                                 style="background-color: {{ ($incident['status'] ?? '') === 'ongoing' ? '#FEF3C7' : (($incident['status'] ?? '') === 'resolved' ? '#D1FAE5' : '#FEE2E2') }}; color: {{ ($incident['status'] ?? '') === 'ongoing' ? '#B45309' : (($incident['status'] ?? '') === 'resolved' ? '#065F46' : '#991B1B') }};">{{
                                 ucfirst($incident['status'] ?? '') }}</span>
-                            <span class="text-xs text-gray-500">
+                            <span class="text-xs text-gray-500 dark:text-gray-200">
                                 @if(($incident['display_source'] ?? '') === 'CCTV')
                                 {{ $incident['user_name'] ?? $incident['reporter_name'] ?? '' }}
                                 @else
@@ -158,7 +161,7 @@
                         </div>
                     </div>
                     @empty
-                    <div class="text-center text-gray-400 py-8">No recent incidents found.</div>
+                    <div class="text-center text-gray-400 dark:text-gray-200 py-8">No recent incidents found.</div>
                     @endforelse
                 </div>
             </div>
@@ -176,6 +179,23 @@
         return;
     }
 
+// Theme-aware helpers
+function isDarkMode() {
+    return document.documentElement.classList.contains('dark');
+}
+function chartColors() {
+    const dark = isDarkMode();
+    return {
+        grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+        tick: dark ? '#d1d5db' : '#6b7280',
+        tooltipBg: dark ? 'rgba(17,24,39,0.9)' : 'rgba(0,0,0,0.8)',
+        tooltipText: '#ffffff',
+        primary: '#3b82f6',
+        status: ['#f59e0b', '#3b82f6', '#10b981'],
+        severity: ['#10b981', '#facc15', '#f97316', '#dc2626']
+    };
+}
+
 let chartType = 'line';
 const overTimeCanvas = document.getElementById('incidentOverTimeChart');
 if (!overTimeCanvas) {
@@ -185,6 +205,7 @@ if (!overTimeCanvas) {
 const ctxOverTime = overTimeCanvas.getContext('2d');
 
 // Show loading state
+let colors = chartColors();
 let overTimeChart = new Chart(ctxOverTime, {
     type: chartType,
     data: {
@@ -192,12 +213,12 @@ let overTimeChart = new Chart(ctxOverTime, {
         datasets: [{
             label: 'Incidents',
             data: [],
-            borderColor: '#3b82f6',
+            borderColor: colors.primary,
             backgroundColor: 'rgba(59,130,246,0.1)',
             fill: true,
             tension: 0.4,
             pointRadius: 4,
-            pointBackgroundColor: '#3b82f6',
+            pointBackgroundColor: colors.primary,
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2,
             pointHoverRadius: 6
@@ -211,10 +232,10 @@ let overTimeChart = new Chart(ctxOverTime, {
             mode: 'index'
         },
         scales: {
-            x: { grid: { display: false }, ticks: { color: '#6b7280', font: { size: 12 } } },
-            y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.08)' }, ticks: { color: '#6b7280', font: { size: 12 } } }
+            x: { grid: { display: false }, ticks: { color: colors.tick, font: { size: 12 } } },
+            y: { beginAtZero: true, grid: { color: colors.grid }, ticks: { color: colors.tick, font: { size: 12 } } }
         },
-        plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', titleColor: '#ffffff', bodyColor: '#ffffff', cornerRadius: 6 } }
+        plugins: { legend: { display: false }, tooltip: { backgroundColor: colors.tooltipBg, titleColor: colors.tooltipText, bodyColor: colors.tooltipText, cornerRadius: 6 } }
     }
 });
 
@@ -333,7 +354,7 @@ function fetchIncidentStatusChart(filterYear = '') {
             const labels = json.labels || [];
             const data = json.data || [];
             // Color palette for statuses: new, dispatched, resolved
-            const bgColors = ['#f59e0b', '#3b82f6', '#10b981'];
+            const bgColors = chartColors().status;
             if (statusChart) {
                 statusChart.data.labels = labels;
                 statusChart.data.datasets[0].data = data;
@@ -404,11 +425,11 @@ function fetchIncidentTypeChart(filterYear = '') {
                 '#ef4444', '#64748b', '#3b82f6', '#8b5cf6', '#f59e0b',
                 '#10b981', '#facc15', '#f97316', '#dc2626', '#6366f1', '#eab308', '#0ea5e9'
             ];
-            const bgColors = labels.map((_, i) => palette[i % palette.length]);
+            const paletteColors = labels.map((_, i) => palette[i % palette.length]);
             if (typeChart) {
                 typeChart.data.labels = labels;
                 typeChart.data.datasets[0].data = data;
-                typeChart.data.datasets[0].backgroundColor = bgColors;
+                typeChart.data.datasets[0].backgroundColor = paletteColors;
                 typeChart.update();
             } else {
                 typeChart = new Chart(ctxType, {
@@ -417,7 +438,7 @@ function fetchIncidentTypeChart(filterYear = '') {
                         labels: labels,
                         datasets: [{
                             data: data,
-                            backgroundColor: bgColors,
+                            backgroundColor: paletteColors,
                             borderWidth: 2,
                             borderColor: '#ffffff'
                         }]
@@ -479,7 +500,7 @@ function fetchIncidentSeverityChart(filterYear = '') {
                 const idx = apiLabels.indexOf(l);
                 return idx !== -1 ? apiData[idx] : 0;
             });
-            const bgColors = ['#10b981', '#facc15', '#f97316', '#dc2626'];
+            const bgColors = chartColors().severity;
             if (severityChart) {
                 severityChart.data.labels = labels;
                 severityChart.data.datasets[0].data = data;
@@ -530,5 +551,26 @@ if (yearSelect) {
         fetchIncidentSeverityChart(currentYear);
     });
 }
+// Update charts when theme changes
+window.addEventListener('theme-changed', () => {
+    colors = chartColors();
+    if (overTimeChart) {
+        overTimeChart.options.scales.x.ticks.color = colors.tick;
+        overTimeChart.options.scales.y.ticks.color = colors.tick;
+        overTimeChart.options.scales.y.grid.color = colors.grid;
+        overTimeChart.options.plugins.tooltip.backgroundColor = colors.tooltipBg;
+        overTimeChart.data.datasets[0].borderColor = colors.primary;
+        overTimeChart.data.datasets[0].pointBackgroundColor = colors.primary;
+        overTimeChart.update();
+    }
+    if (statusChart) {
+        statusChart.data.datasets[0].backgroundColor = chartColors().status;
+        statusChart.update();
+    }
+    if (severityChart) {
+        severityChart.data.datasets[0].backgroundColor = chartColors().severity;
+        severityChart.update();
+    }
+});
 });
 </script>

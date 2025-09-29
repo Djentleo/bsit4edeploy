@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="themeSwitcher()" x-init="init()"
+    :class="{ 'dark': isDark }">
 
 <head>
     <meta charset="utf-8">
@@ -11,7 +12,9 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css?family=Figtree:300,regular,500,600,700,800,900,300italic,italic,500italic,600italic,700italic,800italic,900italic"rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Figtree:300,regular,500,600,700,800,900,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+        rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
 
     <!-- Scripts -->
@@ -21,17 +24,17 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
     <x-banner />
 
-    <div class="min-h-screen bg-gray-100" x-data="{ sidebarCollapsed: false }"
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900" x-data="{ sidebarCollapsed: false }"
         @sidebar-toggle.window="sidebarCollapsed = $event.detail.collapsed">
         @livewire('navigation-menu')
 
         <div :class="sidebarCollapsed ? 'ml-16' : 'ml-64'" class="transition-all duration-300">
             <!-- Page Heading -->
             @if (isset($header))
-            <header class="bg-white shadow">
+            <header class="bg-white dark:bg-gray-800 shadow">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
@@ -48,6 +51,34 @@
     @stack('modals')
 
     @livewireScripts
+
+    {{-- Theme Switcher moved to navigation-menu sidebar --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('theme', {
+                isDark: false,
+                init() {
+                    const saved = localStorage.getItem('theme');
+                    if (saved === 'dark') this.isDark = true;
+                    else if (saved === 'light') this.isDark = false;
+                    else this.isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    this.apply();
+                },
+                toggle() {
+                    this.isDark = !this.isDark;
+                    localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
+                    this.apply();
+                },
+                apply() {
+                    const root = document.documentElement;
+                    if (this.isDark) root.classList.add('dark');
+                    else root.classList.remove('dark');
+                    window.dispatchEvent(new CustomEvent('theme-changed', { detail: { isDark: this.isDark } }));
+                }
+            });
+            Alpine.store('theme').init();
+        });
+    </script>
 
     @auth
     @if(auth()->user()->role === 'admin')
