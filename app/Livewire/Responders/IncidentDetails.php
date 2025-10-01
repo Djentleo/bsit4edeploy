@@ -36,8 +36,10 @@ class IncidentDetails extends Component
         $this->incident = $incident->toArray();
         $this->status = $dispatch->status;
         $this->dispatchId = $dispatch->id;
-        $this->loadNotes($incident->id);
-        $this->loadTimeline($incident->id);
+        // Always use DB id for notes/timeline
+        $dbId = $incident->id;
+        $this->loadNotes($dbId);
+        $this->loadTimeline($dbId);
     }
 
     public function updateStatus($status)
@@ -60,7 +62,7 @@ class IncidentDetails extends Component
             $shouldUpdateFirebase = false;
             if ($status === 'resolved') {
                 if ($incident) {
-                    $dispatchCount = Dispatch::where(function($q) use ($dispatch) {
+                    $dispatchCount = Dispatch::where(function ($q) use ($dispatch) {
                         $q->where('incident_id', $dispatch->incident_id);
                     })->count();
                     if ($dispatchCount <= 1) {
@@ -68,9 +70,9 @@ class IncidentDetails extends Component
                         $incident->save();
                         $shouldUpdateFirebase = true;
                     } else {
-                        $allResolved = Dispatch::where(function($q) use ($dispatch) {
-                                $q->where('incident_id', $dispatch->incident_id);
-                            })
+                        $allResolved = Dispatch::where(function ($q) use ($dispatch) {
+                            $q->where('incident_id', $dispatch->incident_id);
+                        })
                             ->where('status', '!=', 'resolved')
                             ->count() === 0;
                         if ($allResolved) {
@@ -140,6 +142,7 @@ class IncidentDetails extends Component
         $user = Auth::user();
         $noteText = trim($this->newNote);
         if ($incidentId && $user && $noteText !== '') {
+            // Always use DB id for notes
             IncidentNote::create([
                 'incident_id' => $incidentId,
                 'user_id' => $user->id,

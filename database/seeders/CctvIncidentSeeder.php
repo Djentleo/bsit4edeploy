@@ -18,7 +18,6 @@ class CctvIncidentSeeder extends Seeder
 
         $reference = $firebase->getReference('incidents');
         // Delete all existing CCTV incidents before seeding
-        $reference->remove();
 
         $cameraNames = ['cam ni gab'];
         $cameraUrls = [
@@ -28,18 +27,17 @@ class CctvIncidentSeeder extends Seeder
             'http://192.168.1.6:8700/video',
         ];
         $events = ['natural_disaster', 'fire', 'disturbance', 'vehicular_accident'];
-        $statuses = ['new', 'dispatched', 'resolved'];
+        $statuses = 'new';
 
         foreach (range(1, 5) as $i) {
             $cameraIdx = array_rand($cameraNames);
             $eventIdx = array_rand($events);
-            $statusIdx = array_rand($statuses);
             $incident = [
                 'camera_name' => $cameraNames[$cameraIdx],
                 'camera_url' => $cameraUrls[$cameraIdx],
                 'event' => $events[$eventIdx],
                 'screenshot_path' => 'D:\\Capstone\\NEW\\incident_screenshots\\' . date('Ymd_His') . '_' . $events[$eventIdx] . '.jpg',
-                'status' => $statuses[$statusIdx],
+                'status' => $statuses,
                 'timestamp' => now()->format('h:i:s A Y-m-d'),
             ];
             $reference->push($incident);

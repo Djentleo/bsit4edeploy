@@ -21,7 +21,7 @@ class IncidentDispatch extends Component
     public $errorMessage = '';
 
     // Notes
-    public $notes = [];
+    public $incidentNotes = [];
     public $newNote = '';
 
     // Status
@@ -140,7 +140,12 @@ class IncidentDispatch extends Component
 
     public function loadNotes()
     {
-        $this->notes = IncidentNote::where('incident_id', $this->incidentId)
+        // Always resolve to DB id for notes
+        $incident = \App\Models\Incident::where('id', $this->incidentId)
+            ->orWhere('firebase_id', $this->incidentId)
+            ->first();
+        $dbId = $incident ? $incident->id : $this->incidentId;
+        $this->incidentNotes = IncidentNote::where('incident_id', $dbId)
             ->with('user')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -160,8 +165,13 @@ class IncidentDispatch extends Component
             $this->errorMessage = 'You must be logged in to add a note.';
             return;
         }
+        // Always resolve to DB id for notes
+        $incident = \App\Models\Incident::where('id', $this->incidentId)
+            ->orWhere('firebase_id', $this->incidentId)
+            ->first();
+        $dbId = $incident ? $incident->id : $this->incidentId;
         IncidentNote::create([
-            'incident_id' => $this->incidentId,
+            'incident_id' => $dbId,
             'user_id' => $user->id,
             'note' => $noteText,
         ]);
@@ -171,7 +181,7 @@ class IncidentDispatch extends Component
 
         // Log to timeline
         IncidentTimeline::create([
-            'incident_id' => $this->incidentId,
+            'incident_id' => $dbId,
             'user_id' => $user->id,
             'action' => 'note_added',
             'details' => 'Note added',

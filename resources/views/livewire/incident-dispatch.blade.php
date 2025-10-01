@@ -111,7 +111,7 @@
         <!-- SweetAlert2 CDN -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <div class="space-y-3 max-h-48 overflow-y-auto">
-            @forelse($notes as $note)
+            @forelse($incidentNotes as $note)
             <div class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded p-2">
                 <div class="flex items-center justify-between mb-1">
                     <span class="text-sm font-semibold text-gray-800 dark:text-white">{{ $note->user->name ?? 'Unknown'
