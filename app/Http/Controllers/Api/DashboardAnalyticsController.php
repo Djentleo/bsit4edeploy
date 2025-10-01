@@ -40,12 +40,13 @@ class DashboardAnalyticsController extends Controller
     public function incidentStatusCounts(Request $request, FirebaseService $firebaseService)
     {
         $filterYear = $request->query('filterYear'); // optional, e.g. '2025'
-        $allIncidents = $firebaseService->getAllIncidents();
+        $allIncidents = $firebaseService->getAllIncidents(); // active incidents only
         $resolvedIncidents = method_exists($firebaseService, 'getResolvedIncidents') ? $firebaseService->getResolvedIncidents() : [];
         $allowedStatuses = ['new', 'dispatched', 'resolved'];
         $statusCounts = array_fill_keys($allowedStatuses, 0);
-        $combineIncidents = array_merge($allIncidents, $resolvedIncidents);
-        foreach ($combineIncidents as $incident) {
+
+        // Count active (non-resolved) statuses from active nodes only
+        foreach ($allIncidents as $incident) {
             $ts = $incident['timestamp'] ?? $incident['created_at'] ?? null;
             if ($ts) {
                 $carbon = Carbon::parse($ts);
@@ -54,9 +55,23 @@ class DashboardAnalyticsController extends Controller
                 }
             }
             $status = $incident['status'] ?? null;
-            if ($status && in_array($status, $allowedStatuses)) {
+            if ($status === 'new' || $status === 'dispatched') {
                 $statusCounts[$status]++;
             }
+            // Intentionally ignore 'resolved' here to avoid double counting
+        }
+
+        // Count resolved exclusively from the resolved_incidents node
+        foreach ($resolvedIncidents as $incident) {
+            // Prefer a dedicated resolved timestamp if available
+            $ts = $incident['resolved_at'] ?? $incident['timestamp'] ?? $incident['created_at'] ?? null;
+            if ($ts) {
+                $carbon = Carbon::parse($ts);
+                if ($filterYear && $carbon->format('Y') !== $filterYear) {
+                    continue;
+                }
+            }
+            $statusCounts['resolved']++;
         }
         $labels = array_map('ucfirst', array_keys($statusCounts));
         $data = array_values($statusCounts);
