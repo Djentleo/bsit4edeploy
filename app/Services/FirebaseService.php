@@ -10,7 +10,7 @@ class FirebaseService
      /**
      * Copy a resolved incident to incident_logs without removing from original node.
      */
-    public function logResolvedIncident($incidentId)
+    public function logResolvedIncident($incidentId, $resolvedAt = null)
     {
         // Try mobile_incidents first
         $ref = $this->database->getReference('mobile_incidents/' . $incidentId);
@@ -23,6 +23,7 @@ class FirebaseService
         if ($incident) {
             $incident['incident_id'] = $incidentId;
             $incident['status'] = 'resolved';
+            $incident['resolved_at'] = $resolvedAt ? (is_string($resolvedAt) ? $resolvedAt : $resolvedAt->toIso8601String()) : now()->toIso8601String();
             $logRef = $this->database->getReference('resolved_incidents/' . $incidentId);
             $logRef->set($incident);
             return true;

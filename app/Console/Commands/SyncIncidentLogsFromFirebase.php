@@ -50,6 +50,7 @@ class SyncIncidentLogsFromFirebase extends Command
                     'department' => $incident['department'] ?? null,
                     'status' => $incident['status'] ?? null,
                     'timestamp' => isset($incident['timestamp']) ? date('Y-m-d H:i:s', strtotime($incident['timestamp'])) : null,
+                    'resolved_at' => isset($incident['resolved_at']) ? date('Y-m-d H:i:s', strtotime($incident['resolved_at'])) : null,
                     'source' => $incident['source'] ?? ($isCctv ? 'cctv' : null),
                     'incident_description' => $isCctv ? ($incident['screenshot_path'] ?? null) : ($incident['incident_description'] ?? null),
                     'priority' => $incident['priority'] ?? null,

@@ -10,6 +10,7 @@ use App\Models\IncidentNote;
 use App\Models\IncidentTimeline;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Incident;
+use App\Services\FirebaseService;
 
 class IncidentDispatch extends Component
 {
@@ -61,7 +62,12 @@ class IncidentDispatch extends Component
 
     public function loadTimeline()
     {
-        $this->timeline = IncidentTimeline::where('incident_id', $this->incidentId)
+        // Always resolve to DB id for timeline consistency
+        $incident = Incident::where('id', $this->incidentId)
+            ->orWhere('firebase_id', $this->incidentId)
+            ->first();
+        $dbId = $incident ? $incident->id : $this->incidentId;
+        $this->timeline = IncidentTimeline::where('incident_id', $dbId)
             ->with('user')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -74,11 +80,32 @@ class IncidentDispatch extends Component
         $incident = Incident::where('firebase_id', $this->incidentId)->orWhere('id', $this->incidentId)->first();
         if ($incident) {
             $incident->status = $status;
+            // If resolved, set resolved_at timestamp
+            $resolvedAt = null;
+            if ($status === 'resolved') {
+                $resolvedAt = now();
+                $incident->resolved_at = $resolvedAt;
+            }
             $incident->save();
             $this->successMessage = 'Status updated.';
         } else {
             $this->errorMessage = 'Incident not found.';
             return;
+        }
+
+        // Reflect status change in Firebase as well
+        try {
+            if (!empty($incident->firebase_id)) {
+                $firebase = new FirebaseService();
+                $firebase->updateIncidentStatus($incident->firebase_id, $status);
+                // If resolved, also log to resolved_incidents for analytics
+                if ($status === 'resolved') {
+                    $firebase->logResolvedIncident($incident->firebase_id, $resolvedAt);
+                }
+            }
+        } catch (\Throwable $e) {
+            // Don't block UI on Firebase failure; surface a soft warning
+            $this->errorMessage = 'Status updated locally, but failed to update Firebase: ' . $e->getMessage();
         }
         // Log to timeline
         $user = Auth::user();
@@ -129,6 +156,16 @@ class IncidentDispatch extends Component
             if ($incident) {
                 $incident->status = 'dispatched';
                 $incident->save();
+                // Reflect to Firebase as well
+                try {
+                    if (!empty($incident->firebase_id)) {
+                        $firebase = new FirebaseService();
+                        $firebase->updateIncidentStatus($incident->firebase_id, 'dispatched');
+                    }
+                } catch (\Throwable $e) {
+                    // Soft warning only
+                    $this->errorMessage = 'Dispatched locally, but failed to update Firebase: ' . $e->getMessage();
+                }
             }
             DB::commit();
             $this->successMessage = 'Dispatch successful!';

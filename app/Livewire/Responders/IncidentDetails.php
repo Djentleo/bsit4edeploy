@@ -65,8 +65,11 @@ class IncidentDetails extends Component
                     $dispatchCount = Dispatch::where(function ($q) use ($dispatch) {
                         $q->where('incident_id', $dispatch->incident_id);
                     })->count();
+                    $resolvedAt = null;
                     if ($dispatchCount <= 1) {
+                        $resolvedAt = now();
                         $incident->status = 'resolved';
+                        $incident->resolved_at = $resolvedAt;
                         $incident->save();
                         $shouldUpdateFirebase = true;
                     } else {
@@ -76,7 +79,9 @@ class IncidentDetails extends Component
                             ->where('status', '!=', 'resolved')
                             ->count() === 0;
                         if ($allResolved) {
+                            $resolvedAt = now();
                             $incident->status = 'resolved';
+                            $incident->resolved_at = $resolvedAt;
                             $incident->save();
                             $shouldUpdateFirebase = true;
                         }
@@ -85,7 +90,7 @@ class IncidentDetails extends Component
                     if ($incident->status === 'resolved' && $incident->firebase_id) {
                         try {
                             $firebase = new FirebaseService();
-                            $firebase->logResolvedIncident($incident->firebase_id);
+                            $firebase->logResolvedIncident($incident->firebase_id, $resolvedAt);
                         } catch (\Throwable $e) {
                             // Optionally log error
                         }

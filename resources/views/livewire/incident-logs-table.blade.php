@@ -76,6 +76,7 @@
                         <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
                         @endif
                     </th>
+                    <th class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider">RESOLVED AT</th>
                 </tr>
             </thead>
             <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
@@ -113,17 +114,24 @@
                         $incident->department ?? '-' }}</td>
                     <td class="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
                         <div class="max-w-[120px] truncate">
-                            {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('M d, Y') :
-                            '-' }}
+                            {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('M d, Y') : '-' }}
                         </div>
                         <div class="text-gray-400 dark:text-gray-500 text-xs">
                             {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('H:i') : '' }}
                         </div>
                     </td>
+                    <td class="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
+                        <div class="max-w-[120px] truncate">
+                            {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('M d, Y') : '-' }}
+                        </div>
+                        <div class="text-gray-400 dark:text-gray-500 text-xs">
+                            {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('H:i') : '' }}
+                        </div>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-gray-800">
+                    <td colspan="8" class="px-4 py-8 text-center text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-gray-800">
                         <div class="flex flex-col items-center">
                             <svg class="w-8 h-8 text-gray-400 dark:text-gray-300 mb-2" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
