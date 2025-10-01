@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Dispatch;
 use App\Models\Incident;
+use Carbon\Carbon;
 
 class ResponderDashboard extends Component
 {
@@ -17,19 +18,38 @@ class ResponderDashboard extends Component
     public $perPage = 10;
     public $page = 1;
     public $total = 0;
+    public $typeOptions = [];
+    public $hasPrev = false;
+    public $hasNext = false;
+    // Sort fields mirrored from MobileIncidentTable with backward-compat
+    // Allowed: firebase_id|type|location|reporter_name|status|department|timestamp (plus legacy reporter|time)
+    public $sortField = 'timestamp';
+    public $sortDirection = 'desc'; // asc|desc
+
+    // Keep URL in sync with UI like the mobile table
+    protected $updatesQueryString = ['search', 'filterType', 'sortField', 'sortDirection', 'page', 'perPage'];
 
     // Livewire hooks for updating search/filter/pagination
-    public function updatingSearch()
+    // Only use updated* hooks for Livewire v3 best practice
+    public function updatedSearch()
     {
         $this->page = 1;
+        $this->fetchIncidents();
     }
-    public function updatingFilterStatus()
+    public function updatedFilterStatus()
     {
         $this->page = 1;
+        $this->fetchIncidents();
     }
-    public function updatingFilterType()
+    public function updatedFilterType()
     {
         $this->page = 1;
+        $this->fetchIncidents();
+    }
+    public function updatedPerPage()
+    {
+        $this->page = 1;
+        $this->fetchIncidents();
     }
     public function updatedPage()
     {
@@ -74,39 +94,139 @@ class ResponderDashboard extends Component
             return;
         }
         $dispatches = Dispatch::where('responder_id', $user->id)->get();
-        $incidents = $dispatches->map(function ($dispatch) {
+        $all = $dispatches->map(function ($dispatch) {
             $incident = Incident::where('id', $dispatch->incident_id)
                 ->orWhere('firebase_id', $dispatch->incident_id)
                 ->first();
+            $arr = $incident ? $incident->toArray() : null;
+            $reporter = $arr['reporter_name'] ?? 'CCTV';
+            $typeVal = $arr['type'] ?? ($arr['event'] ?? '');
+            $timeTs = $this->parseIncidentTimestamp($arr);
             return [
                 'dispatch_id' => $dispatch->id,
                 'incident_id' => $dispatch->incident_id,
                 'status' => $dispatch->status,
-                'incident' => $incident ? $incident->toArray() : null,
+                'incident' => $arr,
+                'sort' => [
+                    // Legacy keys (used previously)
+                    'reporter' => $reporter,
+                    'type' => $typeVal,
+                    'status' => $dispatch->status,
+                    'time' => $timeTs,
+                    // Keys to mirror MobileIncidentTable
+                    'firebase_id' => $arr['firebase_id'] ?? (isset($arr['id']) ? (string)$arr['id'] : ''),
+                    'location' => $arr['location'] ?? ($arr['camera_name'] ?? ''),
+                    'reporter_name' => $reporter,
+                    'department' => $arr['department'] ?? '',
+                    'timestamp' => $timeTs,
+                ],
             ];
         });
 
+        // Build type options across all incidents (mobile uses 'type', CCTV uses 'event')
+        $typesFromType = $all->pluck('incident.type')->filter();
+        $typesFromEvent = $all->pluck('incident.event')->filter();
+        $this->typeOptions = $typesFromType
+            ->merge($typesFromEvent)
+            ->unique()
+            ->sort()
+            ->values()
+            ->toArray();
+
         // Search and filter
-        $filtered = $incidents->filter(function ($item) {
+        $filtered = $all->filter(function ($item) {
             $incident = $item['incident'];
             if (!$incident) return false;
             $matchesSearch = true;
             if ($this->search) {
                 $search = strtolower($this->search);
                 $matchesSearch = (
+                    (isset($incident['firebase_id']) && str_contains(strtolower((string)$incident['firebase_id']), $search)) ||
                     (isset($incident['type']) && str_contains(strtolower($incident['type']), $search)) ||
                     (isset($incident['location']) && str_contains(strtolower($incident['location']), $search)) ||
-                    (isset($incident['reporter_name']) && str_contains(strtolower($incident['reporter_name']), $search))
+                    (isset($incident['reporter_name']) && str_contains(strtolower($incident['reporter_name']), $search)) ||
+                    (isset($incident['department']) && str_contains(strtolower($incident['department']), $search)) ||
+                    (isset($incident['status']) && str_contains(strtolower($incident['status']), $search)) ||
+                    (isset($incident['incident_description']) && str_contains(strtolower($incident['incident_description']), $search))
                 );
             }
             $matchesStatus = $this->filterStatus ? $item['status'] === $this->filterStatus : true;
-            $matchesType = $this->filterType ? (isset($incident['type']) && $incident['type'] === $this->filterType) : true;
+            // Match against either 'type' (mobile) or 'event' (CCTV)
+            $matchesType = $this->filterType
+                ? ((isset($incident['type']) && $incident['type'] === $this->filterType) || (isset($incident['event']) && $incident['event'] === $this->filterType))
+                : true;
             return $matchesSearch && $matchesStatus && $matchesType;
         })->values();
 
+        // Sorting
+        $key = match ($this->sortField) {
+            'firebase_id' => 'sort.firebase_id',
+            'type' => 'sort.type',
+            'location' => 'sort.location',
+            'reporter_name' => 'sort.reporter_name',
+            'reporter' => 'sort.reporter', // legacy
+            'status' => 'sort.status',
+            'department' => 'sort.department',
+            'timestamp' => 'sort.timestamp',
+            'time' => 'sort.time', // legacy
+            default => 'sort.timestamp',
+        };
+        $sorted = $this->sortDirection === 'asc'
+            ? $filtered->sortBy($key, SORT_NATURAL | SORT_FLAG_CASE)
+            : $filtered->sortByDesc($key, SORT_NATURAL | SORT_FLAG_CASE);
+
         // Pagination
-        $this->total = $filtered->count();
-        $this->incidents = $filtered->forPage($this->page, $this->perPage)->values()->toArray();
+        $this->total = $sorted->count();
+        $this->incidents = $sorted->forPage($this->page, $this->perPage)->values()->toArray();
+        $this->hasPrev = $this->page > 1;
+        $this->hasNext = ($this->page * $this->perPage) < $this->total;
+    }
+
+    public function sortBy($field)
+    {
+        $allowed = ['firebase_id','type','location','reporter_name','status','department','timestamp','reporter','time'];
+        if (!in_array($field, $allowed)) {
+            return;
+        }
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            // Default to desc for time-based sorts, asc otherwise
+            $this->sortDirection = in_array($field, ['timestamp','time']) ? 'desc' : 'asc';
+        }
+        $this->page = 1;
+        $this->fetchIncidents();
+    }
+
+    private function parseIncidentTimestamp(?array $incident): int
+    {
+        if (!$incident) return 0;
+        $candidates = [
+            $incident['datetime'] ?? null,
+            $incident['date_time'] ?? null,
+            $incident['timestamp'] ?? null,
+        ];
+        foreach ($candidates as $value) {
+            if (!$value) continue;
+            // Try common formats
+            $formats = ['Y-m-d H:i:s', 'h:i:s A Y-m-d', Carbon::DEFAULT_TO_STRING_FORMAT];
+            foreach ($formats as $fmt) {
+                try {
+                    $dt = Carbon::createFromFormat($fmt, $value);
+                    if ($dt) return $dt->timestamp;
+                } catch (\Throwable $e) {
+                    // ignore and try next
+                }
+            }
+            try {
+                $dt = Carbon::parse($value);
+                if ($dt) return $dt->timestamp;
+            } catch (\Throwable $e) {
+                // ignore
+            }
+        }
+        return 0;
     }
 
     public function updateStatus($dispatchId, $status)
