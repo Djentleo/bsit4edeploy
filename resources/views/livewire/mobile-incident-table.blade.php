@@ -1,35 +1,8 @@
-<!-- Firebase compat SDKs for browser -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
-<div class="max-w-full" x-data="mobileIncidents()" x-init="init()">
-    <!-- Switch Source Toggle -->
-    <div class="flex justify-end mb-6">
-        <div
-            class="relative inline-flex rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-            <button type="button" onclick="window.location.href='{{ route('incidents.mobile') }}'"
-                class="relative px-4 py-2.5 text-sm font-medium focus:outline-none transition-all duration-200 {{ request()->is('mobile-incident-table') ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-200 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-900' }} rounded-l-lg"
-                {{ request()->is('mobile-incident-table') ? 'disabled' : '' }}>
-                <span class="flex items-center gap-2">
-                    <i class="fas fa-mobile-alt"></i>
-                    Mobile
-                </span>
-            </button>
-            <button type="button" onclick="window.location.href='{{ route('incidents.cctv') }}'"
-                class="relative px-4 py-2.5 text-sm font-medium focus:outline-none transition-all duration-200 {{ request()->is('cctv-incident-table') ? 'bg-blue-600 text-white' : 'text-gray-600 dark:text-gray-200 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-900' }} rounded-r-lg"
-                {{ request()->is('cctv-incident-table') ? 'disabled' : '' }}>
-                <span class="flex items-center gap-2">
-                    <i class="fas fa-video"></i>
-                    CCTV
-                </span>
-            </button>
-        </div>
-    </div>
-    <!-- Search & Filter Row -->
-    <div class="flex flex-row gap-4 mb-6">
-        <div class="relative flex-grow">
-            <input type="search" x-model.debounce.150ms="search" @keydown.enter.prevent autocomplete="off"
-                class="w-full pl-10 pr-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-600 dark:text-white"
+<div>
+    <div class="flex flex-col md:flex-row gap-4 mb-6 items-center">
+        <div class="relative flex-grow w-full md:w-auto">
+            <input type="search" wire:model.live="search" autocomplete="off"
+                class="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Search incidents...">
             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg class="h-5 w-5 text-gray-400 dark:text-gray-300" fill="none" viewBox="0 0 24 24"
@@ -39,222 +12,167 @@
                 </svg>
             </div>
         </div>
-        <div class="relative w-48">
-            <select x-model="filter"
-                class="w-full px-4 py-2.5 appearance-none border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-600 dark:text-white">
+        <div>
+            <select wire:model.live="typeFilter"
+                class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">All Types</option>
-                <option value="vehicle_crash">Vehicular accident</option>
-                <option value="fire">Fire</option>
-                <option value="medical_emergency">Medical emergency</option>
-                <option value="disturbance">Disturbance</option>
+                @foreach($types as $type)
+                <option value="{{ $type }}">{{ ucfirst(str_replace('_', ' ', $type)) }}</option>
+                @endforeach
             </select>
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <svg class="h-5 w-5 text-gray-400 dark:text-gray-300" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </div>
+        </div>
+        <div>
+            <select wire:model.live="perPage"
+                class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
         </div>
     </div>
-
-    <!-- Content Section -->
-    <div
-        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div class="min-w-full">
-            <table class="w-full table-auto">
-                <thead style="background-color: #1C3A5B;" class="border-b border-gray-200 dark:border-gray-700">
-                    <tr class="text-center">
-                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ID</th>
-                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">TYPE</th>
-                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">SEVERITY</th>
-                        <th
-                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden sm:table-cell">
-                            LOCATION</th>
-                        <th
-                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden md:table-cell">
-                            REPORTER</th>
-                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">STATUS</th>
-                        <th
-                            class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden lg:table-cell">
-                            DEPARTMENT</th>
-                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">TIMESTAMP</th>
-                        <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-                    <template x-for="incident in paginatedIncidents" :key="incident.incident_id">
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-center duration-150">
-                            <td class="px-3 py-4 text-gray-900 dark:text-white font-medium text-xs"
-                                x-text="incident.incident_id"></td>
-                            <td class="px-3 py-4">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
-                                    :class="{
-                                        'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200': incident.type === 'fire',
-                                        'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-200': incident.type === 'vehicle_crash' || incident.type === 'vehicular_accident',
-                                        'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-200': incident.type === 'medical_emergency',
-                                        'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200': incident.type === 'disturbance'
-                                    }"
-                                    x-text="(incident.type || '').replace('_', ' ').replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase())"></span>
-                            </td>
-                            <td class="px-3 py-4">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
-                                    :class="{
-                                        'bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-200': incident.severity === 'critical',
-                                        'bg-orange-200 text-orange-800 dark:bg-orange-900 dark:text-orange-200': incident.severity === 'high',
-                                        'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200': incident.severity === 'medium',
-                                        'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200': incident.severity === 'low'
-                                    }"
-                                    x-text="(incident.severity || '').charAt(0).toUpperCase() + (incident.severity || '').slice(1)"></span>
-                            </td>
-                            <td class="px-3 py-4 text-gray-600 dark:text-gray-200 text-xs hidden sm:table-cell"
-                                x-text="incident.location">
-                            </td>
-                            <td class="px-3 py-4 text-gray-600 dark:text-gray-200 text-xs hidden md:table-cell"
-                                x-text="incident.reporter_name"></td>
-                            <td class="px-3 py-4">
-                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold"
-                                    :class="{
-                                        'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200': incident.status === 'new',
-                                        'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200': incident.status === 'dispatched',
-                                        'bg-gray-100 text-gray-700 dark:bg-gray-900 dark:text-gray-200': incident.status === 'resolved'
-                                    }" x-text="(incident.status || '').replace(/\b\w/g, c => c.toUpperCase())"></span>
-                            </td>
-                            <td class="px-3 py-4 text-gray-600 dark:text-gray-200 font-medium text-xs hidden lg:table-cell"
-                                x-text="(incident.department || '').replace(/\b\w/g, c => c.toUpperCase())"></td>
-                            <td
-                                class="px-3 py-4 text-gray-500 dark:text-gray-300 text-xs max-w-[100px] md:max-w-[180px] truncate whitespace-normal break-words">
-                                <div
-                                    x-text="(incident.timestamp ? new Date(incident.timestamp).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : '-')">
-                                </div>
-                                <div class="text-gray-400 dark:text-gray-200 text-xs"
-                                    x-text="(incident.timestamp ? new Date(incident.timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : '')">
-                                </div>
-                            </td>
-                            <td class="px-3 py-4">
-                                <a :href="'/dispatch?incident_id=' + encodeURIComponent(incident.incident_id)"
-                                    class="inline-flex items-center px-3 py-1.5 rounded-md bg-blue-600 dark:bg-blue-900 text-white text-xs font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 shadow-sm">
-                                    View
-                                </a>
-                            </td>
-                        </tr>
-                    </template>
-                    <tr x-show="paginatedIncidents.length === 0">
-                        <td colspan="8"
-                            class="px-3 py-8 text-center text-gray-500 dark:text-gray-200 bg-gray-50 dark:bg-gray-900">
-                            <div class="flex flex-col items-center">
-                                <svg class="w-12 h-12 text-gray-400 dark:text-gray-200 mb-3" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                <p class="text-sm font-medium">No incidents found</p>
-                                <p class="text-xs text-gray-400 dark:text-gray-200 mt-1">Try adjusting your search or
-                                    filter criteria</p>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <!-- Pagination Controls -->
-            <div
-                class="flex items-center justify-between px-3 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-                <div class="text-sm text-gray-600 dark:text-gray-200">
-                    Page <span class="font-medium" x-text="page + 1"></span> of <span class="font-medium"
-                        x-text="totalPages"></span>
-                </div>
-                <div class="flex space-x-2">
-                    <button type="button"
-                        class="px-3 py-2 rounded-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-                        :disabled="page === 0" @click="page = Math.max(0, page - 1)">Previous</button>
-                    <button type="button"
-                        class="px-3 py-2 rounded-md bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-700 dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
-                        :disabled="page >= totalPages - 1"
-                        @click="page = Math.min(totalPages - 1, page + 1)">Next</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Count -->
-        <div
-            class="px-3 py-3 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 text-sm text-gray-600 dark:text-gray-200">
-            Showing <span class="font-medium" x-text="filteredIncidents.length"></span> results
-        </div>
+    <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded-lg shadow">
+        <table class="w-full table-auto">
+            <thead style="background-color: #1C3A5B;" class="border-b border-gray-200 dark:border-gray-700">
+                <tr class="text-center">
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer"
+                        wire:click="sortBy('firebase_id')">ID
+                        @if($sortField === 'firebase_id')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer"
+                        wire:click="sortBy('type')">TYPE
+                        @if($sortField === 'type')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">SEVERITY</th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden sm:table-cell cursor-pointer"
+                        wire:click="sortBy('location')">LOCATION
+                        @if($sortField === 'location')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden md:table-cell cursor-pointer"
+                        wire:click="sortBy('reporter_name')">REPORTER
+                        @if($sortField === 'reporter_name')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer"
+                        wire:click="sortBy('status')">STATUS
+                        @if($sortField === 'status')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden lg:table-cell cursor-pointer"
+                        wire:click="sortBy('department')">DEPARTMENT
+                        @if($sortField === 'department')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer"
+                        wire:click="sortBy('timestamp')">TIMESTAMP
+                        @if($sortField === 'timestamp')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
+                @forelse($incidents as $incident)
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150 text-center">
+                    <td class="px-3 py-4 text-gray-900 dark:text-white font-medium text-xs">{{ $incident->firebase_id ??
+                        '-' }}</td>
+                    <td class="px-3 py-4">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold
+                            @if(($incident->type ?? '') === 'fire') bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
+                            @elseif(($incident->type ?? '') === 'vehicle_crash' || ($incident->type ?? '') === 'vehicular_accident') bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200
+                            @elseif(($incident->type ?? '') === 'medical_emergency') bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                            @elseif(($incident->type ?? '') === 'disturbance') bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200
+                            @else bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200
+                            @endif">
+                            {{ ucfirst(str_replace('_', ' ', $incident->type ?? '-')) }}
+                        </span>
+                    </td>
+                    <td class="px-3 py-4">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold
+                            @if(($incident->severity ?? '') === 'critical') bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
+                            @elseif(($incident->severity ?? '') === 'high') bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
+                            @elseif(($incident->severity ?? '') === 'medium') bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200
+                            @elseif(($incident->severity ?? '') === 'low') bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                            @else bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200
+                            @endif">
+                            {{ ucfirst($incident->severity ?? '-') }}
+                        </span>
+                    </td>
+                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 text-xs hidden sm:table-cell">{{
+                        $incident->location ?? '-' }}</td>
+                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 text-xs hidden md:table-cell">{{
+                        $incident->reporter_name ?? '-' }}</td>
+                    <td class="px-3 py-4">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold
+                            @if(($incident->status ?? '') === 'new') bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
+                            @elseif(($incident->status ?? '') === 'dispatched') bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200
+                            @elseif(($incident->status ?? '') === 'resolved') bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200
+                            @elseif(($incident->status ?? '') === 'en_route') bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200
+                            @elseif(($incident->status ?? '') === 'on_scene') bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200
+                            @else bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200
+                            @endif">
+                            {{ ucfirst(str_replace('_', ' ', $incident->status ?? '-')) }}
+                        </span>
+                    </td>
+                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 font-medium text-xs hidden lg:table-cell">{{
+                        $incident->department ?? '-' }}</td>
+                    <td class="px-3 py-4 text-gray-500 dark:text-gray-400 text-xs">
+                        <div class="max-w-[120px] truncate">
+                            {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('M d, Y') :
+                            '-' }}
+                        </div>
+                        <div class="text-gray-400 dark:text-gray-500 text-xs">
+                            {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('H:i') : '' }}
+                        </div>
+                    </td>
+                    <td class="px-3 py-4">
+                        <a href="/dispatch?incident_id={{ urlencode($incident->firebase_id) }}"
+                            class="inline-flex items-center px-3 py-1.5 rounded-md bg-blue-600 dark:bg-blue-900 text-white text-xs font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 shadow-sm">
+                            View
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8"
+                        class="px-3 py-8 text-center text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-gray-800">
+                        <div class="flex flex-col items-center">
+                            <svg class="w-8 h-8 text-gray-400 dark:text-gray-300 mb-2" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                            <p class="text-sm">No mobile incidents found.</p>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    <div class="mt-4">
+        {{ $incidents->links() }}
     </div>
 
     <script>
-        function mobileIncidents() {
-            return {
-                incidents: [],
-                init() {
-                    this.setupFirebase();
-                },
-                setupFirebase() {
-                    // TODO: Replace with your Firebase config
-                    const firebaseConfig = {
-                        apiKey: "AIzaSyB3XyotQMmmegvcpehChurRa_t1CL3V2yU",
-                        authDomain: "incident-report--database.firebaseapp.com",
-                        databaseURL: "https://incident-report--database-default-rtdb.asia-southeast1.firebasedatabase.app",
-                        projectId: "incident-report--database",
-                        storageBucket: "incident-report--database.firebasestorage.app",
-                        messagingSenderId: "79154499994",
-                        appId: "1:79154499994:web:bfcf3600bb2ad0c58fea23",
-                        measurementId: "G-SF2623RC2F"
-                    };
-                    if (!window.firebase) {
-                        setTimeout(() => this.setupFirebase(), 500);
-                        return;
-                    }
-                    if (!window.firebase.apps || window.firebase.apps.length === 0) {
-                        window.firebase.initializeApp(firebaseConfig);
-                    }
-                    const db = window.firebase.database();
-                    const incidentsRef = db.ref('mobile_incidents');
-                    incidentsRef.on('value', (snapshot) => {
-                        const data = snapshot.val() || {};
-                        this.incidents = Object.values(data);
-                    });
-                },
-                search: '',
-                filter: '',
-                page: 0,
-                pageSize: 10,
-                get filteredIncidents() {
-                    const s = (this.search || '').toLowerCase().trim();
-                    // Severity mapping: higher value = higher severity
-                    const severityMap = { critical: 4, high: 3, medium: 2, low: 1 };
-                    const sortFn = (a, b) => {
-                        const aSeverity = (a.severity || '').toLowerCase();
-                        const bSeverity = (b.severity || '').toLowerCase();
-                        const aScore = severityMap[aSeverity] || 0;
-                        const bScore = severityMap[bSeverity] || 0;
-                        if (aScore === bScore) {
-                            // If same severity, sort by timestamp (earliest first)
-                            const aTime = a.timestamp || '';
-                            const bTime = b.timestamp || '';
-                            return aTime.localeCompare(bTime);
-                        }
-                        // Higher severity first
-                        return bScore - aScore;
-                    };
-                    let arr = this.incidents.slice();
-                    if (s !== '') {
-                        arr = arr.filter(i => {
-                            const hay = Object.values(i).join(' ').toLowerCase();
-                            return hay.indexOf(s) !== -1;
-                        });
-                    } else if (this.filter && this.filter !== '') {
-                        arr = arr.filter(i => ((i.type || '').toLowerCase() === (this.filter || '').toLowerCase()));
-                    }
-                    return arr.sort(sortFn);
-                },
-                get totalPages() {
-                    return Math.max(1, Math.ceil(this.filteredIncidents.length / this.pageSize));
-                },
-                get paginatedIncidents() {
-                    const start = this.page * this.pageSize;
-                    return this.filteredIncidents.slice(start, start + this.pageSize);
-                }
-            }
-        }
+        document.addEventListener('livewire:load', function () {
+            Livewire.hook('message.processed', (message, component) => {
+                // Scroll to top on page change
+                if (window.scrollY > 200) window.scrollTo({top: 0, behavior: 'smooth'});
+            });
+        });
     </script>
+
+    <div wire:poll.5s></div> <!-- Auto-refresh every 10 seconds -->
 </div>

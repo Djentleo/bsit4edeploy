@@ -16,7 +16,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('incidents:predict-severity')->everyMinute();
 
         // Schedule the Firebase incident logs sync to run every minute
-        $schedule->command('app:sync-incident-logs-from-firebase')->everyMinute();
+        $schedule->command('sync:incident-logs')->everyMinute();
+
+        // Schedule the full Firebase to MySQL sync to run every minute
+        $schedule->command('firebase:sync-all')->everyMinute();
+
+
     }
 
     /**

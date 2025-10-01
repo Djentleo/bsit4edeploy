@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -7,6 +6,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FileUploadController;
+use App\Livewire\Responders\IncidentDetails;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -30,6 +30,9 @@ Route::middleware([
         }
         return view('responders.history');
     })->name('history');
+
+    // Responder incident details page (Livewire 3)
+    Route::get('/incidents/{dispatchId}', IncidentDetails::class)->name('incident-details');
 });
 
 Route::middleware([
@@ -56,9 +59,11 @@ Route::middleware([
 
 use App\Services\FirebaseService;
 
-Route::get('/dispatch', function (\Illuminate\Http\Request $request, FirebaseService $firebaseService) {
+use App\Models\Incident;
+
+Route::get('/dispatch', function (\Illuminate\Http\Request $request) {
     $incidentId = $request->query('incident_id');
-    $incident = $incidentId ? $firebaseService->getIncidentById($incidentId) : null;
+    $incident = $incidentId ? Incident::where('firebase_id', $incidentId)->first() : null;
     return view('dispatch.index', compact('incidentId', 'incident'));
 });
 Route::get('/test-firebase', function (FirebaseService $firebaseService) {

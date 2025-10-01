@@ -28,7 +28,7 @@ APACHE_STOP_BAT = os.path.join(XAMPP_DIR, "apache_stop.bat")
 MYSQL_STOP_BAT = os.path.join(XAMPP_DIR, "mysql_stop.bat")
 
 COMMANDS = {
-    "Sync Resolved to MySQL": ["php", "artisan", "sync:incident-logs"],
+    "Sync All from Firebase": ["php", "artisan", "firebase:sync-all"],
     "Predict Severity (Mobile)": ["php", "artisan", "incidents:predict-severity"],
     # Long-running dev servers/tools
     "Start PHP Server (serve)": [
@@ -590,7 +590,7 @@ class AdminControlPanel(tk.Tk):
         def kickoff():
             if not self.autopilot_enabled:
                 return
-            sync_label = "Sync Resolved to MySQL"
+            sync_label = "Sync All from Firebase"
             predict_label = "Predict Severity (Mobile)"
             # Only start if neither sync nor predict is running
             if sync_label not in self.processes and predict_label not in self.processes:
@@ -788,7 +788,7 @@ class AdminControlPanel(tk.Tk):
                 # Auto Pilot chaining logic: Sync -> Predict -> wait -> Sync ...
                 try:
                     if self.autopilot_enabled:
-                        sync_label = "Sync Resolved to MySQL"
+                        sync_label = "Sync All from Firebase"
                         predict_label = "Predict Severity (Mobile)"
                         if label == sync_label and (
                             predict_label not in self.processes

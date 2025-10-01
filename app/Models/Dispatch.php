@@ -15,6 +15,10 @@ class Dispatch extends Model
         'status',
     ];
 
+    public function incident()
+    {
+        return $this->belongsTo(Incident::class, 'incident_id');
+    }
     public function responder()
     {
         return $this->belongsTo(User::class, 'responder_id');

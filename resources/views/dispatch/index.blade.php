@@ -44,7 +44,8 @@
                             <div>
                                 <label
                                     class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Status</label>
-                                <input type="text" name="status" value="{{ $incident['status'] ?? 'N/A' }}"
+                                <input type="text" name="status"
+                                    value="{{ isset($incident['status']) ? ucfirst($incident['status']) : 'N/A' }}"
                                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-yellow-50 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200"
                                     readonly>
                             </div>
@@ -349,57 +350,6 @@
                     });
             }
         }
-        // Fetch incident details from Firebase
-    const urlParams = new URLSearchParams(window.location.search);
-    const incidentId = urlParams.get('incident_id');
-
-    if (incidentId) {
-            const database = firebase.database();
-            // Try mobile_incidents first, fallback to incidents for CCTV
-            let incidentRef = database.ref(`mobile_incidents/${incidentId}`);
-            incidentRef.once('value').then((snapshot) => {
-                let incident = snapshot.val();
-                if (!incident) {
-                    incidentRef = database.ref(`incidents/${incidentId}`);
-                    return incidentRef.once('value').then(s => s.val());
-                }
-                return incident;
-            }).then((incident) => {
-                if (incident) {
-                    if (incident.camera_name) {
-                        // CCTV Incident
-                        const cameraNameInput = document.querySelector('[name="camera_name"]');
-                        if (cameraNameInput) cameraNameInput.value = incident.camera_name || 'N/A';
-                        const eventInput = document.querySelector('[name="event"]');
-                        if (eventInput) eventInput.value = incident.event || 'N/A';
-                        const dateTimeInput = document.querySelector('[name="date_time"]');
-                        if (dateTimeInput) dateTimeInput.value = incident.timestamp || 'N/A';
-                        // Screenshot
-                        const screenshotImg = document.querySelector('img[alt="Screenshot"]');
-                        if (screenshotImg) screenshotImg.src = incident.screenshot_path || '';
-                        // Video link
-                        const videoLink = document.querySelector('a.text-blue-600');
-                        if (videoLink) videoLink.href = incident.camera_url || '#';
-                    } else {
-                        // Mobile Incident (now using mobileIncidents variable)
-                        document.querySelector('[name="incident_type"]').value = incident.type || 'N/A';
-                        document.querySelector('[name="priority_level"]').value = incident.priority || 'N/A';
-                        document.querySelector('[name="reporter_name"]').value = incident.reporter_name || 'N/A';
-                        document.querySelector('[name="contact_number"]').value = incident.contact_number || 'N/A';
-                        document.querySelector('[name="date_time"]').value = incident.timestamp || 'N/A';
-                        document.querySelector('[name="status"]').value = incident.status || 'N/A';
-                        // Use description, fallback to incident_description
-                        document.querySelector('[name="description"]').value = incident.description || incident.incident_description || 'N/A';
-                        document.querySelector('[name="address"]').value = incident.location || 'N/A';
-                    }
-                } else {
-                    alert('Incident not found.');
-                }
-            }).catch((error) => {
-                console.error('Error fetching incident:', error);
-            });
-        } else {
-            alert('No incident ID provided.');
-        }
+        // All incident details are now rendered from backend PHP variables. No Firebase JS SDK is used.
     </script>
 </x-app-layout>

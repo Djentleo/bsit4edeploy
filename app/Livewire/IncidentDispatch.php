@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\IncidentNote;
 use App\Models\IncidentTimeline;
 use Illuminate\Support\Facades\Auth;
-use App\Services\FirebaseService;
+use App\Models\Incident;
 
 class IncidentDispatch extends Component
 {
@@ -27,6 +27,7 @@ class IncidentDispatch extends Component
     // Status
     public $status = '';
     public $statusOptions = [
+        'new' => 'New',
         'dispatched' => 'Dispatched',
         'resolved' => 'Resolved',
         'closed' => 'Closed',
@@ -44,7 +45,7 @@ class IncidentDispatch extends Component
         // Load notes for this incident
         $this->loadNotes();
 
-        // Load current status from Firebase
+        // Load current status from MySQL
         $this->loadStatus();
 
         // Load timeline
@@ -52,9 +53,10 @@ class IncidentDispatch extends Component
     }
     public function loadStatus()
     {
-        $firebase = app(FirebaseService::class);
-        $incident = $firebase->getIncidentById($this->incidentId);
-        $this->status = $incident['status'] ?? '';
+        $incident = Incident::where('firebase_id', $this->incidentId)
+            ->orWhere('id', $this->incidentId)
+            ->first();
+        $this->status = $incident ? $incident->status : '';
     }
 
     public function loadTimeline()
@@ -67,32 +69,26 @@ class IncidentDispatch extends Component
 
     public function updateStatus()
     {
-        $firebase = app(FirebaseService::class);
-        if ($this->status === 'resolved') {
-            // Ensure status is set to 'resolved' in Firebase before moving
-            $firebase->updateIncidentStatus($this->incidentId, 'resolved');
-            $firebase->moveToResolvedAndDelete($this->incidentId);
-            $this->successMessage = 'Incident moved to resolved incidents.';
-            // Optionally clear UI state
-            $this->status = '';
-            $this->notes = [];
-            $this->timeline = [];
-            // Optionally, you could redirect or emit an event to close the modal/page
-            return;
-        } else {
-            $firebase->updateIncidentStatus($this->incidentId, $this->status);
+        // Always save status as lowercase
+        $status = strtolower($this->status);
+        $incident = Incident::where('firebase_id', $this->incidentId)->orWhere('id', $this->incidentId)->first();
+        if ($incident) {
+            $incident->status = $status;
+            $incident->save();
             $this->successMessage = 'Status updated.';
-            $this->loadStatus(); // Refresh status from Firebase
-            // Log to timeline
-            $user = Auth::user();
-            IncidentTimeline::create([
-                'incident_id' => $this->incidentId,
-                'user_id' => $user ? $user->id : null,
-                'action' => 'status_changed',
-                'details' => $this->status,
-            ]);
-            $this->loadTimeline();
+        } else {
+            $this->errorMessage = 'Incident not found.';
+            return;
         }
+        // Log to timeline
+        $user = Auth::user();
+        \App\Models\IncidentTimeline::create([
+            'incident_id' => $incident->id,
+            'user_id' => $user ? $user->id : null,
+            'action' => 'status_changed',
+            'details' => $this->status,
+        ]);
+        $this->loadTimeline();
     }
 
     public function addResponder()
@@ -127,6 +123,12 @@ class IncidentDispatch extends Component
                         'status' => 'dispatched',
                     ]
                 );
+            }
+            // Also update the incident status in the incidents table
+            $incident = Incident::where('firebase_id', $this->incidentId)->orWhere('id', $this->incidentId)->first();
+            if ($incident) {
+                $incident->status = 'dispatched';
+                $incident->save();
             }
             DB::commit();
             $this->successMessage = 'Dispatch successful!';

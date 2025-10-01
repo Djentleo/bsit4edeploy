@@ -5,7 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Dispatch;
-use App\Services\FirebaseService;
+use App\Models\Incident;
 
 class ResponderIncidents extends Component
 {
@@ -40,14 +40,12 @@ class ResponderIncidents extends Component
         $dispatches = Dispatch::where('responder_id', $user->id)->get();
         $incidentIds = $dispatches->pluck('incident_id')->unique()->toArray();
 
-        // Fetch incident details from Firebase, attach firebase_id for all
-        $firebase = app(FirebaseService::class);
+        // Fetch incident details from MySQL using only id
         $incidents = [];
         foreach ($incidentIds as $incidentId) {
-            $incident = $firebase->getIncidentById($incidentId);
+            $incident = Incident::where('id', $incidentId)->first();
             if ($incident) {
-                $incident['firebase_id'] = $incidentId;
-                $incidents[] = $incident;
+                $incidents[] = $incident->toArray();
             }
         }
         $this->incidents = $incidents;
@@ -59,8 +57,8 @@ class ResponderIncidents extends Component
         if (!$incident) return;
         $this->selectedIncident = $incident;
         $this->incidentStatus = $incident['status'] ?? '';
-        // Use firebase_id for notes (works for both types)
-        $this->loadNotes($incident['firebase_id'] ?? null);
+        // Use id for notes
+        $this->loadNotes($incident['id'] ?? null);
         $this->showModal = true;
     }
 
@@ -84,21 +82,14 @@ class ResponderIncidents extends Component
     public function updateStatus()
     {
         if (!$this->selectedIncident) return;
-        $incidentId = $this->selectedIncident['firebase_id'] ?? null;
+        $incidentId = $this->selectedIncident['id'] ?? null;
         if (!$incidentId) return;
-        $firebase = app(FirebaseService::class);
-        if ($this->incidentStatus === 'resolved') {
-            // Ensure status is set to 'resolved' in Firebase before moving
-            $firebase->updateIncidentStatus($incidentId, 'resolved');
-            $firebase->moveToResolvedAndDelete($incidentId);
-            // Optionally clear modal/UI state
-            $this->showModal = false;
-            $this->selectedIncident = null;
-            $this->incidentNotes = [];
-            $this->incidentStatus = '';
-        } else {
-            $firebase->updateIncidentStatus($incidentId, $this->incidentStatus);
-            $this->selectedIncident['status'] = $this->incidentStatus;
+        $status = strtolower($this->incidentStatus);
+        $incident = Incident::where('id', $incidentId)->first();
+        if ($incident) {
+            $incident->status = $status;
+            $incident->save();
+            $this->selectedIncident['status'] = $status;
         }
         // Reload incidents list
         $this->mount();
@@ -107,7 +98,7 @@ class ResponderIncidents extends Component
     public function addNote()
     {
         if (!$this->selectedIncident) return;
-        $incidentId = $this->selectedIncident['firebase_id'] ?? null;
+        $incidentId = $this->selectedIncident['id'] ?? null;
         if (!$incidentId) return;
         $user = Auth::user();
         if (!$user) return;

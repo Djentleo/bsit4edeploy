@@ -1,6 +1,9 @@
 <x-app-layout>
-    <div class="bg-white rounded-xl shadow p-6">
-        <h2 class="text-2xl font-bold mb-4 text-blue-800">Incident Table</h2>
-        <livewire:responder-incidents />
+    <x-slot name="header">
+        <h2 class="font-semibold text-2xl dark:text-white text-gray-900 tracking-tight">Assigned Incidents</h2>
+    </x-slot>
+
+    <div class="container mx-auto py-8">
+        @livewire('responder-dashboard')
     </div>
 </x-app-layout>

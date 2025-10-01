@@ -7,6 +7,28 @@ use Kreait\Firebase\Factory;
 
 class FirebaseService
 {
+     /**
+     * Copy a resolved incident to incident_logs without removing from original node.
+     */
+    public function logResolvedIncident($incidentId)
+    {
+        // Try mobile_incidents first
+        $ref = $this->database->getReference('mobile_incidents/' . $incidentId);
+        $incident = $ref->getValue();
+        if (!$incident) {
+            // Try incidents (CCTV)
+            $ref = $this->database->getReference('incidents/' . $incidentId);
+            $incident = $ref->getValue();
+        }
+        if ($incident) {
+            $incident['incident_id'] = $incidentId;
+            $incident['status'] = 'resolved';
+            $logRef = $this->database->getReference('resolved_incidents/' . $incidentId);
+            $logRef->set($incident);
+            return true;
+        }
+        return false;
+    }
     /**
      * Get all resolved incidents from Firebase.
      */
@@ -19,37 +41,6 @@ class FirebaseService
             return $item;
         })->values()->all();
         return $resolvedList;
-    }
-    /**
-     * Move an incident to resolved_incidents and delete from its original node.
-     */
-    public function moveToResolvedAndDelete($incidentId)
-    {
-        // Try mobile_incidents first
-        $ref = $this->database->getReference('mobile_incidents/' . $incidentId);
-        $incident = $ref->getValue();
-        $sourceNode = null;
-        if ($incident) {
-            $sourceNode = 'mobile_incidents';
-        } else {
-            // Try incidents (CCTV)
-            $ref = $this->database->getReference('incidents/' . $incidentId);
-            $incident = $ref->getValue();
-            if ($incident) {
-                $sourceNode = 'incidents';
-            }
-        }
-        if ($incident && $sourceNode) {
-            // Always inject the incident_id field for consistency
-            $incident['incident_id'] = $incidentId;
-            // Write to resolved_incidents
-            $resolvedRef = $this->database->getReference('resolved_incidents/' . $incidentId);
-            $resolvedRef->set($incident);
-            // Delete from original node
-            $this->database->getReference($sourceNode . '/' . $incidentId)->remove();
-            return true;
-        }
-        return false;
     }
     /**
      * Update the status of an incident in Firebase (mobile or CCTV).

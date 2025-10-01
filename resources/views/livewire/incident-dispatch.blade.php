@@ -37,7 +37,7 @@
         </div>
     </div>
     <!-- Dispatch Button -->
-    <button type="button" wire:click="dispatchIncident"
+    <button type="button"
         class="w-full bg-blue-600 dark:bg-blue-900 text-white py-3 px-4 rounded-lg font-semibold text-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-colors mt-2"
         x-data="{}" x-on:click.prevent="Swal.fire({
             title: 'Are you sure?',
