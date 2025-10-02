@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('department')->nullable();
             $table->string('status')->nullable();
             $table->timestamp('timestamp')->nullable();
+            $table->timestamp('resolved_at')->nullable();
             $table->string('source')->nullable();
             $table->text('incident_description')->nullable();
             $table->string('priority')->nullable();

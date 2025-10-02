@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('reporter_id')->nullable();
             $table->string('department')->nullable();
             $table->string('status')->nullable();
+            $table->timestamp('resolved_at')->nullable();
             $table->timestamp('timestamp')->nullable();
             $table->string('source')->nullable(); // 'mobile' or 'cctv'
             $table->text('incident_description')->nullable();
