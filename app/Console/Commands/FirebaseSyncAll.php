@@ -46,6 +46,7 @@ class FirebaseSyncAll extends Command
                     'type' => $incident['type'] ?? null,
                     'location' => $incident['location'] ?? null,
                     'reporter_name' => $incident['reporter_name'] ?? null,
+                    'contact_number' => $incident['contact_number'] ?? null,
                     'reporter_id' => $incident['reporter_id'] ?? null,
                     'department' => $incident['department'] ?? null,
                     'status' => $incident['status'] ?? null,
@@ -82,8 +83,6 @@ class FirebaseSyncAll extends Command
                     'timestamp' => isset($incident['timestamp']) ? date('Y-m-d H:i:s', strtotime($incident['timestamp'])) : null,
                     'source' => 'cctv',
                     'incident_description' => $incident['screenshot_path'] ?? null,
-                    'priority' => $incident['priority'] ?? null,
-                    'severity' => $incident['severity'] ?? null,
                     'updated_at' => now(),
                     'created_at' => now(),
                 ]
