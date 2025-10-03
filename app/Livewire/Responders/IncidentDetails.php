@@ -16,6 +16,7 @@ class IncidentDetails extends Component
 {
     public $incident;
     public $status;
+    public $selectedStatus; // New property for the dropdown
     public $statusOptions = [
         'dispatched' => 'Dispatched',
         'en_route' => 'En Route',
@@ -35,6 +36,7 @@ class IncidentDetails extends Component
             ->firstOrFail();
         $this->incident = $incident->toArray();
         $this->status = $dispatch->status;
+        $this->selectedStatus = $dispatch->status; // Initialize dropdown with current status
         $this->dispatchId = $dispatch->id;
         // Always use DB id for notes/timeline
         $dbId = $incident->id;
@@ -42,25 +44,29 @@ class IncidentDetails extends Component
         $this->loadTimeline($dbId);
     }
 
-    public function updateStatus($status)
+    public function updateStatus($status = null)
     {
+        // Use the passed parameter or the selectedStatus property
+        $newStatus = $status ?? $this->selectedStatus;
+
         // Basic allowlist validation
-        if (! array_key_exists($status, $this->statusOptions)) {
+        if (! array_key_exists($newStatus, $this->statusOptions)) {
             $this->addError('status', 'Invalid status selected.');
             return;
         }
 
         $dispatch = Dispatch::find($this->dispatchId);
         if ($dispatch && $dispatch->responder_id === Auth::id()) {
-            $dispatch->status = $status;
+            $dispatch->status = $newStatus;
             $dispatch->save();
-            $this->status = $status;
+            $this->status = $newStatus;
+            $this->selectedStatus = $newStatus; // Keep dropdown in sync
             // Incident status logic (same as dashboard)
             $incident = Incident::where('id', $dispatch->incident_id)
                 ->orWhere('firebase_id', $dispatch->incident_id)
                 ->first();
             $shouldUpdateFirebase = false;
-            if ($status === 'resolved') {
+            if ($newStatus === 'resolved') {
                 if ($incident) {
                     $dispatchCount = Dispatch::where(function ($q) use ($dispatch) {
                         $q->where('incident_id', $dispatch->incident_id);
@@ -113,15 +119,12 @@ class IncidentDetails extends Component
                     }
                 }
             }
+
+            // Show success message
+            session()->flash('status', 'Status updated successfully to: ' . $this->statusOptions[$newStatus]);
         } else {
             $this->addError('status', 'You are not authorized to update this dispatch status.');
         }
-    }
-
-    // React to dropdown changes automatically when bound with wire:model
-    public function updatedStatus($value)
-    {
-        $this->updateStatus($value);
     }
 
     public function loadNotes($incidentId)

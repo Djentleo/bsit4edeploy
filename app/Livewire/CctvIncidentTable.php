@@ -2,20 +2,31 @@
 
 namespace App\Livewire;
 
-
+use App\Models\Incident;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Models\Incident;
 
 class CctvIncidentTable extends Component
 {
     use WithPagination;
 
     public $search = '';
+
     public $perPage = 10;
+
     public $typeFilter = '';
+
+    public $statusFilter = '';
+
     public $sortField = 'timestamp';
+
     public $sortDirection = 'desc';
+
+    public $selectedIncidents = [];
+
+    public $selectAll = false;
+
+    public $showHidden = false;
 
     protected $updatesQueryString = ['search', 'typeFilter', 'sortField', 'sortDirection', 'page'];
 
@@ -23,10 +34,12 @@ class CctvIncidentTable extends Component
     {
         $this->resetPage();
     }
+
     public function updatingTypeFilter()
     {
         $this->resetPage();
     }
+
     public function updatingPerPage()
     {
         $this->resetPage();
@@ -42,9 +55,24 @@ class CctvIncidentTable extends Component
         }
     }
 
-    public function render()
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            // Only select IDs of incidents currently displayed (after filters, sorting, and pagination)
+            $incidents = $this->getCurrentIncidents();
+            $this->selectedIncidents = $incidents->pluck('id')->toArray();
+        } else {
+            $this->selectedIncidents = [];
+        }
+    }
+
+    /**
+     * Get the current paginated incidents as displayed in the table (after filters, sorting, and pagination)
+     */
+    protected function getCurrentIncidents()
     {
         $query = Incident::query()->where('source', 'cctv');
+        $query->where('hidden', $this->showHidden);
         if ($this->search) {
             $s = '%' . $this->search . '%';
             $query->where(function ($q) use ($s) {
@@ -58,8 +86,68 @@ class CctvIncidentTable extends Component
         if ($this->typeFilter) {
             $query->where('type', $this->typeFilter);
         }
+        if ($this->statusFilter) {
+            $query->where('status', $this->statusFilter);
+        }
+
+        return $query->orderBy($this->sortField, $this->sortDirection)->paginate($this->perPage);
+    }
+
+    public function updatedSelectedIncidents()
+    {
+        $this->selectAll = false;
+    }
+
+    public function hideSelected()
+    {
+        if (! empty($this->selectedIncidents)) {
+            Incident::whereIn('id', $this->selectedIncidents)->update(['hidden' => true]);
+            $this->selectedIncidents = [];
+            $this->selectAll = false;
+            session()->flash('status', 'Selected incidents have been hidden.');
+        }
+    }
+
+    public function unhideSelected()
+    {
+        if (! empty($this->selectedIncidents)) {
+            Incident::whereIn('id', $this->selectedIncidents)->update(['hidden' => false]);
+            $this->selectedIncidents = [];
+            $this->selectAll = false;
+            session()->flash('status', 'Selected incidents have been unhidden.');
+        }
+    }
+
+    public function toggleShowHidden()
+    {
+        $this->showHidden = ! $this->showHidden;
+        $this->selectedIncidents = [];
+        $this->selectAll = false;
+    }
+
+    public function render()
+    {
+        $query = Incident::query()->where('source', 'cctv');
+        $query->where('hidden', $this->showHidden);
+        if ($this->search) {
+            $s = '%' . $this->search . '%';
+            $query->where(function ($q) use ($s) {
+                $q->where('firebase_id', 'like', $s)
+                    ->orWhere('type', 'like', $s)
+                    ->orWhere('location', 'like', $s)
+                    ->orWhere('department', 'like', $s)
+                    ->orWhere('status', 'like', $s);
+            });
+        }
+        if ($this->typeFilter) {
+            $query->where('type', $this->typeFilter);
+        }
+        if ($this->statusFilter) {
+            $query->where('status', $this->statusFilter);
+        }
         $incidents = $query->orderBy($this->sortField, $this->sortDirection)->paginate($this->perPage);
         $types = Incident::query()->where('source', 'cctv')->distinct()->pluck('type');
+
         return view('livewire.cctv-incident-table', [
             'incidents' => $incidents,
             'types' => $types,

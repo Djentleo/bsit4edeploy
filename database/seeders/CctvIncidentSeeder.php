@@ -32,13 +32,15 @@ class CctvIncidentSeeder extends Seeder
         foreach (range(1, 5) as $i) {
             $cameraIdx = array_rand($cameraNames);
             $eventIdx = array_rand($events);
+            // Generate a random date in 2024
+            $randomTimestamp = now()->setDate(2023, rand(1, 12), rand(1, 28))->setTime(rand(0,23), rand(0,59), rand(0,59));
             $incident = [
                 'camera_name' => $cameraNames[$cameraIdx],
                 'camera_url' => $cameraUrls[$cameraIdx],
                 'event' => $events[$eventIdx],
-                'screenshot_path' => 'D:\\Capstone\\NEW\\incident_screenshots\\' . date('Ymd_His') . '_' . $events[$eventIdx] . '.jpg',
+                'screenshot_path' => 'D:\\Capstone\\NEW\\incident_screenshots\\' . $randomTimestamp->format('Ymd_His') . '_' . $events[$eventIdx] . '.jpg',
                 'status' => $statuses,
-                'timestamp' => now()->format('h:i:s A Y-m-d'),
+                'timestamp' => $randomTimestamp->format('h:i:s A Y-m-d'),
             ];
             $reference->push($incident);
         }

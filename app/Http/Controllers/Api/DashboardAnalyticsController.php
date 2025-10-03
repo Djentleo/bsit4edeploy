@@ -4,29 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\FirebaseService;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class DashboardAnalyticsController extends Controller
 {
     // GET /api/incident-severity-counts
-    public function incidentSeverityCounts(Request $request, FirebaseService $firebaseService)
+    public function incidentSeverityCounts(Request $request)
     {
         $filterYear = $request->query('filterYear'); // optional, e.g. '2025'
-        $allIncidents = $firebaseService->getAllIncidents(); // Only active incidents
         $allowedSeverities = ['critical', 'high', 'medium', 'low'];
         $severityCounts = array_fill_keys($allowedSeverities, 0);
-        foreach ($allIncidents as $incident) {
-            $ts = $incident['timestamp'] ?? $incident['created_at'] ?? null;
-            if ($ts) {
-                $carbon = Carbon::parse($ts);
-                if ($filterYear && $carbon->format('Y') !== $filterYear) {
-                    continue;
-                }
-            }
-            $severity = strtolower($incident['severity'] ?? '');
-            if ($severity && in_array($severity, $allowedSeverities)) {
-                $severityCounts[$severity]++;
+        $query = \App\Models\Incident::query();
+        if ($filterYear && $filterYear !== 'all') {
+            $query->whereYear('timestamp', $filterYear);
+        }
+        $results = $query->select('severity', DB::raw('COUNT(*) as count'))
+            ->whereIn('severity', $allowedSeverities)
+            ->groupBy('severity')
+            ->get();
+        foreach ($results as $row) {
+            $severity = strtolower($row->severity);
+            if (isset($severityCounts[$severity])) {
+                $severityCounts[$severity] = $row->count;
             }
         }
         $labels = array_map('ucfirst', array_keys($severityCounts));
@@ -37,42 +37,35 @@ class DashboardAnalyticsController extends Controller
         ]);
     }
     // GET /api/incident-status-counts
-    public function incidentStatusCounts(Request $request, FirebaseService $firebaseService)
+    public function incidentStatusCounts(Request $request)
     {
         $filterYear = $request->query('filterYear'); // optional, e.g. '2025'
-        $allIncidents = $firebaseService->getAllIncidents(); // active incidents only
-        $resolvedIncidents = method_exists($firebaseService, 'getResolvedIncidents') ? $firebaseService->getResolvedIncidents() : [];
         $allowedStatuses = ['new', 'dispatched', 'resolved'];
         $statusCounts = array_fill_keys($allowedStatuses, 0);
 
-        // Count active (non-resolved) statuses from active nodes only
-        foreach ($allIncidents as $incident) {
-            $ts = $incident['timestamp'] ?? $incident['created_at'] ?? null;
-            if ($ts) {
-                $carbon = Carbon::parse($ts);
-                if ($filterYear && $carbon->format('Y') !== $filterYear) {
-                    continue;
-                }
-            }
-            $status = $incident['status'] ?? null;
-            if ($status === 'new' || $status === 'dispatched') {
-                $statusCounts[$status]++;
-            }
-            // Intentionally ignore 'resolved' here to avoid double counting
+        $query = \App\Models\Incident::query();
+        if ($filterYear && $filterYear !== 'all') {
+            $query->whereYear('timestamp', $filterYear);
         }
+        // Count new and dispatched
+        $results = $query->select('status', DB::raw('COUNT(*) as count'))
+            ->whereIn('status', ['new', 'dispatched'])
+            ->groupBy('status')
+            ->get();
+        foreach ($results as $row) {
+            $status = $row->status;
+            if (isset($statusCounts[$status])) {
+                $statusCounts[$status] = $row->count;
+            }
+        }
+        // Count resolved (status = resolved)
+        $resolvedQuery = \App\Models\Incident::query();
+        if ($filterYear && $filterYear !== 'all') {
+            $resolvedQuery->whereYear('timestamp', $filterYear);
+        }
+        $resolvedCount = $resolvedQuery->where('status', 'resolved')->count();
+        $statusCounts['resolved'] = $resolvedCount;
 
-        // Count resolved exclusively from the resolved_incidents node
-        foreach ($resolvedIncidents as $incident) {
-            // Prefer a dedicated resolved timestamp if available
-            $ts = $incident['resolved_at'] ?? $incident['timestamp'] ?? $incident['created_at'] ?? null;
-            if ($ts) {
-                $carbon = Carbon::parse($ts);
-                if ($filterYear && $carbon->format('Y') !== $filterYear) {
-                    continue;
-                }
-            }
-            $statusCounts['resolved']++;
-        }
         $labels = array_map('ucfirst', array_keys($statusCounts));
         $data = array_values($statusCounts);
         return response()->json([
@@ -82,38 +75,38 @@ class DashboardAnalyticsController extends Controller
     }
 
     // GET /api/incidents-over-time
-    public function incidentsOverTime(Request $request, FirebaseService $firebaseService)
+    public function incidentsOverTime(Request $request)
     {
         $group = $request->query('group', 'month'); // 'day', 'week', 'month', or 'year'
         $filterYear = $request->query('filterYear'); // optional, e.g. '2025'
-        $allIncidents = $firebaseService->getAllIncidents();
-        $counts = [];
-        foreach ($allIncidents as $incident) {
-            $ts = $incident['timestamp'] ?? $incident['created_at'] ?? null;
-            if ($ts) {
-                $carbon = Carbon::parse($ts);
-                // If filterYear is set, skip incidents not in that year
-                if ($filterYear && $carbon->format('Y') !== $filterYear) {
-                    continue;
-                }
-                if ($group === 'day') {
-                    $key = $carbon->format('Y-m-d');
-                } elseif ($group === 'week') {
-                    $key = $carbon->format('o-\WW');
-                } elseif ($group === 'month') {
-                    $key = $carbon->format('Y-m');
-                } elseif ($group === 'year') {
-                    $key = $carbon->format('Y');
-                } else {
-                    $key = $carbon->format('Y-m'); // fallback
-                }
-                if (!isset($counts[$key])) $counts[$key] = 0;
-                $counts[$key]++;
-            }
+        $query = \App\Models\Incident::query();
+        if ($filterYear && $filterYear !== 'all') {
+            $query->whereYear('timestamp', $filterYear);
         }
-        ksort($counts);
-        $labels = array_keys($counts);
-        $data = array_values($counts);
+        // Choose SQL date format based on group
+        switch ($group) {
+            case 'day':
+                $dateFormat = '%Y-%m-%d';
+                break;
+            case 'week':
+                $dateFormat = '%x-W%v';
+                break;
+            case 'month':
+                $dateFormat = '%Y-%m';
+                break;
+            case 'year':
+                $dateFormat = '%Y';
+                break;
+            default:
+                $dateFormat = '%Y-%m';
+        }
+        $results = $query
+            ->selectRaw('DATE_FORMAT(timestamp, ?) as period, COUNT(*) as count', [$dateFormat])
+            ->groupBy('period')
+            ->orderBy('period')
+            ->get();
+        $labels = $results->pluck('period');
+        $data = $results->pluck('count');
         return response()->json([
             'labels' => $labels,
             'data' => $data,
@@ -122,27 +115,46 @@ class DashboardAnalyticsController extends Controller
     }
 
     // GET /api/incident-type-counts
-    public function incidentTypeCounts(Request $request, FirebaseService $firebaseService)
+    public function incidentTypeCounts(Request $request)
     {
         $filterYear = $request->query('filterYear'); // optional, e.g. '2025'
-        $allIncidents = $firebaseService->getAllIncidents();
-        $allowedTypes = ['vehicle_crash', 'fire', 'disturbance', 'medical_emergency'];
-        $typeCounts = array_fill_keys($allowedTypes, 0);
-        foreach ($allIncidents as $incident) {
-            $ts = $incident['timestamp'] ?? $incident['created_at'] ?? null;
-            if ($ts) {
-                $carbon = Carbon::parse($ts);
-                if ($filterYear && $carbon->format('Y') !== $filterYear) {
-                    continue;
+        $query = \App\Models\Incident::query();
+        if ($filterYear && $filterYear !== 'all') {
+            $query->whereYear('timestamp', $filterYear);
+        }
+        $results = $query->select('type', DB::raw('COUNT(*) as count'))
+            ->groupBy('type')
+            ->orderBy('type')
+            ->get();
+
+        // Map similar types to a canonical label
+        $typeMap = [
+            'vehicular accident' => ['vehicular accident', 'vehicular_accident', 'vehicle crash', 'vehicle_crash', 'accident'],
+            // Add more mappings as needed
+        ];
+
+        $grouped = [];
+        foreach ($results as $row) {
+            $raw = strtolower(str_replace('_', ' ', $row->type));
+            $label = null;
+            foreach ($typeMap as $canonical => $aliases) {
+                if (in_array($raw, $aliases)) {
+                    $label = $canonical;
+                    break;
                 }
             }
-            $type = $incident['type'] ?? $incident['event'] ?? null;
-            if ($type && in_array($type, $allowedTypes)) {
-                $typeCounts[$type]++;
+            if (!$label) {
+                $label = ucwords($raw);
+            } else {
+                $label = ucwords($label);
             }
+            if (!isset($grouped[$label])) {
+                $grouped[$label] = 0;
+            }
+            $grouped[$label] += $row->count;
         }
-        $labels = array_keys($typeCounts);
-        $data = array_values($typeCounts);
+        $labels = array_keys($grouped);
+        $data = array_values($grouped);
         return response()->json([
             'labels' => $labels,
             'data' => $data

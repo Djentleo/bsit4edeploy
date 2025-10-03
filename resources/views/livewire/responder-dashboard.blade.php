@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.5s>
     <div class="flex flex-col md:flex-row gap-4 mb-6 items-center">
         <div class="relative flex-grow w-full md:w-auto">
             <input type="search" wire:model.live="search" autocomplete="off"
@@ -205,5 +205,5 @@
         });
     </script>
 
-    <div wire:poll.5s></div>
+    <!-- wire:poll moved to main container above for auto-refresh -->
 </div>

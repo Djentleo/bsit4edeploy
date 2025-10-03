@@ -184,7 +184,7 @@ class ResponderDashboard extends Component
 
     public function sortBy($field)
     {
-        $allowed = ['firebase_id','type','location','reporter_name','status','department','timestamp','reporter','time'];
+        $allowed = ['firebase_id', 'type', 'location', 'reporter_name', 'status', 'department', 'timestamp', 'reporter', 'time'];
         if (!in_array($field, $allowed)) {
             return;
         }
@@ -193,7 +193,7 @@ class ResponderDashboard extends Component
         } else {
             $this->sortField = $field;
             // Default to desc for time-based sorts, asc otherwise
-            $this->sortDirection = in_array($field, ['timestamp','time']) ? 'desc' : 'asc';
+            $this->sortDirection = in_array($field, ['timestamp', 'time']) ? 'desc' : 'asc';
         }
         $this->page = 1;
         $this->fetchIncidents();
@@ -343,6 +343,7 @@ class ResponderDashboard extends Component
 
     public function render()
     {
+        $this->fetchIncidents();
         return view('livewire.responder-dashboard', [
             'incidents' => $this->incidents,
             'statusOptions' => $this->statusOptions,

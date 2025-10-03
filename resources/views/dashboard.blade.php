@@ -37,38 +37,37 @@
 
             <!-- Dashboard Charts Section - 2x2 Grid Layout -->
             <div class="mt-8">
+                <!-- Global Filters for All Charts -->
+                <div class="flex flex-col md:flex-row md:items-center md:justify-end mb-6 gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="relative">
+                            <select id="groupingSelect"
+                                class="appearance-none inline-flex items-center px-3 py-1.5 pr-8 text-sm font-medium text-slate-700 bg-slate-50 border border-slate-300 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 cursor-pointer">
+                                <option value="day">Day</option>
+                                <option value="week">Week</option>
+                                <option value="month" selected>Month</option>
+                                <option value="year">Year</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"></div>
+                        </div>
+                        <div class="relative">
+                            <select id="yearFilterSelect"
+                                class="appearance-none inline-flex items-center px-3 py-1.5 pr-8 text-sm font-medium text-slate-700 bg-slate-50 border border-slate-300 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 cursor-pointer">
+                                <option value="all" selected>All Years</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                                <option value="2023">2023</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"></div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-2 gap-6">
                     <!-- Top Left: Incidents Over Time -->
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-3">
                             <div class="flex items-center gap-6">
                                 <h3 class="text-sm font-bold text-gray-700 dark:text-white">Incidents Over Time</h3>
-                                <div class="flex items-center gap-3">
-                                    <div class="relative">
-                                        <select id="groupingSelect"
-                                            class="appearance-none inline-flex items-center px-3 py-1.5 pr-8 text-sm font-medium text-slate-700 bg-slate-50 border border-slate-300 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 cursor-pointer">
-                                            <option value="day">Day</option>
-                                            <option value="week">Week</option>
-                                            <option value="month" selected>Month</option>
-                                            <option value="year">Year</option>
-                                        </select>
-                                        <div
-                                            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                        </div>
-                                    </div>
-                                    <div class="relative">
-                                        <select id="yearFilterSelect"
-                                            class="appearance-none inline-flex items-center px-3 py-1.5 pr-8 text-sm font-medium text-slate-700 bg-slate-50 border border-slate-300 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 cursor-pointer">
-                                            <option value="all" selected>All Years</option>
-                                            <option value="2025">2025</option>
-                                            <option value="2024">2024</option>
-                                            <option value="2023">2023</option>
-                                        </select>
-                                        <div
-                                            class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <button id="toggleChartType"
                                 class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-1 transition-all duration-200 shadow-sm hover:shadow">
@@ -262,6 +261,7 @@ function fetchIncidentsOverTime(group = 'month', filterYear = '') {
         });
 }
 
+
 // Initial fetch (default: month, all years)
 const groupingSelect = document.getElementById('groupingSelect');
 const yearSelect = document.getElementById('yearFilterSelect');
@@ -270,18 +270,29 @@ let currentYear = yearSelect ? yearSelect.value : 'all';
 fetchIncidentsOverTime(currentGroup, currentYear);
 
 // Listen for grouping and year changes
+function reloadAllCharts() {
+    fetchIncidentsOverTime(currentGroup, currentYear);
+    fetchIncidentStatusChart(currentYear);
+    fetchIncidentTypeChart(currentYear);
+    fetchIncidentSeverityChart(currentYear);
+}
 if (groupingSelect) {
     groupingSelect.addEventListener('change', function(e) {
         currentGroup = e.target.value;
-        fetchIncidentsOverTime(currentGroup, currentYear);
+        reloadAllCharts();
     });
 }
 if (yearSelect) {
     yearSelect.addEventListener('change', function(e) {
         currentYear = e.target.value;
-        fetchIncidentsOverTime(currentGroup, currentYear);
+        reloadAllCharts();
     });
 }
+
+// Auto-refresh all charts every 5 seconds
+setInterval(() => {
+    reloadAllCharts();
+}, 5000);
 
 document.getElementById('toggleChartType').onclick = function() {
     chartType = chartType === 'line' ? 'bar' : 'line';
@@ -397,14 +408,6 @@ function fetchIncidentStatusChart(filterYear = '') {
 // Initial fetch (default: all years)
 fetchIncidentStatusChart(currentYear);
 
-// Update chart on year filter change
-if (yearSelect) {
-    yearSelect.addEventListener('change', function(e) {
-        currentYear = e.target.value;
-        fetchIncidentStatusChart(currentYear);
-    });
-}
-
 // Type Doughnut Chart (Dynamic)
 const typeCanvas = document.getElementById('incidentTypeChart');
 const ctxType = typeCanvas ? typeCanvas.getContext('2d') : null;
@@ -468,14 +471,6 @@ function fetchIncidentTypeChart(filterYear = '') {
 
 // Initial fetch (default: all years)
 fetchIncidentTypeChart(currentYear);
-
-// Update chart on year filter change
-if (yearSelect) {
-    yearSelect.addEventListener('change', function(e) {
-        currentYear = e.target.value;
-        fetchIncidentTypeChart(currentYear);
-    });
-}
 
 // Severity Doughnut Chart (Dynamic)
 const severityCanvas = document.getElementById('incidentSeverityChart');
@@ -543,14 +538,6 @@ function fetchIncidentSeverityChart(filterYear = '') {
 
 // Initial fetch (default: all years)
 fetchIncidentSeverityChart(currentYear);
-
-// Update chart on year filter change
-if (yearSelect) {
-    yearSelect.addEventListener('change', function(e) {
-        currentYear = e.target.value;
-        fetchIncidentSeverityChart(currentYear);
-    });
-}
 // Update charts when theme changes
 window.addEventListener('theme-changed', () => {
     colors = chartColors();

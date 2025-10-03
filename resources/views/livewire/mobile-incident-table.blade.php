@@ -12,13 +12,48 @@
                 </svg>
             </div>
         </div>
-        <div>
+        <div class="flex items-center gap-2 mt-2 md:mt-0">
+            @if(count($selectedIncidents) > 0)
+            @if($showHidden)
+            <button wire:click="unhideSelected"
+                class="inline-flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-xs font-semibold rounded shadow focus:outline-none focus:ring-2 focus:ring-green-500">
+                <i class="fas fa-eye text-white mr-1"></i>
+                Unhide
+            </button>
+            @else
+            <button wire:click="hideSelected"
+                class="inline-flex items-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded shadow focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fas fa-eye-slash text-white mr-1"></i>
+                Hide
+            </button>
+            @endif
+            @else
+            <button type="button" wire:click="toggleShowHidden"
+                class="inline-flex items-center px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500">
+                @if($showHidden)
+                <i class="fas fa-eye-slash text-white mr-1"></i>
+                Show Visible
+                @else
+                <i class="fas fa-eye text-white mr-1"></i>
+                Show Hidden
+                @endif
+            </button>
+            @endif
+        </div>
+        <div class="flex gap-2 w-full md:w-auto">
             <select wire:model.live="typeFilter"
                 class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="">All Types</option>
                 @foreach($types as $type)
                 <option value="{{ $type }}">{{ ucfirst(str_replace('_', ' ', $type)) }}</option>
                 @endforeach
+            </select>
+            <select wire:model.live="statusFilter"
+                class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">All Statuses</option>
+                <option value="new">New</option>
+                <option value="dispatched">Dispatched</option>
+                <option value="resolved">Resolved</option>
             </select>
         </div>
         <div>
@@ -31,10 +66,13 @@
             </select>
         </div>
     </div>
-    <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded-lg shadow">
+    <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded-lg shadow relative">
         <table class="w-full table-auto">
             <thead style="background-color: #1C3A5B;" class="border-b border-gray-200 dark:border-gray-700">
                 <tr class="text-center">
+                    <th class="px-2 py-4">
+                        <input type="checkbox" wire:model="selectAll" class="form-checkbox h-4 w-4 text-blue-600">
+                    </th>
                     <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer"
                         wire:click="sortBy('firebase_id')">ID
                         @if($sortField === 'firebase_id')
@@ -84,6 +122,10 @@
             <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
                 @forelse($incidents as $incident)
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150 text-center">
+                    <td class="px-2 py-4">
+                        <input type="checkbox" wire:model="selectedIncidents" value="{{ $incident->id }}"
+                            class="form-checkbox h-4 w-4 text-blue-600">
+                    </td>
                     <td class="px-3 py-4 text-gray-900 dark:text-white font-medium text-xs">{{ $incident->firebase_id ??
                         '-' }}</td>
                     <td class="px-3 py-4">
