@@ -1,6 +1,9 @@
 <x-app-layout>
-    <div class="max-w-4xl mx-auto py-8">
-        <h2 class="text-2xl font-bold mb-4 text-blue-800">Incident History</h2>
-        <div class="text-gray-500">Completed incident history will appear here.</div>
+    <x-slot name="header">
+        <h2 class="font-semibold text-2xl dark:text-white text-gray-900 tracking-tight">Incident History</h2>
+    </x-slot>
+
+    <div class="container mx-auto py-8">
+        @livewire('responders.responder-history')
     </div>
 </x-app-layout>

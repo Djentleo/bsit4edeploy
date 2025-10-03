@@ -38,8 +38,10 @@
             <!-- Dashboard Charts Section - 2x2 Grid Layout -->
             <div class="mt-8">
                 <!-- Global Filters for All Charts -->
-                <div class="flex flex-col md:flex-row md:items-center md:justify-end mb-6 gap-3">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-3">
+                    <h1 class="text-lg font-semibold text-gray-700 dark:text-white">Dashboard Charts</h1>
                     <div class="flex items-center gap-3">
+                        <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Granularity:</span>
                         <div class="relative">
                             <select id="groupingSelect"
                                 class="appearance-none inline-flex items-center px-3 py-1.5 pr-8 text-sm font-medium text-slate-700 bg-slate-50 border border-slate-300 rounded-lg hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 cursor-pointer">

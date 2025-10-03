@@ -29,4 +29,9 @@ class Incident extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function dispatches()
+    {
+        return $this->hasMany(Dispatch::class, 'incident_id', 'firebase_id');
+    }
 }
