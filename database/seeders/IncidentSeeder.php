@@ -20,12 +20,12 @@ class IncidentSeeder extends Seeder
         $database = $firebase->getReference('mobile_incidents');
 
         // Clear existing records in the 'incidents' node
-        try {
+       /* try {
             $database->remove();
             echo "All existing records in 'incidents' have been removed.\n";
         } catch (\Exception $e) {
             echo "Error clearing records: " . $e->getMessage() . "\n";
-        }
+        }*/
         // Programmatically generate 75 simulation incidents with varied fields
         $types = ['vehicle_crash', 'fire', 'disturbance', 'medical_emergency'];
         $departments = [
@@ -45,6 +45,17 @@ class IncidentSeeder extends Seeder
             ['address' => 'Market Area, Malabon'],
         ];
         $reporters = ['Juan Dela Cruz', 'Maria Clara', 'Jose Rizal', 'Pedro Penduko', 'Aling Nena', 'Anna Santos', 'Miguel Tan', 'Carmen Reyes'];
+        // Simulated contact numbers for each reporter
+        $reporterContacts = [
+            'Juan Dela Cruz' => '09171234567',
+            'Maria Clara' => '09181234567',
+            'Jose Rizal' => '09192223333',
+            'Pedro Penduko' => '09201112222',
+            'Aling Nena' => '09223334444',
+            'Anna Santos' => '09334445555',
+            'Miguel Tan' => '09445556666',
+            'Carmen Reyes' => '09556667777',
+        ];
         // Simulated Firebase Auth UIDs for each reporter
         $reporterUids = [
             'Juan Dela Cruz' => 'uid_juan_123456',
@@ -97,11 +108,13 @@ class IncidentSeeder extends Seeder
                 'location' => $loc['address'],
                 'reporter_name' => $reporterName,
                 'reporter_id' => $reporterUids[$reporterName], // Simulated Firebase Auth UID
+                'contact_number' => $reporterContacts[$reporterName],
                 'department' => $departments[$type] ?? 'General',
                 // 'severity' => $severities[array_rand($severities)],
                 'status' => 'new',
                 // Set timestamp to current date and time (real-time)
                 'timestamp' => now()->toIso8601String(),
+                'source' => 'mobile',
             ];
 
             // Call Flask API for severity prediction
@@ -126,14 +139,14 @@ class IncidentSeeder extends Seeder
                 echo "Record added with id: " . $incidentId . "\n";
 
                 // Send email notification to all admins
-                try {
+                /*try {
                     $admins = \App\Models\User::where('role', 'admin')->get();
                     if ($admins->count() > 0) {
                         \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\NewIncidentNotification($incident));
                     }
                 } catch (\Exception $e) {
                     echo "Error sending notification: " . $e->getMessage() . "\n";
-                }
+                }*/
             } catch (\Exception $e) {
                 echo "Error adding record: " . $e->getMessage() . "\n";
             }
