@@ -58,7 +58,7 @@ class MobileIncidentTable extends Component
         if ($value) {
             // Only select IDs of incidents currently displayed (after filters, sorting, and pagination)
             $incidents = $this->getCurrentIncidents();
-            $this->selectedIncidents = $incidents->pluck('id')->toArray();
+            $this->selectedIncidents = collect($incidents->items())->pluck('id')->toArray();
         } else {
             $this->selectedIncidents = [];
         }
@@ -93,7 +93,14 @@ class MobileIncidentTable extends Component
         if ($this->statusFilter) {
             $query->where('status', $this->statusFilter);
         }
-        return $query->orderBy($this->sortField, $this->sortDirection)->paginate($this->perPage);
+        // Custom severity order: critical > high > medium > low, then timestamp desc
+        if ($this->sortField === 'severity') {
+            $query->orderByRaw("FIELD(severity, 'critical', 'high', 'medium', 'low') " . ($this->sortDirection === 'asc' ? 'ASC' : 'DESC'));
+            $query->orderBy('timestamp', 'desc');
+        } else {
+            $query->orderBy($this->sortField, $this->sortDirection);
+        }
+        return $query->paginate($this->perPage);
     }
 
     public function updatedSelectedIncidents()
