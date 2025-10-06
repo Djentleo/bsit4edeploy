@@ -152,7 +152,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6"
+                    <td colspan="10"
                         class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900">
                         <div class="flex flex-col items-center">
                             <i class="fas fa-video text-gray-400 dark:text-gray-500 text-2xl mb-2"></i>

@@ -85,7 +85,12 @@
                         <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
                         @endif
                     </th>
-                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider">SEVERITY</th>
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer" wire:click="sortBy('severity')">
+                        SEVERITY
+                        @if($sortField === 'severity')
+                        <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
+                        @endif
+                    </th>
                     <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider hidden sm:table-cell cursor-pointer"
                         wire:click="sortBy('location')">LOCATION
                         @if($sortField === 'location')
@@ -186,7 +191,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="8"
+                    <td colspan="10"
                         class="px-3 py-8 text-center text-gray-500 dark:text-gray-300 bg-gray-50 dark:bg-gray-800">
                         <div class="flex flex-col items-center">
                             <svg class="w-8 h-8 text-gray-400 dark:text-gray-300 mb-2" fill="none" stroke="currentColor"

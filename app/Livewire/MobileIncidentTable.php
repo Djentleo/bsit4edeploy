@@ -15,8 +15,8 @@ class MobileIncidentTable extends Component
     public $typeFilter = '';
     public $statusFilter = '';
     public $showHidden = false;
-    public $sortField = 'timestamp';
-    public $sortDirection = 'desc';
+    public $sortField = 'severity';
+    public $sortDirection = 'asc';
 
     public $selectedIncidents = [];
     public $selectAll = false;
@@ -147,7 +147,14 @@ class MobileIncidentTable extends Component
         if ($this->statusFilter) {
             $query->where('status', $this->statusFilter);
         }
-        $incidents = $query->orderBy($this->sortField, $this->sortDirection)->paginate($this->perPage);
+        // Custom severity order: critical > high > medium > low, then timestamp desc
+        if ($this->sortField === 'severity') {
+            $query->orderByRaw("FIELD(severity, 'critical', 'high', 'medium', 'low') " . ($this->sortDirection === 'asc' ? 'ASC' : 'DESC'));
+            $query->orderBy('timestamp', 'desc');
+        } else {
+            $query->orderBy($this->sortField, $this->sortDirection);
+        }
+        $incidents = $query->paginate($this->perPage);
         $types = Incident::query()->where('source', 'mobile')->distinct()->pluck('type');
         return view('livewire.mobile-incident-table', [
             'incidents' => $incidents,
