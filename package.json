@@ -23,5 +23,8 @@
         "commitizen": {
             "path": "./node_modules/cz-conventional-changelog"
         }
+    },
+    "dependencies": {
+        "puppeteer": "^24.23.0"
     }
 }

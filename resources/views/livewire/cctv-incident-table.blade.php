@@ -1,4 +1,26 @@
 <div>
+    <!-- Report Controls -->
+    <div class="flex items-center gap-3 mb-4" x-data="{ period: 'day' }">
+        <form method="GET" action="{{ route('incident-report.generate') }}" target="_blank" class="flex gap-2 items-center w-full justify-end">
+            <select name="period" x-model="period" class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+            <input type="date" name="date" value="{{ now()->toDateString() }}" x-show="period === 'day'" class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input type="hidden" name="source" value="cctv">
+            <input type="hidden" name="typeFilter" value="{{ $typeFilter }}">
+            <input type="hidden" name="statusFilter" value="{{ $statusFilter }}">
+            <input type="hidden" name="page" value="{{ request()->query('page', 1) }}">
+            <input type="hidden" name="perPage" value="{{ $perPage }}">
+           <button type="submit"
+                class="inline-flex items-center px-3 py-2 bg-green-700 hover:bg-green-900 text-white text-xs font-semibold rounded shadow focus:outline-none focus:ring-2 focus:ring-green-500 ml-2">
+                <i class="fas fa-file-pdf text-white mr-1"></i> Generate Report
+            </button>
+        </form>
+    </div>
+
     <div class="flex flex-col md:flex-row gap-4 mb-6 items-center">
         <div class="relative flex-grow w-full md:w-auto">
             <input type="search" wire:model.live="search" autocomplete="off"
@@ -59,6 +81,7 @@
                         <option value="50">50</option>
                     </select>
                 </div>
+                
             </div>
     </div>
     <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded-lg shadow">

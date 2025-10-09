@@ -55,6 +55,7 @@ Route::middleware([
         return view('incidents.cctv');
     })->name('incidents.cctv');
     Route::get('incident-logs', [\App\Http\Controllers\IncidentLogsController::class, 'index'])->name('incident.logs');
+    Route::get('/incident-report/generate', [\App\Http\Controllers\IncidentReportController::class, 'generate'])->name('incident-report.generate');
 });
 
 use App\Services\FirebaseService;

@@ -1,4 +1,29 @@
 <div>
+    <!-- Report Controls -->
+    <div class="flex items-center gap-3 mb-4" id="mobile-report-controls">
+        <form method="GET" action="{{ route('incident-report.generate') }}" target="_blank"
+            class="flex gap-2 items-center w-full justify-end">
+            <select name="period"
+                class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+            </select>
+            <input type="date" name="date" value="{{ now()->toDateString() }}"
+                class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <input type="hidden" name="source" value="mobile">
+            <input type="hidden" name="typeFilter" value="{{ $typeFilter }}">
+            <input type="hidden" name="statusFilter" value="{{ $statusFilter }}">
+            <input type="hidden" name="page" value="{{ request()->query('page', 1) }}">
+            <input type="hidden" name="perPage" value="{{ $perPage }}">
+            <button type="submit"
+                class="inline-flex items-center px-3 py-2 bg-green-700 hover:bg-green-900 text-white text-xs font-semibold rounded shadow focus:outline-none focus:ring-2 focus:ring-green-500 ml-2">
+                <i class="fas fa-file-pdf text-white mr-1"></i> Generate Report
+            </button>
+        </form>
+    </div>
+
     <div class="flex flex-col md:flex-row gap-4 mb-6 items-center">
         <div class="relative flex-grow w-full md:w-auto">
             <input type="search" wire:model.live="search" autocomplete="off"
@@ -55,6 +80,7 @@
                 <option value="dispatched">Dispatched</option>
                 <option value="resolved">Resolved</option>
             </select>
+
         </div>
         <div>
             <select wire:model.live="perPage"
@@ -66,6 +92,25 @@
             </select>
         </div>
     </div>
+    <script>
+        (function(){
+            const root = document.getElementById('mobile-report-controls');
+            if (!root) return;
+            const period = root.querySelector('select[name="period"]');
+            const dateInput = root.querySelector('input[name="date"]');
+            function sync() {
+                if (!period || !dateInput) return;
+                if (period.value === 'day') {
+                    dateInput.style.display = '';
+                } else {
+                    dateInput.style.display = 'none';
+                }
+            }
+            period && period.addEventListener('change', sync);
+            // Ensure picker is visible on initial load if Day is selected
+            window.addEventListener('DOMContentLoaded', sync);
+        })();
+    </script>
     <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded-lg shadow relative">
         <table class="w-full table-auto">
             <thead style="background-color: #1C3A5B;" class="border-b border-gray-200 dark:border-gray-700">
@@ -85,7 +130,8 @@
                         <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
                         @endif
                     </th>
-                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer" wire:click="sortBy('severity')">
+                    <th class="px-3 py-4 text-xs font-semibold text-white uppercase tracking-wider cursor-pointer"
+                        wire:click="sortBy('severity')">
                         SEVERITY
                         @if($sortField === 'severity')
                         <span class="ml-1">{!! $sortDirection === 'asc' ? '&#8593;' : '&#8595;' !!}</span>
