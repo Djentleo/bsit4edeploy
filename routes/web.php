@@ -42,19 +42,31 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('users', function () {
-        if (Auth::user() && Auth::user()->role !== 'admin') {
-            return redirect()->route('responder.incidents');
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard');
         }
         return view('users.index');
     })->name('users.index');
     // Incident Tables Dropdown
     Route::get('incidents/mobile', function () {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard');
+        }
         return view('incidents.mobile');
     })->name('incidents.mobile');
     Route::get('incidents/cctv', function () {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard');
+        }
         return view('incidents.cctv');
     })->name('incidents.cctv');
     Route::get('incident-logs', [\App\Http\Controllers\IncidentLogsController::class, 'index'])->name('incident.logs');
+Route::get('incident-logs', function () {
+    if (Auth::user()->role !== 'admin') {
+        return redirect()->route('dashboard');
+    }
+    return app(\App\Http\Controllers\IncidentLogsController::class)->index(app(\App\Services\FirebaseService::class));
+})->name('incident.logs');
     Route::get('/incident-report/generate', [\App\Http\Controllers\IncidentReportController::class, 'generate'])->name('incident-report.generate');
 });
 
