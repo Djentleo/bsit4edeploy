@@ -89,7 +89,13 @@
             </div>
         </div>
 
-        <h1 class="text-2xl font-bold mb-4 text-left">{{ ucfirst($source) }} Incident Report ({{ ucfirst($period) }})
+        <h1 class="text-2xl font-bold mb-4 text-left">
+            {{ ucfirst($source) }} Incident Report
+            @if($period === 'year' && !empty($allYears))
+            (All Years)
+            @else
+            ({{ ucfirst($period) }})
+            @endif
         </h1>
 
         <div class="grid grid-2 mb-8">
@@ -158,16 +164,21 @@
     // Register datalabels plugin
     Chart.register(window.ChartDataLabels);
 
-    // Time Chart (always)
+    // Time Chart (line for most, bar for all years)
+    let timeChartType = 'line';
+    if ('{{ $period }}' === 'year' && {{ !empty($allYears) ? 'true' : 'false' }}) {
+        timeChartType = 'bar';
+    }
     new Chart(document.getElementById('timeChart'), {
-        type: 'line',
+        type: timeChartType,
         data: {
             labels: timeSeries.labels,
             datasets: [{
                 label: 'Incidents',
                 data: timeSeries.data,
-                fill: false,
+                backgroundColor: '#6366F1',
                 borderColor: '#6366F1',
+                fill: timeChartType === 'line' ? false : true,
                 tension: 0.3,
                 pointRadius: 2,
             }]

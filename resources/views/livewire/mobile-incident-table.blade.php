@@ -2,8 +2,8 @@
     <!-- Report Controls -->
     <div class="flex items-center gap-3 mb-4" id="mobile-report-controls">
         <form method="GET" action="{{ route('incident-report.generate') }}" target="_blank"
-            class="flex gap-2 items-center w-full justify-end">
-            <select name="period"
+            class="flex gap-2 items-center w-full justify-end" x-data="{ period: 'day', allYears: false }">
+            <select name="period" x-model="period"
                 class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="day">Day</option>
                 <option value="week">Week</option>
@@ -11,7 +11,15 @@
                 <option value="year">Year</option>
             </select>
             <input type="date" name="date" value="{{ now()->toDateString() }}"
+                x-show="period === 'day' || period === 'week' || period === 'month'"
                 class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <template x-if="period === 'year'">
+                <label class="flex items-center ml-2">
+                    <input type="checkbox" name="allYears" value="1" x-model="allYears"
+                        class="form-checkbox h-4 w-4 text-blue-600 mr-1">
+                    <span class="text-xs text-gray-700 dark:text-white">All Years</span>
+                </label>
+            </template>
             <input type="hidden" name="source" value="mobile">
             <input type="hidden" name="typeFilter" value="{{ $typeFilter }}">
             <input type="hidden" name="statusFilter" value="{{ $statusFilter }}">
@@ -92,25 +100,7 @@
             </select>
         </div>
     </div>
-    <script>
-        (function(){
-            const root = document.getElementById('mobile-report-controls');
-            if (!root) return;
-            const period = root.querySelector('select[name="period"]');
-            const dateInput = root.querySelector('input[name="date"]');
-            function sync() {
-                if (!period || !dateInput) return;
-                if (period.value === 'day') {
-                    dateInput.style.display = '';
-                } else {
-                    dateInput.style.display = 'none';
-                }
-            }
-            period && period.addEventListener('change', sync);
-            // Ensure picker is visible on initial load if Day is selected
-            window.addEventListener('DOMContentLoaded', sync);
-        })();
-    </script>
+    <!-- Removed conflicting JS. Alpine.js x-show now controls date picker visibility for day/week/month. -->
     <div class="overflow-x-auto bg-white dark:bg-gray-900 rounded-lg shadow relative">
         <table class="w-full table-auto">
             <thead style="background-color: #1C3A5B;" class="border-b border-gray-200 dark:border-gray-700">

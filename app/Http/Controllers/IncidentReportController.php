@@ -20,6 +20,7 @@ class IncidentReportController extends Controller
         $statusFilter = $request->input('statusFilter', '');
         $page = $request->input('page', 1);
         $perPage = $request->input('perPage', 10);
+        $allYears = $request->input('allYears', false);
 
         // Build query
         $query = Incident::query()->where('source', $source);
@@ -43,7 +44,10 @@ class IncidentReportController extends Controller
                     ->whereMonth('timestamp', $anchor->month);
                 break;
             case 'year':
-                $query->whereYear('timestamp', $anchor->year);
+                if (!$allYears) {
+                    $query->whereYear('timestamp', $anchor->year);
+                }
+                // else: no year filter, get all years
                 break;
         }
 
@@ -112,7 +116,20 @@ class IncidentReportController extends Controller
                 $timeSeries['labels'][] = $label;
                 $timeSeries['data'][] = (int)($buckets[$label] ?? 0);
             }
-        } else { // year
+        } elseif ($period === 'year' && $allYears) {
+            // Group by year for all years
+            $buckets = (clone $baseForCharts)
+                ->selectRaw('YEAR(timestamp) as bucket, COUNT(*) as count')
+                ->groupBy('bucket')
+                ->pluck('count', 'bucket')
+                ->toArray();
+            $years = array_keys($buckets);
+            sort($years);
+            foreach ($years as $year) {
+                $timeSeries['labels'][] = (string)$year;
+                $timeSeries['data'][] = (int)($buckets[$year] ?? 0);
+            }
+        } else { // year (single year)
             $buckets = (clone $baseForCharts)
                 ->selectRaw('MONTH(timestamp) as bucket, COUNT(*) as count')
                 ->groupBy('bucket')
@@ -130,6 +147,7 @@ class IncidentReportController extends Controller
             'source' => $source,
             'period' => $period,
             'date' => $date,
+            'allYears' => $allYears,
             'severityData' => $severityData,
             'statusData' => $statusData,
             'typeData' => $typeData,
