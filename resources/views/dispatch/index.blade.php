@@ -186,12 +186,33 @@
                         class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Evidence & Attachments</h3>
                         <div class="grid grid-cols-1 gap-4">
-                            <div
-                                class="bg-gray-100 dark:bg-gray-900 rounded-lg h-56 flex items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer">
-                                <div class="text-center">
-                                    <i class="fas fa-camera"></i>
-                                    <p class="text-sm text-gray-500 dark:text-gray-200">Photo Evidence</p>
-                                </div>
+                            <div class="bg-gray-100 dark:bg-gray-900 rounded-lg flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer py-4">
+                                @if(!empty($incident['proofImageUrl']) || !empty($incident['proof_image_url']))
+                                    <div x-data="{ showModal: false }">
+                                <img src="{{ $incident['proofImageUrl'] ?? $incident['proof_image_url'] }}"
+                                    alt="Photo Evidence"
+                                    style="width: 100%; max-width: 100%; height: 400px; object-fit: cover; cursor: pointer;"
+                                    class="rounded shadow border mb-2 transition-transform hover:scale-105"
+                                    @click="showModal = true" />
+                                        <p class="text-sm text-gray-500 dark:text-gray-200">Click to view full size</p>
+                                        <!-- Modal -->
+                                         <!-- Modal -->
+                <div x-show="showModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" @click.self="showModal = false">
+                    <img
+                        src="{{ $incident['proof_image_url'] ?? $incident['proofImageUrl'] }}"
+                        alt="Photo Evidence Full Size"
+                        class="object-contain rounded-lg shadow-2xl"
+                        style="max-height: 90vh; max-width: 95vw;"
+                    >
+                </div>
+                                    </div>
+                                @else
+                                    <div class="text-center">
+                                        <i class="fas fa-camera"></i>
+                                        <p class="text-sm text-gray-500 dark:text-gray-200">Photo Evidence</p>
+                                        <span class="text-xs text-gray-400 dark:text-gray-200">No photo provided.</span>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

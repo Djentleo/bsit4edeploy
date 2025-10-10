@@ -205,6 +205,42 @@
 
     <!-- Location & Map Section (Mobile only: no camera_name) -->
     @if(!isset($incident['camera_name']))
+    <!-- Evidence & Attachments Section (Mobile only) -->
+    @if(!empty($incident['proof_image_url'] ?? $incident['proofImageUrl']))
+    <div x-data="{ showModal: false }" class="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden mb-6">
+        <div class="bg-gradient-to-r from-yellow-500 to-orange-600 px-6 py-4">
+            <div class="flex items-center gap-2 text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+                <h3 class="text-xl font-semibold">Evidence & Attachments</h3>
+            </div>
+        </div>
+        <div class="p-6">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">Photo Evidence</label>
+                <div class="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg px-4 py-3 flex justify-center">
+                    <img
+                        src="{{ $incident['proof_image_url'] ?? $incident['proofImageUrl'] }}"
+                        alt="Photo Evidence"
+                        class="cursor-pointer object-cover rounded-lg shadow-lg"
+                        style="width: 100%; max-width: 600px; height: 400px;"
+                        @click="showModal = true"
+                    >
+                </div>
+                <!-- Modal -->
+                <div x-show="showModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" @click.self="showModal = false">
+                    <img
+                        src="{{ $incident['proof_image_url'] ?? $incident['proofImageUrl'] }}"
+                        alt="Photo Evidence Full Size"
+                        class="object-contain rounded-lg shadow-2xl"
+                        style="max-height: 90vh; max-width: 95vw;"
+                    >
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
     <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4">
             <div class="flex items-center gap-2 text-white">

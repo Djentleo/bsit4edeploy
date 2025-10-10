@@ -55,6 +55,7 @@ class FirebaseSyncAll extends Command
                     'incident_description' => $incident['incident_description'] ?? null,
                     'priority' => $incident['priority'] ?? null,
                     'severity' => $incident['severity'] ?? null,
+                    'proof_image_url' => $incident['proofImageUrl'] ?? null,
                     'updated_at' => now(),
                     'created_at' => now(),
                 ]
