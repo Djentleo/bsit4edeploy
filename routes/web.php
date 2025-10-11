@@ -2,11 +2,12 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\FileUploadController;
 use App\Livewire\Responders\IncidentDetails;
+use App\Http\Controllers\AdminCreationController;
+use App\Http\Controllers\AdminRecoveryController;
+use App\Services\FirebaseService;
+use App\Models\Incident;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -61,18 +62,17 @@ Route::middleware([
         return view('incidents.cctv');
     })->name('incidents.cctv');
     Route::get('incident-logs', [\App\Http\Controllers\IncidentLogsController::class, 'index'])->name('incident.logs');
-Route::get('incident-logs', function () {
-    if (Auth::user()->role !== 'admin') {
-        return redirect()->route('dashboard');
-    }
-    return app(\App\Http\Controllers\IncidentLogsController::class)->index(app(\App\Services\FirebaseService::class));
-})->name('incident.logs');
+    Route::get('incident-logs', function () {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard');
+        }
+        return app(\App\Http\Controllers\IncidentLogsController::class)->index(app(\App\Services\FirebaseService::class));
+    })->name('incident.logs');
+
     Route::get('/incident-report/generate', [\App\Http\Controllers\IncidentReportController::class, 'generate'])->name('incident-report.generate');
 });
 
-use App\Services\FirebaseService;
 
-use App\Models\Incident;
 
 Route::get('/dispatch', function (\Illuminate\Http\Request $request) {
     $incidentId = $request->query('incident_id');
@@ -89,4 +89,14 @@ Route::get('/test-summary', function (FirebaseService $firebaseService) {
     return response()->json($summaryData);
 });
 
-Route::post('/upload', [FileUploadController::class, 'upload'])->name('file.upload');
+// Admin creation page (only if no admin exists) - accessible to guests only with rate limiting
+Route::middleware(['guest', 'throttle:10,1'])->group(function () {
+    Route::get('/admin-create', [AdminCreationController::class, 'showForm'])->name('admin.create.form');
+    Route::post('/admin-create', [AdminCreationController::class, 'create'])->name('admin.create');
+});
+
+// Admin recovery page (accessible with recovery key)
+Route::middleware(['guest', 'throttle:10,1'])->group(function () {
+    Route::get('/admin-recover', [AdminRecoveryController::class, 'showForm'])->name('admin.recover.form');
+    Route::post('/admin-recover', [AdminRecoveryController::class, 'recover'])->name('admin.recover');
+});

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->text('incident_description')->nullable();
             $table->string('priority')->nullable();
             $table->string('severity')->nullable();
+            $table->string('proof_image_url')->nullable();
             $table->timestamps();
         });
     }

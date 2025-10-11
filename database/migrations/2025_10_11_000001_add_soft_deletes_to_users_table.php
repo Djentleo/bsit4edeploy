@@ -8,20 +8,20 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::table('incidents', function (Blueprint $table) {
-            $table->string('proof_image_url')->nullable()->after('severity');
+        Schema::table('users', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
-        Schema::table('incidents', function (Blueprint $table) {
-            $table->dropColumn('proof_image_url');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropSoftDeletes();
         });
     }
 };
