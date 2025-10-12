@@ -26,7 +26,9 @@
         <table class="w-full table-auto">
             <thead style="background-color: #1C3A5B;" class="border-b border-gray-200 dark:border-gray-700">
                 <tr class="text-center">
+                    <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Reporter Name</th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Type</th>
+                    <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Source</th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Location</th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Description</th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Resolved At</th>
@@ -35,11 +37,17 @@
             <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
                 @forelse($incidents as $incident)
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150 text-center">
+                    <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">{{ $incident->reporter_name ?? '-'
+                        }}</td>
                     <td class="px-6 py-4 text-gray-600 dark:text-gray-300">{{ $incident->type ?? '-' }}</td>
-                    <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">{{ $incident->location ?? '-' }}</td>
-                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ $incident->incident_description ?? '-' }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">{{ $incident->source ?? '-' }}</td>
+                    <td class="px-6 py-4 text-gray-900 dark:text-white font-medium">{{ $incident->location ?? '-' }}
+                    </td>
+                    <td class="px-6 py-4 text-gray-500 dark:text-gray-400">{{ $incident->incident_description ?? '-' }}
+                    </td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400 text-sm">
-                        {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('M d, Y H:i') : '-' }}
+                        {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('H:i') :
+                        '' }}
                     </td>
                 </tr>
                 @empty
