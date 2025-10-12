@@ -41,7 +41,16 @@ class IncidentDispatch extends Component
         $this->incidentId = $incidentId;
         // Only responders (role = 'responder')
         $this->allResponders = User::where('role', 'responder')->get();
-        $this->additionalResponders = [];
+
+        // Load assigned responders from dispatches table
+        $dispatches = Dispatch::where('incident_id', $incidentId)->get();
+        if ($dispatches->count() > 0) {
+            $this->mainResponder = $dispatches->first()->responder_id;
+            $this->additionalResponders = $dispatches->skip(1)->pluck('responder_id')->toArray();
+        } else {
+            $this->mainResponder = '';
+            $this->additionalResponders = [];
+        }
 
         // Load notes for this incident
         $this->loadNotes();

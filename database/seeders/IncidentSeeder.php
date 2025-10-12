@@ -102,6 +102,13 @@ class IncidentSeeder extends Seeder
                 ],
             ];
             $reporterName = $reporters[array_rand($reporters)];
+            // Online image URLs for each type
+            $imageUrls = [
+                'vehicle_crash' => 'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=600&q=80',
+                'fire' => 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80',
+                'disturbance' => 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80',
+                'medical_emergency' => 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd2e?auto=format&fit=crop&w=600&q=80',
+            ];
             $incident = [
                 'type' => $type,
                 'incident_description' => $descTemplates[$type][array_rand($descTemplates[$type])],
@@ -115,6 +122,7 @@ class IncidentSeeder extends Seeder
                 // Set timestamp to current date and time (real-time)
                 'timestamp' => now()->toIso8601String(),
                 'source' => 'mobile',
+                'proofImageUrl' => $imageUrls[$type],
             ];
 
             // Call Flask API for severity prediction

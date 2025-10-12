@@ -120,6 +120,14 @@ class IncidentDetails extends Component
                 }
             }
 
+            // Log responder status change to timeline
+            IncidentTimeline::create([
+                'incident_id' => $incident ? $incident->id : null,
+                'user_id' => Auth::id(),
+                'action' => 'responder_status_changed',
+                'details' => $newStatus,
+            ]);
+
             // Show success message
             session()->flash('status', 'Status updated successfully to: ' . $this->statusOptions[$newStatus]);
         } else {
