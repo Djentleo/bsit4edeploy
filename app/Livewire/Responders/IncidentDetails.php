@@ -66,6 +66,21 @@ class IncidentDetails extends Component
                 ->orWhere('firebase_id', $dispatch->incident_id)
                 ->first();
             $shouldUpdateFirebase = false;
+            // If responder sets status to en_route, update main incident status as well
+            if ($newStatus === 'en_route' && $incident) {
+                $incident->status = 'en_route';
+                $incident->save();
+                // Also update Firebase status
+                if ($incident->firebase_id) {
+                    try {
+                        $firebase = new FirebaseService();
+                        $firebase->updateIncidentStatus($incident->firebase_id, 'en_route');
+                    } catch (\Throwable $e) {
+                        // Optionally log error
+                    }
+                }
+            }
+
             if ($newStatus === 'resolved') {
                 if ($incident) {
                     $dispatchCount = Dispatch::where(function ($q) use ($dispatch) {
