@@ -22,6 +22,16 @@
             </select>
         </div>
         <div>
+            <select wire:model.live="statusFilter"
+                class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">All Statuses</option>
+                <option value="dispatched">Dispatched</option>
+                <option value="en_route">En Route</option>
+                <option value="resolved">Resolved</option>
+                <option value="closed">Closed</option>
+            </select>
+        </div>
+        <div>
             <select wire:model.live="perPage"
                 class="pl-3 pr-8 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-sm text-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <option value="5">5</option>
@@ -86,60 +96,69 @@
                 @forelse($incidents as $item)
                 @php $incident = $item['incident'] ?? []; @endphp
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150 text-center">
-                    <td class="px-3 py-4 text-gray-900 dark:text-white font-medium text-xs">{{ $incident['firebase_id'] ?? '-' }}</td>
+                    <td class="px-3 py-4 text-gray-900 dark:text-white font-medium text-xs">{{ $incident['firebase_id']
+                        ?? '-' }}</td>
                     <td class="px-3 py-4">
                         @php
-                            $typeVal = $incident['type'] ?? ($incident['event'] ?? '-');
-                            $typeClasses = match($typeVal) {
-                                'fire' => 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
-                                'vehicle_crash', 'vehicular_accident' => 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200',
-                                'medical_emergency' => 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
-                                'disturbance' => 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
-                                default => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
-                            };
+                        $typeVal = $incident['type'] ?? ($incident['event'] ?? '-');
+                        $typeClasses = match($typeVal) {
+                        'fire' => 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
+                        'vehicle_crash', 'vehicular_accident' => 'bg-orange-100 dark:bg-orange-900 text-orange-800
+                        dark:text-orange-200',
+                        'medical_emergency' => 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+                        'disturbance' => 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
+                        default => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
+                        };
                         @endphp
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold {{ $typeClasses }}">
+                        <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold {{ $typeClasses }}">
                             {{ ucfirst(str_replace('_', ' ', $typeVal)) }}
                         </span>
                     </td>
                     <td class="px-3 py-4">
                         @php
-                            $sev = $incident['severity'] ?? '-';
-                            $sevClasses = match($sev) {
-                                'critical' => 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
-                                'high' => 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
-                                'medium' => 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200',
-                                'low' => 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
-                                default => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
-                            };
+                        $sev = $incident['severity'] ?? '-';
+                        $sevClasses = match($sev) {
+                        'critical' => 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
+                        'high' => 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
+                        'medium' => 'bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200',
+                        'low' => 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+                        default => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
+                        };
                         @endphp
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold {{ $sevClasses }}">
+                        <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold {{ $sevClasses }}">
                             {{ ucfirst($sev) }}
                         </span>
                     </td>
-                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 text-xs hidden sm:table-cell">{{ $incident['location'] ?? '-' }}</td>
-                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 text-xs hidden md:table-cell">{{ $incident['reporter_name'] ?? 'CCTV' }}</td>
+                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 text-xs hidden sm:table-cell">{{
+                        $incident['location'] ?? '-' }}</td>
+                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 text-xs hidden md:table-cell">{{
+                        $incident['reporter_name'] ?? 'CCTV' }}</td>
                     <td class="px-3 py-4">
                         @php
-                            $st = $item['status'] ?? ($incident['status'] ?? '-');
-                            $statusClasses = match($st) {
-                                'new' => 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
-                                'dispatched' => 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
-                                'resolved' => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
-                                'en_route' => 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
-                                'on_scene' => 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200',
-                                default => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
-                            };
+                        $st = $item['status'] ?? ($incident['status'] ?? '-');
+                        $statusClasses = match($st) {
+                        'new' => 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+                        'dispatched' => 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
+                        'resolved' => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
+                        'en_route' => 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
+                        'on_scene' => 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200',
+                        default => 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200',
+                        };
                         @endphp
-                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold {{ $statusClasses }}">
+                        <span
+                            class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold {{ $statusClasses }}">
                             {{ ucfirst(str_replace('_', ' ', $st)) }}
                         </span>
                     </td>
-                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 font-medium text-xs hidden lg:table-cell">{{ $incident['department'] ?? '-' }}</td>
+                    <td class="px-3 py-4 text-gray-600 dark:text-gray-300 font-medium text-xs hidden lg:table-cell">{{
+                        $incident['department'] ?? '-' }}</td>
                     <td class="px-3 py-4 text-gray-500 dark:text-gray-400 text-xs">
                         @php
-                            $tsRaw = $incident['datetime'] ?? ($incident['date_time'] ?? ($incident['timestamp'] ?? null));
-                            try { $dt = $tsRaw ? \Carbon\Carbon::parse($tsRaw) : null; } catch (\Throwable $e) { $dt = null; }
+                        $tsRaw = $incident['datetime'] ?? ($incident['date_time'] ?? ($incident['timestamp'] ?? null));
+                        try { $dt = $tsRaw ? \Carbon\Carbon::parse($tsRaw) : null; } catch (\Throwable $e) { $dt = null;
+                        }
                         @endphp
                         <div class="max-w-[120px] truncate">
                             {{ $dt ? $dt->format('M d, Y') : '-' }}

@@ -13,7 +13,7 @@ class ResponderDashboard extends Component
     public static string $layout = 'layouts.app';
     public $incidents = [];
     public $search = '';
-    public $filterStatus = '';
+    public $statusFilter = '';
     public $filterType = '';
     public $perPage = 10;
     public $page = 1;
@@ -150,7 +150,7 @@ class ResponderDashboard extends Component
                     (isset($incident['incident_description']) && str_contains(strtolower($incident['incident_description']), $search))
                 );
             }
-            $matchesStatus = $this->filterStatus ? $item['status'] === $this->filterStatus : true;
+            $matchesStatus = $this->statusFilter ? $item['status'] === $this->statusFilter : true;
             // Match against either 'type' (mobile) or 'event' (CCTV)
             $matchesType = $this->filterType
                 ? ((isset($incident['type']) && $incident['type'] === $this->filterType) || (isset($incident['event']) && $incident['event'] === $this->filterType))
