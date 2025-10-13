@@ -31,7 +31,6 @@ class IncidentDispatch extends Component
         'new' => 'New',
         'dispatched' => 'Dispatched',
         'resolved' => 'Resolved',
-        'closed' => 'Closed',
     ];
     // Timeline
     public $timeline = [];
@@ -88,12 +87,32 @@ class IncidentDispatch extends Component
         $status = strtolower($this->status);
         $incident = Incident::where('firebase_id', $this->incidentId)->orWhere('id', $this->incidentId)->first();
         if ($incident) {
+            // Remove resolved incident from Firebase and MySQL if changing from resolved to dispatched or new
+            $previousStatus = $incident->status;
             $incident->status = $status;
             // If resolved, set resolved_at timestamp
             $resolvedAt = null;
             if ($status === 'resolved') {
                 $resolvedAt = now();
                 $incident->resolved_at = $resolvedAt;
+            } else if (($status === 'dispatched' || $status === 'new') && $previousStatus === 'resolved') {
+                // Remove from resolved_incidents in Firebase
+                if (!empty($incident->firebase_id)) {
+                    try {
+                        $firebase = new FirebaseService();
+                        $firebase->removeResolvedIncident($incident->firebase_id);
+                    } catch (\Throwable $e) {
+                        // Optionally log error
+                    }
+                }
+                // Remove resolved log from MySQL incident_logs (match both DB id and Firebase id)
+                \App\Models\IncidentLog::where(function ($q) use ($incident) {
+                    $q->where('incident_id', $incident->id)
+                        ->orWhere('incident_id', $incident->firebase_id);
+                })
+                    ->where('status', 'resolved')
+                    ->delete();
+                $incident->resolved_at = null;
             }
             $incident->save();
             $this->successMessage = 'Status updated.';

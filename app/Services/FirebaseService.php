@@ -5,8 +5,7 @@ namespace App\Services;
 use Kreait\Firebase\Factory;
 
 
-class FirebaseService
-{
+class FirebaseService{
      /**
      * Copy a resolved incident to incident_logs without removing from original node.
      */
@@ -42,6 +41,16 @@ class FirebaseService
             return $item;
         })->values()->all();
         return $resolvedList;
+    }
+
+     /**
+     * Remove a resolved incident from resolved_incidents in Firebase.
+     */
+    public function removeResolvedIncident($incidentId)
+    {
+        $ref = $this->database->getReference('resolved_incidents/' . $incidentId);
+        $ref->remove();
+        return true;
     }
     /**
      * Update the status of an incident in Firebase (mobile or CCTV).

@@ -21,7 +21,6 @@ class IncidentDetails extends Component
         'dispatched' => 'Dispatched',
         'en_route' => 'En Route',
         'resolved' => 'Resolved',
-        'closed' => 'Closed',
     ];
     public $incidentNotes = [];
     public $newNote = '';
@@ -57,6 +56,7 @@ class IncidentDetails extends Component
 
         $dispatch = Dispatch::find($this->dispatchId);
         if ($dispatch && $dispatch->responder_id === Auth::id()) {
+            $previousStatus = $dispatch->status;
             $dispatch->status = $newStatus;
             $dispatch->save();
             $this->status = $newStatus;
@@ -66,15 +66,31 @@ class IncidentDetails extends Component
                 ->orWhere('firebase_id', $dispatch->incident_id)
                 ->first();
             $shouldUpdateFirebase = false;
-            // If responder sets status to en_route, update main incident status as well
-            if ($newStatus === 'en_route' && $incident) {
-                $incident->status = 'en_route';
+            // If responder sets status to dispatched or en_route, update main incident status as well
+            if (($newStatus === 'dispatched' || $newStatus === 'en_route') && $incident) {
+                // Remove resolved incident record from Firebase and MySQL if previous status was resolved
+                if ($previousStatus === 'resolved' && $incident->firebase_id) {
+                    try {
+                        $firebase = new FirebaseService();
+                        $firebase->removeResolvedIncident($incident->firebase_id);
+                    } catch (\Throwable $e) {
+                        // Optionally log error
+                    }
+                    // Remove from MySQL incident_logs (match both DB id and Firebase id)
+                    \App\Models\IncidentLog::where(function ($q) use ($incident) {
+                        $q->where('incident_id', $incident->id)
+                            ->orWhere('incident_id', $incident->firebase_id);
+                    })
+                        ->where('status', 'resolved')
+                        ->delete();
+                }
+                $incident->status = $newStatus;
                 $incident->save();
                 // Also update Firebase status
                 if ($incident->firebase_id) {
                     try {
                         $firebase = new FirebaseService();
-                        $firebase->updateIncidentStatus($incident->firebase_id, 'en_route');
+                        $firebase->updateIncidentStatus($incident->firebase_id, $newStatus);
                     } catch (\Throwable $e) {
                         // Optionally log error
                     }

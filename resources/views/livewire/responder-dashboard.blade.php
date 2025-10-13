@@ -28,7 +28,6 @@
                 <option value="dispatched">Dispatched</option>
                 <option value="en_route">En Route</option>
                 <option value="resolved">Resolved</option>
-                <option value="closed">Closed</option>
             </select>
         </div>
         <div>

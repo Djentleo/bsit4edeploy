@@ -73,7 +73,6 @@ class ResponderDashboard extends Component
         'dispatched' => 'Dispatched',
         'en_route' => 'En Route',
         'resolved' => 'Resolved',
-        'closed' => 'Closed',
     ];
     public $showModal = false;
     public $selectedIncident = null;
