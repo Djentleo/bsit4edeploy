@@ -178,4 +178,12 @@ class FirebaseService{
             'completed_issues' => $completed,
         ];
     }
+    /**
+     * Delete an incident from both mobile_incidents and incidents nodes in Firebase.
+     */
+    public function deleteIncidentFromFirebase($incidentId)
+    {
+        $this->database->getReference('mobile_incidents/' . $incidentId)->remove();
+        $this->database->getReference('incidents/' . $incidentId)->remove();
+    }
 }

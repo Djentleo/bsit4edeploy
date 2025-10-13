@@ -14,6 +14,7 @@ use App\Services\FirebaseService;
 
 class IncidentDispatch extends Component
 {
+    // Incident
     public $incidentId;
     public $mainResponder = '';
     public $additionalResponders = [];
@@ -264,5 +265,44 @@ class IncidentDispatch extends Component
         $this->loadNotes();
         $this->loadStatus();
         $this->loadTimeline();
+    }
+
+    public function deleteIncident()
+    {
+        $incident = Incident::where('firebase_id', $this->incidentId)
+            ->orWhere('id', $this->incidentId)
+            ->first();
+        if ($incident) {
+            // Delete from Firebase
+            if (!empty($incident->firebase_id)) {
+                try {
+                    $firebase = new FirebaseService();
+                    // Remove from main incidents node
+                    $firebase->updateIncidentStatus($incident->firebase_id, 'deleted');
+                    $firebase->removeResolvedIncident($incident->firebase_id);
+                    $firebase->deleteIncidentFromFirebase($incident->firebase_id);
+                } catch (\Throwable $e) {
+                    // Optionally log error
+                }
+            }
+            // Delete from MySQL
+            \App\Models\IncidentLog::where(function($q) use ($incident) {
+                $q->where('incident_id', $incident->id)
+                  ->orWhere('incident_id', $incident->firebase_id);
+            })->delete();
+            Dispatch::where('incident_id', $incident->id)
+                ->orWhere('incident_id', $incident->firebase_id)
+                ->delete();
+            IncidentNote::where('incident_id', $incident->id)
+                ->orWhere('incident_id', $incident->firebase_id)
+                ->delete();
+            IncidentTimeline::where('incident_id', $incident->id)
+                ->orWhere('incident_id', $incident->firebase_id)
+                ->delete();
+            $incident->delete();
+            $this->successMessage = 'Incident deleted from both MySQL and Firebase.';
+        } else {
+            $this->errorMessage = 'Incident not found.';
+        }
     }
 }

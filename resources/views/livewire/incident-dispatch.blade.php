@@ -26,7 +26,7 @@
     </div>
     @endif
     <!-- Assign Responders Card -->
-    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden w-full">
         <div class="bg-blue-900 px-6 py-3">
             <div class="flex items-center gap-3 text-white">
                 <i class="fas fa-user-plus"></i>
@@ -44,8 +44,7 @@
                     class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm text-sm">
                     <option value="">Choose Lead Responder</option>
                     @foreach($this->allResponders as $responder)
-                    <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ?? 'N/A'
-                        }})</option>
+                    <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ?? 'N/A' }})</option>
                     @endforeach
                 </select>
             </div>
@@ -62,8 +61,7 @@
                         class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm text-sm">
                         <option value="">Select Additional Responder</option>
                         @foreach($this->allResponders as $responder)
-                        <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ??
-                            'N/A' }})</option>
+                        <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ?? 'N/A' }})</option>
                         @endforeach
                     </select>
                     <button type="button" wire:click="removeResponder({{ $index }})"
@@ -77,14 +75,16 @@
             @endif
 
             <!-- Add Another Responder & Dispatch Button Row -->
-            <div class="flex flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-600">
+            <div class="flex flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-600 w-full">
                 <button type="button" wire:click="addResponder"
-                    class="flex-1 bg-white dark:bg-gray-800 text-green-600 dark:text-white px-3 rounded-2xl font-semibold border-2 border-dashed border-green-300 dark:hover:from-green-800 flex items-center justify-center gap-2 h-14 text-xs whitespace-nowrap">
-                    <i class="fas fa-plus"></i>
-                    Add Another Responder
+                    class="w-1/2 min-w-0 bg-white dark:bg-gray-800 text-green-600 dark:text-white px-3 py-2 rounded-2xl font-semibold border-2 border-dashed border-green-300 dark:hover:from-green-800 text-center h-14 text-xs break-words overflow-hidden">
+                    <span class="flex items-center justify-center w-full gap-1">
+                        <i class="fas fa-plus"></i>
+                        <span class="break-words">Add Another Responder</span>
+                    </span>
                 </button>
                 <button type="button"
-                    class="flex-1 bg-blue-900 text-white px-3 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-14 text-xs whitespace-nowrap"
+                    class="w-1/2 bg-blue-900 text-white px-3 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-14 text-xs whitespace-nowrap"
                     x-data="{}" x-on:click.prevent="Swal.fire({
                         title: 'Are you sure?',
                         text: 'Do you want to dispatch this incident?',
@@ -336,7 +336,28 @@
                 @endforelse
             </div>
         </div>
+            
     </div>
+    <!-- Delete Incident Button -->
+
+            <div class="flex justify-center">
+                <div class="w-full max-w-xl">
+                    <button type="button"
+                        class="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg flex items-center justify-center gap-2"
+                        x-data="{}" x-on:click.prevent="Swal.fire({
+                            title: 'Delete Incident?',
+                            text: 'Are you sure you want to permanently delete this incident from both MySQL and Firebase?',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#2563eb',
+                            confirmButtonText: 'Yes, delete it!'
+                        }).then((result) => { if (result.isConfirmed) { $wire.deleteIncident(); } })">
+                        <i class="fas fa-trash"></i>
+                        Delete Incident
+                    </button>
+                </div>
+            </div>
 
     <!-- Custom Scrollbar Styles -->
     <style>
