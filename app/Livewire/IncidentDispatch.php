@@ -116,6 +116,15 @@ class IncidentDispatch extends Component
                 $incident->resolved_at = null;
             }
             $incident->save();
+
+            // Update all related dispatches for this incident (force IDs to string)
+            $idInt = (string) $incident->id;
+            $idFirebase = (string) $incident->firebase_id;
+            \App\Models\Dispatch::where(function ($q) use ($idInt, $idFirebase) {
+                $q->where('incident_id', $idInt)
+                    ->orWhere('incident_id', $idFirebase);
+            })->update(['status' => $status]);
+
             $this->successMessage = 'Status updated.';
         } else {
             $this->errorMessage = 'Incident not found.';
@@ -286,9 +295,9 @@ class IncidentDispatch extends Component
                 }
             }
             // Delete from MySQL
-            \App\Models\IncidentLog::where(function($q) use ($incident) {
+            \App\Models\IncidentLog::where(function ($q) use ($incident) {
                 $q->where('incident_id', $incident->id)
-                  ->orWhere('incident_id', $incident->firebase_id);
+                    ->orWhere('incident_id', $incident->firebase_id);
             })->delete();
             Dispatch::where('incident_id', $incident->id)
                 ->orWhere('incident_id', $incident->firebase_id)
