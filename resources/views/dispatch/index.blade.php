@@ -26,15 +26,13 @@
                         <!-- CCTV Incident UI: Only show relevant CCTV info, remove map, evidence, attachments -->
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Camera
-                                    Name</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Camera Name</label>
                                 <input type="text" name="camera_name" value="{{ $incident['camera_name'] ?? 'N/A' }}"
                                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white"
                                     readonly>
                             </div>
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Event</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Event</label>
                                 <input type="text" name="event" value="{{ $incident['event'] ?? 'N/A' }}"
                                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white"
                                     readonly>
@@ -42,38 +40,54 @@
                         </div>
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label
-                                    class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Status</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Status</label>
                                 <input type="text" name="status"
                                     value="{{ isset($incident['status']) ? ucfirst($incident['status']) : 'N/A' }}"
                                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-yellow-50 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-200"
                                     readonly>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Date &
-                                    Time</label>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Date & Time</label>
                                 <input type="text" name="date_time" value="{{ $incident['timestamp'] ?? 'N/A' }}"
                                     class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white"
                                     readonly>
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label
-                                class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Screenshot</label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Description</label>
+                            <textarea rows="3" name="description"
+                                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white"
+                                readonly>N/A</textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Evidence & Attachments</label>
                             @if(!empty($incident['screenshot_path']))
-                            <img src="{{ $incident['screenshot_path'] }}" alt="Screenshot"
-                                class="h-32 w-auto rounded shadow border" />
+                                <div x-data="{ showModal: false }">
+                                    <img src="{{ $incident['screenshot_path'] }}" alt="Screenshot"
+                                        style="width: 100%; max-width: 100%; height: 400px; object-fit: cover; cursor: pointer;"
+                                        class="rounded shadow border mb-2 transition-transform hover:scale-105"
+                                        @click="showModal = true" />
+                                    <p class="text-sm text-gray-500 dark:text-gray-200">Click to view full size</p>
+                                    <!-- Modal -->
+                                    <div x-show="showModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" @click.self="showModal = false">
+                                        <img
+                                            src="{{ $incident['screenshot_path'] }}"
+                                            alt="Screenshot Full Size"
+                                            class="object-contain rounded-lg shadow-2xl"
+                                            style="max-height: 90vh; max-width: 95vw;"
+                                        >
+                                    </div>
+                                </div>
                             @else
-                            <span class="text-gray-400 dark:text-gray-200">N/A</span>
+                                <span class="text-gray-400 dark:text-gray-200">N/A</span>
                             @endif
                         </div>
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 dark:text-white mb-1">Video</label>
                             @if(!empty($incident['camera_url']))
-                            <a href="{{ $incident['camera_url'] }}" target="_blank" class="text-blue-600 underline">View
-                                Video</a>
+                                <a href="{{ $incident['camera_url'] }}" target="_blank" class="text-blue-600 underline">View Video</a>
                             @else
-                            <span class="text-gray-400 dark:text-gray-200">N/A</span>
+                                <span class="text-gray-400 dark:text-gray-200">N/A</span>
                             @endif
                         </div>
                         @else

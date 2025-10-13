@@ -124,7 +124,6 @@
                         @endif
                     </th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">SCREENSHOT</th>
-                    <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">VIDEO</th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider cursor-pointer"
                         wire:click="sortBy('timestamp')">TIMESTAMP
                         @if($sortField === 'timestamp')
@@ -164,22 +163,20 @@
                         @endif
                     </td>
                     <td class="px-6 py-4">
-                        @if($incident->incident_description)
-                        <img src="{{ $incident->incident_description }}" alt="Screenshot"
-                            class="h-16 w-auto rounded shadow border border-gray-200 dark:border-gray-600" />
+                        @if($incident->proof_image_url)
+                        <div x-data="{ showModal: false }">
+                            <img src="{{ $incident->proof_image_url }}" alt="Screenshot"
+                                class="h-16 w-auto rounded shadow border border-gray-200 dark:border-gray-600 cursor-pointer"
+                                @click="showModal = true" />
+                            <!-- Modal -->
+                            <div x-show="showModal" x-transition class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" @click.self="showModal = false">
+                                <img src="{{ $incident->proof_image_url }}" alt="Screenshot Full Size"
+                                    class="object-contain rounded-lg shadow-2xl"
+                                    style="max-height: 90vh; max-width: 95vw;" />
+                            </div>
+                        </div>
                         @else
                         <span class="text-gray-400 dark:text-gray-500 text-sm">No image</span>
-                        @endif
-                    </td>
-                    <td class="px-6 py-4">
-                        @if($incident->camera_url)
-                        <a href="{{ $incident->camera_url }}" target="_blank"
-                            class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline text-sm">
-                            <i class="fas fa-play-circle mr-1"></i>
-                            View Video
-                        </a>
-                        @else
-                        <span class="text-gray-400 dark:text-gray-500 text-sm">No video</span>
                         @endif
                     </td>
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400 text-sm">

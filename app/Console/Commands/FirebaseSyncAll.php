@@ -72,22 +72,23 @@ class FirebaseSyncAll extends Command
             // Only sync if this is a CCTV incident (e.g., has camera_name or source is cctv)
             $isCctv = isset($incident['camera_name']) || ($incident['source'] ?? null) === 'cctv';
             if (!$isCctv) continue;
-            DB::table('incidents')->updateOrInsert(
-                ['firebase_id' => $firebaseKey],
-                [
-                    'type' => $incident['event'] ?? 'CCTV',
-                    'location' => $incident['camera_name'] ?? null,
-                    'reporter_name' => 'CCTV',
-                    'reporter_id' => null,
-                    'department' => $incident['department'] ?? null,
-                    'status' => $incident['status'] ?? null,
-                    'timestamp' => isset($incident['timestamp']) ? date('Y-m-d H:i:s', strtotime($incident['timestamp'])) : null,
-                    'source' => 'cctv',
-                    'incident_description' => $incident['screenshot_path'] ?? null,
-                    'updated_at' => now(),
-                    'created_at' => now(),
-                ]
-            );
+                DB::table('incidents')->updateOrInsert(
+                    ['firebase_id' => $firebaseKey],
+                    [
+                        'type' => $incident['event'] ?? 'CCTV',
+                        'location' => $incident['camera_name'] ?? null,
+                        'reporter_name' => 'CCTV',
+                        'reporter_id' => null,
+                        'department' => $incident['department'] ?? null,
+                        'status' => $incident['status'] ?? null,
+                        'timestamp' => isset($incident['timestamp']) ? date('Y-m-d H:i:s', strtotime($incident['timestamp'])) : null,
+                        'source' => 'cctv',
+                        'incident_description' => null,
+                        'proof_image_url' => $incident['firebase_url'] ?? null,
+                        'updated_at' => now(),
+                        'created_at' => now(),
+                    ]
+                );
             $countCctv++;
         }
         $this->info("Synced {$countCctv} CCTV incidents.");

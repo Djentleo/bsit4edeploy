@@ -117,7 +117,7 @@
                         Current Status:
                     </span>
                     <span
-                        class="px-4 py-1 rounded-full text-sm font-semibold shadow-sm transition-all duration-200
+                        class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold shadow-sm transition-all duration-200 whitespace-nowrap max-w-[160px]
                         @if($status === 'new') bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 border border-blue-300 dark:border-blue-700
                         @elseif($status === 'dispatched') bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 border border-yellow-300 dark:border-yellow-700
                         @elseif($status === 'resolved') bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 border border-green-300 dark:border-green-700

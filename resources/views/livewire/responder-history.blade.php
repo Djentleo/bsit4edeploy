@@ -1,4 +1,4 @@
-<div>
+<div wire:poll.10s>
     <div class="flex flex-col md:flex-row gap-4 mb-6 items-center">
         <div class="relative flex-grow w-full md:w-auto">
             <input type="search" wire:model.live="search" autocomplete="off"
@@ -52,7 +52,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4"
+                    <td colspan="6"
                         class="px-6 py-8 text-center text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-900">
                         <div class="flex flex-col items-center">
                             <i class="fas fa-history text-gray-400 dark:text-gray-500 text-2xl mb-2"></i>
