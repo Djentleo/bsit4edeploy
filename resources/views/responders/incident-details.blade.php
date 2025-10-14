@@ -1,4 +1,4 @@
-<div class="max-w-5xl mx-auto p-6 space-y-6">
+<div class="max-w-5xl mx-auto p-6 space-y-6" wire:poll.5s="pollUpdates">
     <!-- Header -->
     <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
         <div class="flex items-center justify-between">
@@ -303,7 +303,8 @@
                 </div>
             </div>
             <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-2">
-                <div id="map" style="width: 100%; height: 400px; border-radius: 0.5rem; overflow: hidden;"></div>
+                <div id="map" wire:ignore style="width: 100%; height: 400px; border-radius: 0.5rem; overflow: hidden;">
+                </div>
             </div>
         </div>
     </div>
@@ -312,17 +313,68 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-                if (window.mapboxgl && document.getElementById('map')) {
-                    mapboxgl.accessToken = 'pk.eyJ1IjoiZGplbnRsZW8iLCJhIjoiY21mNnoxMDgzMGt3NjJyb20zY3dqdnRjdSJ9.OKI8RAGo7e9eRRXejMLfOA';
-                    const map = new mapboxgl.Map({
+        (function () {
+            if (window.__initResponderMapsBound) return; // prevent double-binding
+            window.__initResponderMapsBound = true;
+
+            function add3DBuildings(map) {
+                map.on('load', function () {
+                    const layers = map.getStyle().layers || [];
+                    let labelLayerId;
+                    for (let i = 0; i < layers.length; i++) {
+                        if (layers[i].type === 'symbol' && layers[i].layout && layers[i].layout['text-field']) {
+                            labelLayerId = layers[i].id;
+                            break;
+                        }
+                    }
+                    try {
+                        map.addLayer({
+                            id: '3d-buildings',
+                            source: 'composite',
+                            'source-layer': 'building',
+                            filter: ['==', 'extrude', 'true'],
+                            type: 'fill-extrusion',
+                            minzoom: 15,
+                            paint: {
+                                'fill-extrusion-color': '#aaa',
+                                'fill-extrusion-height': ['get', 'height'],
+                                'fill-extrusion-base': ['get', 'min_height'],
+                                'fill-extrusion-opacity': 0.6
+                            }
+                        }, labelLayerId);
+                    } catch (e) {
+                        // layer may already exist; ignore
+                    }
+                });
+            }
+
+            function destroyExistingMap(containerEl) {
+                if (!containerEl) return;
+                if (containerEl._mapInstance && typeof containerEl._mapInstance.remove === 'function') {
+                    try { containerEl._mapInstance.remove(); } catch (e) {}
+                    containerEl._mapInstance = null;
+                }
+                // Clear any leftover nodes
+                while (containerEl.firstChild) containerEl.removeChild(containerEl.firstChild);
+            }
+
+            window.initResponderMaps = function () {
+                if (!window.mapboxgl) return;
+                mapboxgl.accessToken = 'pk.eyJ1IjoiZGplbnRsZW8iLCJhIjoiY21mNnoxMDgzMGt3NjJyb20zY3dqdnRjdSJ9.OKI8RAGo7e9eRRXejMLfOA';
+
+                // Initialize Mobile map if present
+                var mapEl = document.getElementById('map');
+                if (mapEl) {
+                    destroyExistingMap(mapEl);
+                    var map = new mapboxgl.Map({
                         container: 'map',
                         style: 'mapbox://styles/mapbox/streets-v11',
-                        center: [120.9532, 14.6562], // Default center (Malabon)
+                        center: [120.9532, 14.6562],
                         zoom: 13,
                         pitch: 45,
                         bearing: -17.6
                     });
+                    mapEl._mapInstance = map;
                     map.addControl(new mapboxgl.NavigationControl());
                     map.addControl(new mapboxgl.FullscreenControl());
                     map.addControl(new mapboxgl.GeolocateControl({
@@ -330,64 +382,94 @@
                         trackUserLocation: true,
                         showUserHeading: true
                     }));
-                    map.on('load', function () {
-                        const layers = map.getStyle().layers;
-                        let labelLayerId;
-                        for (let i = 0; i < layers.length; i++) {
-                            if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-                                labelLayerId = layers[i].id;
-                                break;
-                            }
-                        }
-                        map.addLayer({
-                            'id': '3d-buildings',
-                            'source': 'composite',
-                            'source-layer': 'building',
-                            'filter': ['==', 'extrude', 'true'],
-                            'type': 'fill-extrusion',
-                            'minzoom': 15,
-                            'paint': {
-                                'fill-extrusion-color': '#aaa',
-                                'fill-extrusion-height': ["get", "height"],
-                                'fill-extrusion-base': ["get", "min_height"],
-                                'fill-extrusion-opacity': 0.6
-                            }
-                        }, labelLayerId);
-                    });
+                    add3DBuildings(map);
+                    // Ensure proper sizing after DOM updates
+                    setTimeout(() => { try { map.resize(); } catch (e) {} }, 60);
+
                     // Dynamic marker/geocode logic
                     const address = @json($incident['location'] ?? '');
-                    const lat = @json($incident['latitude'] ?? null);
-                    const lng = @json($incident['longitude'] ?? null);
-                    if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
+                    const lat = parseFloat(@json($incident['latitude'] ?? ''));
+                    const lng = parseFloat(@json($incident['longitude'] ?? ''));
+                    if (!isNaN(lat) && !isNaN(lng)) {
                         map.setCenter([lng, lat]);
-                        new mapboxgl.Marker({ color: 'red' })
-                            .setLngLat([lng, lat])
-                            .addTo(map);
-                    } else if (address) {
+                        new mapboxgl.Marker({ color: 'red' }).setLngLat([lng, lat]).addTo(map);
+                    } else if (address && window.mapboxSdk) {
                         const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
                         mapboxClient.geocoding
-                            .forwardGeocode({
-                                query: address,
-                                limit: 1
-                            })
+                            .forwardGeocode({ query: address, limit: 1 })
                             .send()
-                            .then(function(response) {
-                                if (
-                                    response &&
-                                    response.body &&
-                                    response.body.features &&
-                                    response.body.features.length
-                                ) {
-                                    const feature = response.body.features[0];
+                            .then(function (response) {
+                                const feature = response?.body?.features?.[0];
+                                if (feature) {
                                     map.setCenter(feature.center);
-                                    new mapboxgl.Marker({ color: 'red' })
-                                        .setLngLat(feature.center)
-                                        .addTo(map);
+                                    new mapboxgl.Marker({ color: 'red' }).setLngLat(feature.center).addTo(map);
                                 }
-                            });
+                            })
+                            .catch(() => {});
                     }
                 }
-            });
+
+                // Initialize CCTV map if present
+                var cctvEl = document.getElementById('cctv-map');
+                if (cctvEl) {
+                    destroyExistingMap(cctvEl);
+                    var cctvMap = new mapboxgl.Map({
+                        container: 'cctv-map',
+                        style: 'mapbox://styles/mapbox/streets-v11',
+                        center: [120.9532, 14.6562],
+                        zoom: 13,
+                        pitch: 45,
+                        bearing: -17.6
+                    });
+                    cctvEl._mapInstance = cctvMap;
+                    cctvMap.addControl(new mapboxgl.NavigationControl());
+                    cctvMap.addControl(new mapboxgl.FullscreenControl());
+                    cctvMap.addControl(new mapboxgl.GeolocateControl({
+                        positionOptions: { enableHighAccuracy: true },
+                        trackUserLocation: true,
+                        showUserHeading: true
+                    }));
+                    add3DBuildings(cctvMap);
+                    // Ensure proper sizing after DOM updates
+                    setTimeout(() => { try { cctvMap.resize(); } catch (e) {} }, 60);
+
+                    const cameraName = @json($incident['camera_name'] ?? '');
+                    const clat = parseFloat(@json($incident['latitude'] ?? ''));
+                    const clng = parseFloat(@json($incident['longitude'] ?? ''));
+                    if (!isNaN(clat) && !isNaN(clng)) {
+                        cctvMap.setCenter([clng, clat]);
+                        new mapboxgl.Marker({ color: 'red' }).setLngLat([clng, clat]).addTo(cctvMap);
+                    } else if (cameraName && window.mapboxSdk) {
+                        const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+                        mapboxClient.geocoding
+                            .forwardGeocode({ query: cameraName, limit: 1 })
+                            .send()
+                            .then(function (response) {
+                                const feature = response?.body?.features?.[0];
+                                if (feature) {
+                                    cctvMap.setCenter(feature.center);
+                                    new mapboxgl.Marker({ color: 'red' }).setLngLat(feature.center).addTo(cctvMap);
+                                }
+                            })
+                            .catch(() => {});
+                    }
+                }
+            };
+
+            // Bind to initial load and Livewire lifecycle events
+            document.addEventListener('DOMContentLoaded', window.initResponderMaps);
+            document.addEventListener('livewire:load', window.initResponderMaps);
+            document.addEventListener('livewire:update', window.initResponderMaps);
+            document.addEventListener('livewire:navigated', window.initResponderMaps);
+            // Livewire v2 compatibility: re-run after each message processed
+            if (window.Livewire && typeof window.Livewire.hook === 'function') {
+                try {
+                    window.Livewire.hook('message.processed', () => {
+                        window.initResponderMaps();
+                    });
+                } catch (e) {}
+            }
+        })();
     </script>
 </div>
 @endif
@@ -423,7 +505,8 @@
             </div>
         </div>
         <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-2">
-            <div id="cctv-map" style="width: 100%; height: 400px; border-radius: 0.5rem; overflow: hidden;"></div>
+            <div id="cctv-map" wire:ignore style="width: 100%; height: 400px; border-radius: 0.5rem; overflow: hidden;">
+            </div>
         </div>
     </div>
 </div>
@@ -432,82 +515,12 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
 <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-                if (window.mapboxgl && document.getElementById('cctv-map')) {
-                    mapboxgl.accessToken = 'pk.eyJ1IjoiZGplbnRsZW8iLCJhIjoiY21mNnoxMDgzMGt3NjJyb20zY3dqdnRjdSJ9.OKI8RAGo7e9eRRXejMLfOA';
-                    const cctvMap = new mapboxgl.Map({
-                        container: 'cctv-map',
-                        style: 'mapbox://styles/mapbox/streets-v11',
-                        center: [120.9532, 14.6562],
-                        zoom: 13,
-                        pitch: 45,
-                        bearing: -17.6
-                    });
-                    cctvMap.addControl(new mapboxgl.NavigationControl());
-                    cctvMap.addControl(new mapboxgl.FullscreenControl());
-                    cctvMap.addControl(new mapboxgl.GeolocateControl({
-                        positionOptions: { enableHighAccuracy: true },
-                        trackUserLocation: true,
-                        showUserHeading: true
-                    }));
-                    cctvMap.on('load', function () {
-                        const layers = cctvMap.getStyle().layers;
-                        let labelLayerId;
-                        for (let i = 0; i < layers.length; i++) {
-                            if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
-                                labelLayerId = layers[i].id;
-                                break;
-                            }
-                        }
-                        cctvMap.addLayer({
-                            'id': '3d-buildings',
-                            'source': 'composite',
-                            'source-layer': 'building',
-                            'filter': ['==', 'extrude', 'true'],
-                            'type': 'fill-extrusion',
-                            'minzoom': 15,
-                            'paint': {
-                                'fill-extrusion-color': '#aaa',
-                                'fill-extrusion-height': ["get", "height"],
-                                'fill-extrusion-base': ["get", "min_height"],
-                                'fill-extrusion-opacity': 0.6
-                            }
-                        }, labelLayerId);
-                    });
-                    // Dynamic marker/geocode logic
-                    const cameraName = @json($incident['camera_name'] ?? '');
-                    const lat = @json($incident['latitude'] ?? null);
-                    const lng = @json($incident['longitude'] ?? null);
-                    if (lat && lng && !isNaN(lat) && !isNaN(lng)) {
-                        cctvMap.setCenter([lng, lat]);
-                        new mapboxgl.Marker({ color: 'red' })
-                            .setLngLat([lng, lat])
-                            .addTo(cctvMap);
-                    } else if (cameraName) {
-                        const mapboxClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
-                        mapboxClient.geocoding
-                            .forwardGeocode({
-                                query: cameraName,
-                                limit: 1
-                            })
-                            .send()
-                            .then(function(response) {
-                                if (
-                                    response &&
-                                    response.body &&
-                                    response.body.features &&
-                                    response.body.features.length
-                                ) {
-                                    const feature = response.body.features[0];
-                                    cctvMap.setCenter(feature.center);
-                                    new mapboxgl.Marker({ color: 'red' })
-                                        .setLngLat(feature.center)
-                                        .addTo(cctvMap);
-                                }
-                            });
-                    }
-                }
-            });
+    // The actual initialization is handled by window.initResponderMaps,
+    // which is bound once in the earlier script block.
+    if (window.initResponderMaps) {
+        // If the CCTV section renders without the mobile section, ensure init is bound and run once
+        document.addEventListener('DOMContentLoaded', window.initResponderMaps);
+    }
 </script>
 </div>
 @endif

@@ -218,6 +218,23 @@ class IncidentDetails extends Component
         $this->timeline = $timeline;
     }
 
+    public function pollUpdates()
+    {
+        // Always reload from DB for real-time updates
+        $incidentId = $this->incident['id'] ?? null;
+        if ($incidentId) {
+            $incident = Incident::where('id', $incidentId)
+                ->orWhere('firebase_id', $incidentId)
+                ->first();
+            if ($incident) {
+                $this->incident = $incident->toArray();
+                $this->status = $incident->status;
+                $this->loadNotes($incident->id);
+                $this->loadTimeline($incident->id);
+            }
+        }
+    }
+
     public function render()
     {
         return view('responders.incident-details', [
