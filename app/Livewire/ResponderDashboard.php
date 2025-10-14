@@ -148,6 +148,23 @@ class ResponderDashboard extends Component
                     (isset($incident['status']) && str_contains(strtolower($incident['status']), $search)) ||
                     (isset($incident['incident_description']) && str_contains(strtolower($incident['incident_description']), $search))
                 );
+
+                // Flexible date search
+                $tsRaw = $incident['datetime'] ?? ($incident['date_time'] ?? ($incident['timestamp'] ?? null));
+                if ($tsRaw) {
+                    try {
+                        $dt = \Carbon\Carbon::parse($tsRaw);
+                        $dateMatches = (
+                            str_contains(strtolower($dt->format('F')), $search) || // Month name
+                            str_contains(strtolower($dt->format('Y')), $search) || // Year
+                            str_contains(strtolower($dt->format('d')), $search) || // Day
+                            str_contains(strtolower($dt->format('F j, Y')), $search) // Full date
+                        );
+                        $matchesSearch = $matchesSearch || $dateMatches;
+                    } catch (\Throwable $e) {
+                        // ignore parse errors
+                    }
+                }
             }
             $matchesStatus = $this->statusFilter ? $item['status'] === $this->statusFilter : true;
             // Match against either 'type' (mobile) or 'event' (CCTV)

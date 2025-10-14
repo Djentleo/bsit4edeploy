@@ -84,7 +84,12 @@ class MobileIncidentTable extends Component
                     ->orWhere('reporter_name', 'like', $s)
                     ->orWhere('department', 'like', $s)
                     ->orWhere('status', 'like', $s)
-                    ->orWhere('incident_description', 'like', $s);
+                    ->orWhere('incident_description', 'like', $s)
+                    ->orWhere('timestamp', 'like', $s)
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%M') LIKE ?", [$s])
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%Y') LIKE ?", [$s])
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%d') LIKE ?", [$s])
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%M %d, %Y') LIKE ?", [$s]);
             });
         }
         if ($this->typeFilter) {
@@ -145,7 +150,12 @@ class MobileIncidentTable extends Component
                     ->orWhere('reporter_name', 'like', $s)
                     ->orWhere('department', 'like', $s)
                     ->orWhere('status', 'like', $s)
-                    ->orWhere('incident_description', 'like', $s);
+                    ->orWhere('incident_description', 'like', $s)
+                    ->orWhere('timestamp', 'like', $s)
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%M') LIKE ?", [$s])
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%Y') LIKE ?", [$s])
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%d') LIKE ?", [$s])
+                    ->orWhereRaw("DATE_FORMAT(timestamp, '%M %d, %Y') LIKE ?", [$s]);
             });
         }
         if ($this->typeFilter) {
