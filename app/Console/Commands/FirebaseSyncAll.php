@@ -40,11 +40,17 @@ class FirebaseSyncAll extends Command
         $mobileRaw = $database->getReference('mobile_incidents')->getValue() ?? [];
         $countMobile = 0;
         foreach ($mobileRaw as $firebaseKey => $incident) {
+            // Prioritize latitude/longitude if available
+            $latitude = isset($incident['latitude']) && is_numeric($incident['latitude']) ? $incident['latitude'] : null;
+            $longitude = isset($incident['longitude']) && is_numeric($incident['longitude']) ? $incident['longitude'] : null;
+            $location = $incident['location'] ?? null;
             DB::table('incidents')->updateOrInsert(
                 ['firebase_id' => $firebaseKey],
                 [
                     'type' => $incident['type'] ?? null,
-                    'location' => $incident['location'] ?? null,
+                    'location' => $location,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
                     'reporter_name' => $incident['reporter_name'] ?? null,
                     'contact_number' => $incident['contact_number'] ?? null,
                     'reporter_id' => $incident['reporter_id'] ?? null,
