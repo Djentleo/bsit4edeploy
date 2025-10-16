@@ -78,13 +78,13 @@
                         @endif
                     </th>
                     <th class="px-4 py-3 text-xs font-medium text-white uppercase tracking-wider">RESOLVED AT</th>
+                    <th class="px-3 py-3 text-xs font-medium text-white uppercase tracking-wider">ACTIONS</th>
                 </tr>
             </thead>
             <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
                 @forelse($logs as $incident)
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150">
-                    <td class="px-4 py-3 text-gray-900 dark:text-white font-medium text-sm">{{ $incident->short_id ??
-                        '-' }}</td>
+                    <td class="px-4 py-3 text-gray-900 dark:text-white font-medium text-sm">{{ $incident->short_id ?? '-' }}</td>
                     <td class="px-4 py-3">
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
                             @if(($incident->type ?? '') === 'fire') bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200
@@ -96,12 +96,8 @@
                             {{ ucfirst(str_replace('_', ' ', $incident->type ?? '-')) }}
                         </span>
                     </td>
-                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300 text-sm hidden sm:table-cell">{{
-                        $incident->location ?? '-' }}
-                    </td>
-                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300 text-sm hidden md:table-cell">{{
-                        $incident->reporter_name ?? '-'
-                        }}</td>
+                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300 text-sm hidden sm:table-cell">{{ $incident->location ?? '-' }}</td>
+                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300 text-sm hidden md:table-cell">{{ $incident->reporter_name ?? '-' }}</td>
                     <td class="px-4 py-3">
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
                             @if(($incident->status ?? '') === 'new') bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200
@@ -114,12 +110,10 @@
                             {{ ucfirst(str_replace('_', ' ', $incident->status ?? '-')) }}
                         </span>
                     </td>
-                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300 font-medium text-sm hidden lg:table-cell">{{
-                        $incident->department ?? '-' }}</td>
+                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300 font-medium text-sm hidden lg:table-cell">{{ $incident->department ?? '-' }}</td>
                     <td class="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
                         <div class="max-w-[120px] truncate">
-                            {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('M d, Y') :
-                            '-' }}
+                            {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('M d, Y') : '-' }}
                         </div>
                         <div class="text-gray-400 dark:text-gray-500 text-xs">
                             {{ $incident->timestamp ? \Carbon\Carbon::parse($incident->timestamp)->format('H:i') : '' }}
@@ -127,13 +121,17 @@
                     </td>
                     <td class="px-4 py-3 text-gray-500 dark:text-gray-400 text-xs">
                         <div class="max-w-[120px] truncate">
-                            {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('M d, Y')
-                            : '-' }}
+                            {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('M d, Y') : '-' }}
                         </div>
                         <div class="text-gray-400 dark:text-gray-500 text-xs">
-                            {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('H:i') :
-                            '' }}
+                            {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('H:i') : '' }}
                         </div>
+                    </td>
+                    <td class="px-3 py-4">
+                        <a href="/dispatch?incident_id={{ urlencode($incident->incident_id) }}&from=logs"
+                            class="inline-flex items-center px-3 py-1.5 rounded-md bg-blue-600 dark:bg-blue-900 text-white text-xs font-semibold hover:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 shadow-sm">
+                            View
+                        </a>
                     </td>
                 </tr>
                 @empty

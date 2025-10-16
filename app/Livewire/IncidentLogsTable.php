@@ -68,9 +68,9 @@ class IncidentLogsTable extends Component
             $query->where('type', $this->typeFilter);
         }
         $logs = $query->orderBy($this->sortField, $this->sortDirection)->paginate($this->perPage);
-        // Add short_id to each log (using md5 hash, first 8 chars)
+        // Add short_id to each log (first 8 chars of Firebase ID)
         foreach ($logs as $log) {
-            $log->short_id = substr(md5($log->incident_id), 0, 8);
+            $log->short_id = substr($log->incident_id, 0, 8);
         }
         $types = IncidentLog::query()->distinct()->pluck('type');
         return view('livewire.incident-logs-table', [

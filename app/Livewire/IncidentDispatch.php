@@ -16,6 +16,7 @@ class IncidentDispatch extends Component
 {
     // Incident
     public $incidentId;
+    public $readOnly = false;
     public $mainResponder = '';
     public $additionalResponders = [];
     public $allResponders = [];
@@ -38,7 +39,10 @@ class IncidentDispatch extends Component
 
     public function mount($incidentId)
     {
-        $this->incidentId = $incidentId;
+    // Detect if 'from' query param is set to 'logs'
+    $this->incidentId = $incidentId;
+    $fromLogs = request()->query('from') === 'logs';
+    $this->readOnly = $fromLogs;
         // Only responders (role = 'responder')
         $this->allResponders = User::where('role', 'responder')->get();
 

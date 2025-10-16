@@ -79,7 +79,8 @@
             <!-- Add Another Responder & Dispatch Button Row -->
             <div class="flex flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-600 w-full">
                 <button type="button" wire:click="addResponder"
-                    class="w-1/2 min-w-0 bg-white dark:bg-gray-800 text-green-600 dark:text-white px-3 py-2 rounded-2xl font-semibold border-2 border-dashed border-green-300 dark:hover:from-green-800 text-center h-14 text-xs break-words overflow-hidden">
+                    class="w-1/2 min-w-0 bg-white dark:bg-gray-800 text-green-600 dark:text-white px-3 py-2 rounded-2xl font-semibold border-2 border-dashed border-green-300 dark:hover:from-green-800 text-center h-14 text-xs break-words overflow-hidden"
+                    @if($readOnly) disabled style="opacity:0.5;cursor:not-allowed;" @endif>
                     <span class="flex items-center justify-center w-full gap-1">
                         <i class="fas fa-plus"></i>
                         <span class="break-words">Add Another Responder</span>
@@ -87,7 +88,8 @@
                 </button>
                 <button type="button"
                     class="w-1/2 bg-blue-900 text-white px-3 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-14 text-xs whitespace-nowrap"
-                    x-data="{}" x-on:click.prevent="Swal.fire({
+                    @if($readOnly) disabled style="opacity:0.5;cursor:not-allowed;" @endif
+                    x-data="{}" @if(!$readOnly) x-on:click.prevent="Swal.fire({
                         title: 'Are you sure?',
                         text: 'Do you want to dispatch this incident?',
                         icon: 'question',
@@ -95,7 +97,7 @@
                         confirmButtonColor: '#2563eb',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Yes, dispatch it!'
-                    }).then((result) => { if (result.isConfirmed) { $wire.dispatchIncident(); } })">
+                    }).then((result) => { if (result.isConfirmed) { $wire.dispatchIncident(); } })" @endif>
                     <i class="fas fa-paper-plane"></i>
                     Dispatch Incident
                 </button>
@@ -146,7 +148,8 @@
                 </div>
                 <button type="button"
                     class="w-full bg-blue-900 text-white py-3 px-4 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-12 text-xs whitespace-nowrap"
-                    x-data="{}" x-on:click.prevent="Swal.fire({
+                    @if($readOnly) disabled style="opacity:0.5;cursor:not-allowed;" @endif
+                    x-data="{}" @if(!$readOnly) x-on:click.prevent="Swal.fire({
                         title: 'Update Status?',
                         text: 'Are you sure you want to update the status?',
                         icon: 'question',
@@ -154,7 +157,7 @@
                         confirmButtonColor: '#2563eb',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Yes, update!'
-                    }).then((result) => { if (result.isConfirmed) { $wire.updateStatus(); } })">
+                    }).then((result) => { if (result.isConfirmed) { $wire.updateStatus(); } })" @endif>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
@@ -188,7 +191,8 @@
                         x-on:keydown.enter="if (!event.shiftKey) { event.preventDefault(); $el.closest('form').dispatchEvent(new Event('submit', { cancelable: true })); }">
                     </textarea>
                     <button type="submit"
-                        class="w-full bg-blue-900 text-white py-3 px-4 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-12 text-xs whitespace-nowrap">
+                        class="w-full bg-blue-900 text-white py-3 px-4 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-12 text-xs whitespace-nowrap"
+                        @if($readOnly) disabled style="opacity:0.5;cursor:not-allowed;" @endif>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -340,7 +344,8 @@
         <div class="w-full max-w-xl">
             <button type="button"
                 class="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg flex items-center justify-center gap-2"
-                x-data="{}" x-on:click.prevent="Swal.fire({
+                @if($readOnly) disabled style="opacity:0.5;cursor:not-allowed;" @endif
+                x-data="{}" @if(!$readOnly) x-on:click.prevent="Swal.fire({
                             title: 'Delete Incident?',
                             text: 'Are you sure you want to permanently delete this incident from both MySQL and Firebase?',
                             icon: 'warning',
@@ -348,7 +353,7 @@
                             confirmButtonColor: '#d33',
                             cancelButtonColor: '#2563eb',
                             confirmButtonText: 'Yes, delete it!'
-                        }).then((result) => { if (result.isConfirmed) { $wire.deleteIncident(); } })">
+                        }).then((result) => { if (result.isConfirmed) { $wire.deleteIncident(); } })" @endif>
                 <i class="fas fa-trash"></i>
                 Delete Incident
             </button>
