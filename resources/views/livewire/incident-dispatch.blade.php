@@ -44,7 +44,8 @@
                     class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm text-sm">
                     <option value="">Choose Lead Responder</option>
                     @foreach($this->allResponders as $responder)
-                    <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ?? 'N/A' }})</option>
+                    <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ?? 'N/A'
+                        }})</option>
                     @endforeach
                 </select>
             </div>
@@ -61,7 +62,8 @@
                         class="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm text-sm">
                         <option value="">Select Additional Responder</option>
                         @foreach($this->allResponders as $responder)
-                        <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ?? 'N/A' }})</option>
+                        <option value="{{ $responder->id }}">{{ $responder->name }} ({{ $responder->responder_type ??
+                            'N/A' }})</option>
                         @endforeach
                     </select>
                     <button type="button" wire:click="removeResponder({{ $index }})"
@@ -181,18 +183,12 @@
                 <div class="space-y-3">
                     <textarea wire:model.defer="newNote" rows="3"
                         placeholder="Add an internal note about this incident..."
-                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none shadow-sm text-sm transition-all duration-200 placeholder-gray-500"></textarea>
-                    <button type="button"
-                        class="w-full bg-blue-900 text-white py-3 px-4 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-12 text-xs whitespace-nowrap"
-                        x-data="{}" x-on:click.prevent="Swal.fire({
-                            title: 'Add Note?',
-                            text: 'Are you sure you want to add this note?',
-                            icon: 'question',
-                            showCancelButton: true,
-                            confirmButtonColor: '#2563eb',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, add it!'
-                        }).then((result) => { if (result.isConfirmed) { $wire.addNote(); } })">
+                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none shadow-sm text-sm transition-all duration-200 placeholder-gray-500"
+                        x-data="{}"
+                        x-on:keydown.enter="if (!event.shiftKey) { event.preventDefault(); $el.closest('form').dispatchEvent(new Event('submit', { cancelable: true })); }">
+                    </textarea>
+                    <button type="submit"
+                        class="w-full bg-blue-900 text-white py-3 px-4 rounded-2xl font-bold shadow-lg hover:shadow-xl flex items-center justify-center gap-2 h-12 text-xs whitespace-nowrap">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -336,15 +332,15 @@
                 @endforelse
             </div>
         </div>
-            
+
     </div>
     <!-- Delete Incident Button -->
 
-            <div class="flex justify-center">
-                <div class="w-full max-w-xl">
-                    <button type="button"
-                        class="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg flex items-center justify-center gap-2"
-                        x-data="{}" x-on:click.prevent="Swal.fire({
+    <div class="flex justify-center">
+        <div class="w-full max-w-xl">
+            <button type="button"
+                class="w-full bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg flex items-center justify-center gap-2"
+                x-data="{}" x-on:click.prevent="Swal.fire({
                             title: 'Delete Incident?',
                             text: 'Are you sure you want to permanently delete this incident from both MySQL and Firebase?',
                             icon: 'warning',
@@ -353,11 +349,11 @@
                             cancelButtonColor: '#2563eb',
                             confirmButtonText: 'Yes, delete it!'
                         }).then((result) => { if (result.isConfirmed) { $wire.deleteIncident(); } })">
-                        <i class="fas fa-trash"></i>
-                        Delete Incident
-                    </button>
-                </div>
-            </div>
+                <i class="fas fa-trash"></i>
+                Delete Incident
+            </button>
+        </div>
+    </div>
 
     <!-- Custom Scrollbar Styles -->
     <style>

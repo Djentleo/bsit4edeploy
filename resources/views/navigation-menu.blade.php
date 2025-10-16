@@ -203,13 +203,25 @@
                 @endif
                 <div class="border-t border-gray-200 dark:border-gray-700"></div>
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="{{ route('logout') }}" x-data="{}">
                     @csrf
-                    <button type="submit"
-                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <button type="button"
+                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                        x-on:click.prevent="Swal.fire({
+                            title: 'Are you sure?',
+                            text: 'You will be logged out of the admin panel.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, log out',
+                            cancelButtonText: 'Cancel'
+                        }).then((result) => { if (result.isConfirmed) { $el.closest('form').submit(); } })">
                         {{ __('Log Out') }}
                     </button>
                 </form>
+                <!-- SweetAlert2 -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             </div>
         </div>
     </div>
