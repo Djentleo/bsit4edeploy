@@ -39,10 +39,10 @@ class IncidentDispatch extends Component
 
     public function mount($incidentId)
     {
-    // Detect if 'from' query param is set to 'logs'
-    $this->incidentId = $incidentId;
-    $fromLogs = request()->query('from') === 'logs';
-    $this->readOnly = $fromLogs;
+        // Detect if 'from' query param is set to 'logs'
+        $this->incidentId = $incidentId;
+        $fromLogs = request()->query('from') === 'logs';
+        $this->readOnly = $fromLogs;
         // Only responders (role = 'responder')
         $this->allResponders = User::where('role', 'responder')->get();
 
@@ -130,6 +130,20 @@ class IncidentDispatch extends Component
             })->update(['status' => $status]);
 
             $this->successMessage = 'Status updated.';
+            // Database notification for admins
+            $admins = \App\Models\User::where('role', 'admin')->get();
+            if ($admins->count() > 0) {
+                $msg = 'Incident status changed to ' . ucfirst($status) . ' for incident ' . ($incident->type ?? '') . ' at ' . ($incident->location ?? '');
+                // Use relative link so it respects subfolder deployments (e.g., /CAP102_TEST/public)
+                $link = 'dispatch?incident_id=' . ($incident->firebase_id ?? $incident->id);
+                \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                    'status',
+                    ($incident->firebase_id ?? $incident->id),
+                    $msg,
+                    $link,
+                    ['status' => $status, 'incident' => $incident]
+                ));
+            }
         } else {
             $this->errorMessage = 'Incident not found.';
             return;
@@ -255,6 +269,20 @@ class IncidentDispatch extends Component
             'note' => $noteText,
         ]);
         $this->newNote = '';
+        // Database notification for admins
+        $admins = \App\Models\User::where('role', 'admin')->get();
+        if ($admins->count() > 0) {
+            $msg = 'New note added to incident ' . ($incident->type ?? '') . ' at ' . ($incident->location ?? '') . ': "' . $noteText . '"';
+            // Use relative link so it respects subfolder deployments (e.g., /CAP102_TEST/public)
+            $link = 'dispatch?incident_id=' . ($incident->firebase_id ?? $incident->id);
+            \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                'note',
+                ($incident->firebase_id ?? $incident->id),
+                $msg,
+                $link,
+                ['note' => $noteText, 'incident' => $incident]
+            ));
+        }
         $this->loadNotes();
         $this->successMessage = 'Note added.';
 

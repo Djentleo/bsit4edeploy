@@ -5,8 +5,9 @@ namespace App\Services;
 use Kreait\Firebase\Factory;
 
 
-class FirebaseService{
-     /**
+class FirebaseService
+{
+    /**
      * Copy a resolved incident to incident_logs without removing from original node.
      */
     public function logResolvedIncident($incidentId, $resolvedAt = null)
@@ -43,7 +44,7 @@ class FirebaseService{
         return $resolvedList;
     }
 
-     /**
+    /**
      * Remove a resolved incident from resolved_incidents in Firebase.
      */
     public function removeResolvedIncident($incidentId)
@@ -99,11 +100,22 @@ class FirebaseService{
         $newRef->update(['incident_id' => $incidentId]);
         $incident['incident_id'] = $incidentId;
 
-        // Send email notification to all admins
+        // Send email and database notification to all admins
         try {
             $admins = \App\Models\User::where('role', 'admin')->get();
             if ($admins->count() > 0) {
                 \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\NewIncidentNotification((object) $incident));
+                // Database notification
+                $msg = 'New incident reported: ' . ($incident['type'] ?? $incident['event'] ?? '') . ' at ' . ($incident['location'] ?? $incident['camera_name'] ?? '');
+                // Use relative link so it works when app is in a subfolder (no leading slash)
+                $link = 'dispatch?incident_id=' . ($incident['incident_id'] ?? $incident['firebase_id'] ?? '');
+                \Illuminate\Support\Facades\Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                    'incident',
+                    ($incident['incident_id'] ?? $incident['firebase_id'] ?? ''),
+                    $msg,
+                    $link,
+                    ['raw' => $incident]
+                ));
             }
         } catch (\Exception $e) {
             // Optionally log error

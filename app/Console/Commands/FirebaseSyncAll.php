@@ -5,6 +5,9 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
+use App\Models\User;
 
 class FirebaseSyncAll extends Command
 {
@@ -40,6 +43,8 @@ class FirebaseSyncAll extends Command
         $mobileRaw = $database->getReference('mobile_incidents')->getValue() ?? [];
         $countMobile = 0;
         foreach ($mobileRaw as $firebaseKey => $incident) {
+            // Detect if new before upsert
+            $existed = DB::table('incidents')->where('firebase_id', $firebaseKey)->exists();
             // Prioritize latitude/longitude if available
             $latitude = isset($incident['latitude']) && is_numeric($incident['latitude']) ? $incident['latitude'] : null;
             $longitude = isset($incident['longitude']) && is_numeric($incident['longitude']) ? $incident['longitude'] : null;
@@ -66,6 +71,26 @@ class FirebaseSyncAll extends Command
                     'created_at' => now(),
                 ]
             );
+            // If it didn't exist before, create an admin DB notification
+            if (! $existed) {
+                try {
+                    $admins = User::where('role', 'admin')->get();
+                    if ($admins->count() > 0) {
+                        $msg = 'New incident reported: ' . ($incident['type'] ?? '') . ' at ' . ($location ?? 'Unknown location');
+                        // Store relative link so UI works under subfolders
+                        $link = 'dispatch?incident_id=' . $firebaseKey;
+                        Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                            'incident',
+                            $firebaseKey,
+                            $msg,
+                            $link,
+                            ['raw' => $incident]
+                        ));
+                    }
+                } catch (\Throwable $e) {
+                    Log::error('Failed to send mobile sync incident notification', ['error' => $e->getMessage(), 'id' => $firebaseKey]);
+                }
+            }
             $countMobile++;
         }
         $this->info("Synced {$countMobile} mobile incidents.");
@@ -78,23 +103,45 @@ class FirebaseSyncAll extends Command
             // Only sync if this is a CCTV incident (e.g., has camera_name or source is cctv)
             $isCctv = isset($incident['camera_name']) || ($incident['source'] ?? null) === 'cctv';
             if (!$isCctv) continue;
-                DB::table('incidents')->updateOrInsert(
-                    ['firebase_id' => $firebaseKey],
-                    [
-                        'type' => $incident['event'] ?? 'CCTV',
-                        'location' => $incident['camera_name'] ?? null,
-                        'reporter_name' => 'CCTV',
-                        'reporter_id' => null,
-                        'department' => $incident['department'] ?? null,
-                        'status' => $incident['status'] ?? null,
-                        'timestamp' => isset($incident['timestamp']) ? date('Y-m-d H:i:s', strtotime($incident['timestamp'])) : null,
-                        'source' => 'cctv',
-                        'incident_description' => null,
-                        'proof_image_url' => $incident['firebase_url'] ?? null,
-                        'updated_at' => now(),
-                        'created_at' => now(),
-                    ]
-                );
+            // Detect if new before upsert
+            $existed = DB::table('incidents')->where('firebase_id', $firebaseKey)->exists();
+            DB::table('incidents')->updateOrInsert(
+                ['firebase_id' => $firebaseKey],
+                [
+                    'type' => $incident['event'] ?? 'CCTV',
+                    'location' => $incident['camera_name'] ?? null,
+                    'reporter_name' => 'CCTV',
+                    'reporter_id' => null,
+                    'department' => $incident['department'] ?? null,
+                    'status' => $incident['status'] ?? null,
+                    'timestamp' => isset($incident['timestamp']) ? date('Y-m-d H:i:s', strtotime($incident['timestamp'])) : null,
+                    'source' => 'cctv',
+                    'incident_description' => null,
+                    'proof_image_url' => $incident['firebase_url'] ?? null,
+                    'updated_at' => now(),
+                    'created_at' => now(),
+                ]
+            );
+            // If it didn't exist before, create an admin DB notification
+            if (! $existed) {
+                try {
+                    $admins = User::where('role', 'admin')->get();
+                    if ($admins->count() > 0) {
+                        $msg = 'New incident reported: ' . ($incident['event'] ?? 'CCTV') . ' at ' . ($incident['camera_name'] ?? '');
+                        // Store relative link so UI works under subfolders
+                        $link = 'dispatch?incident_id=' . $firebaseKey;
+                        Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                            'incident',
+                            $firebaseKey,
+                            $msg,
+                            $link,
+                            ['raw' => $incident]
+                        ));
+                    }
+                } catch (\Throwable $e) {
+                    Log::error('Failed to send CCTV sync incident notification', ['error' => $e->getMessage(), 'id' => $firebaseKey]);
+                }
+            }
             $countCctv++;
         }
         $this->info("Synced {$countCctv} CCTV incidents.");

@@ -5,6 +5,9 @@ namespace App\Livewire\Responders;
 use Livewire\Component;
 use Livewire\Attributes\Layout as LivewireLayout;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log;
 use App\Models\Dispatch;
 use App\Models\Incident;
 use App\Models\IncidentNote;
@@ -159,6 +162,26 @@ class IncidentDetails extends Component
                 'details' => $newStatus,
             ]);
 
+            // Notify all admins about status change
+            try {
+                $admins = \App\Models\User::where('role', 'admin')->get();
+                if ($admins->count() > 0 && $incident) {
+                    $msg = 'Responder changed status to ' . ucfirst($newStatus) . ' for incident ' . ($incident->type ?? '') . ' at ' . ($incident->location ?? '');
+                    // Use relative link so it respects subfolder deployments
+                    $link = 'dispatch?incident_id=' . ($incident->firebase_id ?? $incident->id);
+                    Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                        'status',
+                        ($incident->firebase_id ?? $incident->id),
+                        $msg,
+                        $link,
+                        ['status' => $newStatus, 'by' => Auth::user()->name ?? 'Responder']
+                    ));
+                }
+            } catch (\Throwable $e) {
+                // Optionally log error
+                Log::error('Failed to send responder status notification', ['error' => $e->getMessage()]);
+            }
+
             // Show success message
             session()->flash('status', 'Status updated successfully to: ' . $this->statusOptions[$newStatus]);
         } else {
@@ -197,6 +220,26 @@ class IncidentDetails extends Component
             ]);
             $this->newNote = '';
             $this->loadNotes($incidentId);
+
+            // Notify all admins about new note
+            try {
+                $incident = \App\Models\Incident::find($incidentId);
+                $admins = \App\Models\User::where('role', 'admin')->get();
+                if ($admins->count() > 0 && $incident) {
+                    $msg = 'Responder added a note to incident ' . ($incident->type ?? '') . ' at ' . ($incident->location ?? '') . ': "' . $noteText . '"';
+                    // Use relative link so it respects subfolder deployments
+                    $link = 'dispatch?incident_id=' . ($incident->firebase_id ?? $incident->id);
+                    Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                        'note',
+                        ($incident->firebase_id ?? $incident->id),
+                        $msg,
+                        $link,
+                        ['note' => $noteText, 'by' => $user->name]
+                    ));
+                }
+            } catch (\Throwable $e) {
+                Log::error('Failed to send responder note notification', ['error' => $e->getMessage()]);
+            }
         }
     }
 

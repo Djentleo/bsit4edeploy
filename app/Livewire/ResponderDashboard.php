@@ -4,6 +4,9 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Log;
 use App\Models\Dispatch;
 use App\Models\Incident;
 use Carbon\Carbon;
@@ -251,6 +254,26 @@ class ResponderDashboard extends Component
         if ($dispatch && $dispatch->responder_id === Auth::id()) {
             $dispatch->status = $status;
             $dispatch->save();
+            // Notify admins about status change
+            try {
+                $incident = \App\Models\Incident::where('id', $dispatch->incident_id)
+                    ->orWhere('firebase_id', $dispatch->incident_id)
+                    ->first();
+                $admins = \App\Models\User::where('role', 'admin')->get();
+                if ($admins->count() > 0 && $incident) {
+                    $msg = 'Responder changed status to ' . ucfirst($status) . ' for incident ' . ($incident->type ?? '') . ' at ' . ($incident->location ?? '');
+                    $link = URL::to('/dispatch?incident_id=' . ($incident->firebase_id ?? $incident->id));
+                    Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                        'status',
+                        ($incident->firebase_id ?? $incident->id),
+                        $msg,
+                        $link,
+                        ['status' => $status, 'by' => Auth::user()->name ?? 'Responder']
+                    ));
+                }
+            } catch (\Throwable $e) {
+                Log::error('Failed to send responder status change notification', ['error' => $e->getMessage()]);
+            }
             // If resolved, check if all responders are resolved or only one responder is assigned
             if ($status === 'resolved') {
                 // Find the incident by id or firebase_id
@@ -330,13 +353,36 @@ class ResponderDashboard extends Component
         if (!$user) return;
         $noteText = trim($this->newNote);
         if ($noteText === '') return;
+        // Resolve to DB id if provided id is a firebase id
+        $incident = \App\Models\Incident::where('id', $incidentId)
+            ->orWhere('firebase_id', $incidentId)
+            ->first();
+        $dbId = $incident ? $incident->id : $incidentId;
         \App\Models\IncidentNote::create([
-            'incident_id' => $incidentId,
+            'incident_id' => $dbId,
             'user_id' => $user->id,
             'note' => $noteText,
         ]);
         $this->newNote = '';
-        $this->loadNotes($incidentId);
+        $this->loadNotes($dbId);
+
+        // Notify all admins about new note
+        try {
+            $admins = \App\Models\User::where('role', 'admin')->get();
+            if ($admins->count() > 0) {
+                $msg = 'Responder added a note to incident ' . ($incident->type ?? '') . ' at ' . ($incident->location ?? '') . ': "' . $noteText . '"';
+                $link = URL::to('/dispatch?incident_id=' . ($incident->firebase_id ?? $incident->id));
+                Notification::send($admins, new \App\Notifications\AdminIncidentNotification(
+                    'note',
+                    ($incident->firebase_id ?? $incident->id),
+                    $msg,
+                    $link,
+                    ['note' => $noteText, 'by' => $user->name]
+                ));
+            }
+        } catch (\Throwable $e) {
+            Log::error('Failed to send responder dashboard note notification', ['error' => $e->getMessage()]);
+        }
     }
 
     public function loadTimeline($incidentId)
