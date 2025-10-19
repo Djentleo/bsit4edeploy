@@ -184,7 +184,7 @@
                         '-' }}
                     </td>
                     <td class="px-6 py-4">
-                        <a href="dispatch?incident_id={{ urlencode($incident->firebase_id) }}"
+                        <a href="/dispatch?incident_id={{ urlencode($incident->firebase_id) }}"
                             class="inline-flex items-center px-3 py-2 rounded-md bg-blue-600 dark:bg-blue-700 text-white text-sm font-medium hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-150">
                             <i class="fas fa-eye mr-1"></i>
                             View
