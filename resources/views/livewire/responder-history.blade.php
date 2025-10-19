@@ -32,6 +32,7 @@
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Location</th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Description</th>
                     <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Resolved At</th>
+                    <th class="px-6 py-3 text-xs font-medium text-white uppercase tracking-wider">Actions</th>
                 </tr>
             </thead>
             <tbody class="text-sm divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900">
@@ -48,6 +49,17 @@
                     <td class="px-6 py-4 text-gray-500 dark:text-gray-400 text-sm">
                         {{ $incident->resolved_at ? \Carbon\Carbon::parse($incident->resolved_at)->format('H:i') :
                         '' }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        @php $dispatchId = $incident->dispatch_id ?? null; @endphp
+                        @if($dispatchId)
+                        <a href="{{ url('/responder/incidents/' . $dispatchId . '?from=logs') }}"
+                            class="inline-flex items-center px-3 py-1.5 text-xs font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow">
+                            <i class="fas fa-eye mr-1"></i> View
+                        </a>
+                        @else
+                        <span class="text-xs text-gray-400">No link</span>
+                        @endif
                     </td>
                 </tr>
                 @empty

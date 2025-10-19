@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire\Responders; 
+namespace App\Livewire\Responders;
 
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Incident;
 use App\Models\IncidentLog;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ResponderHistory extends Component
 {
@@ -19,8 +20,14 @@ class ResponderHistory extends Component
 
     protected $updatesQueryString = ['search', 'sortField', 'sortDirection', 'page'];
 
-    public function updatingSearch() { $this->resetPage(); }
-    public function updatingPerPage() { $this->resetPage(); }
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    public function updatingPerPage()
+    {
+        $this->resetPage();
+    }
 
     public function sortBy($field)
     {
@@ -39,11 +46,19 @@ class ResponderHistory extends Component
         // Only show resolved incidents assigned to this responder (via dispatches)
         if ($user && isset($user->id)) {
             $query->where('status', 'resolved')
-                ->whereIn('firebase_id', function($sub) use ($user) {
+                ->whereIn('firebase_id', function ($sub) use ($user) {
                     $sub->select('incident_id')
                         ->from('dispatches')
                         ->where('responder_id', $user->id);
-                });
+                })
+                // Attach the responder's dispatch id for this incident to build view link
+                ->addSelect([
+                    'dispatch_id' => DB::table('dispatches')
+                        ->select('id')
+                        ->whereColumn('dispatches.incident_id', 'incidents.firebase_id')
+                        ->where('responder_id', $user->id)
+                        ->limit(1)
+                ]);
         } else {
             $query->whereRaw('0=1');
         }

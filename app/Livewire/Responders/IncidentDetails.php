@@ -29,6 +29,7 @@ class IncidentDetails extends Component
     public $newNote = '';
     public $timeline = [];
     public $dispatchId;
+    public $readOnly = false;
 
     public function mount($dispatchId)
     {
@@ -40,6 +41,8 @@ class IncidentDetails extends Component
         $this->status = $dispatch->status;
         $this->selectedStatus = $dispatch->status; // Initialize dropdown with current status
         $this->dispatchId = $dispatch->id;
+        // Set read-only mode ONLY when coming from history/logs
+        $this->readOnly = request()->query('from') === 'logs';
         // Always use DB id for notes/timeline
         $dbId = $incident->id;
         $this->loadNotes($dbId);
@@ -48,6 +51,10 @@ class IncidentDetails extends Component
 
     public function updateStatus($status = null)
     {
+        // In read-only mode, silently ignore updates (no inline alert)
+        if ($this->readOnly) {
+            return;
+        }
         // Use the passed parameter or the selectedStatus property
         $newStatus = $status ?? $this->selectedStatus;
 
@@ -208,6 +215,10 @@ class IncidentDetails extends Component
 
     public function addNote()
     {
+        // In read-only mode, silently ignore note submissions (no inline alert)
+        if ($this->readOnly) {
+            return;
+        }
         $incidentId = $this->incident['id'] ?? null;
         $user = Auth::user();
         $noteText = trim($this->newNote);
@@ -274,6 +285,7 @@ class IncidentDetails extends Component
                 $this->status = $incident->status;
                 $this->loadNotes($incident->id);
                 $this->loadTimeline($incident->id);
+                // Do NOT reset $readOnly here; only set on mount
             }
         }
     }

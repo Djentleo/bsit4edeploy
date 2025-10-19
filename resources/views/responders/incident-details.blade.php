@@ -85,7 +85,7 @@
                 </div>
             </div>
 
-            <!-- Status Messages -->
+            <!-- Status Messages (success only). Read-only errors suppressed by design. -->
             @if (session()->has('status'))
             <div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
                 <div class="flex items-center">
@@ -98,30 +98,30 @@
             </div>
             @endif
 
-            @error('status')
-            <div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <div class="flex items-center">
-                    <svg class="w-5 h-5 text-red-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <p class="text-red-800">{{ $message }}</p>
-                </div>
-            </div>
-            @enderror
-
             <!-- Update Status Button -->
             <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700 mt-6">
                 <div class="flex items-center gap-3">
                     <select wire:model="selectedStatus"
-                        class="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        @if($readOnly) disabled @endif
+                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                        @if($readOnly)
+                            opacity-60 cursor-not-allowed bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400
+                        @else
+                            bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white
+                        @endif">
                         @foreach($statusOptions as $value => $label)
                         <option value="{{ $value }}">{{ $label }}</option>
                         @endforeach
                     </select>
                     <button type="button"
-                        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm"
-                        x-data="{}" x-on:click.prevent="Swal.fire({
+                        @if($readOnly) disabled @endif
+                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm
+                        @if($readOnly)
+                            bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-not-allowed opacity-70
+                        @else
+                            bg-blue-600 hover:bg-blue-700 text-white
+                        @endif"
+                        x-data="{}" @if(!$readOnly) x-on:click.prevent="Swal.fire({
                             title: 'Update Status?',
                             text: 'Are you sure you want to update the status?',
                             icon: 'question',
@@ -130,7 +130,7 @@
                             cancelButtonColor: '#d33',
                             confirmButtonText: 'Yes, update!',
                             cancelButtonText: 'Cancel'
-                        }).then((result) => { if (result.isConfirmed) { $wire.updateStatus(); } })">
+                        }).then((result) => { if (result.isConfirmed) { $wire.updateStatus(); } })" @endif>
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
@@ -190,10 +190,22 @@
             </div>
             <form wire:submit.prevent="addNote" class="flex gap-3">
                 <input type="text" wire:model.defer="newNote"
-                    class="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2.5 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    @if($readOnly) disabled @endif
+                    class="flex-1 border rounded-lg px-4 py-2.5 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                    @if($readOnly)
+                        bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-70
+                    @else
+                        bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white
+                    @endif"
                     placeholder="Add a note...">
                 <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                    @if($readOnly) disabled @endif
+                    class="px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                    @if($readOnly)
+                        bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-not-allowed opacity-70
+                    @else
+                        bg-blue-600 hover:bg-blue-700 text-white
+                    @endif">
                     Add Note
                 </button>
             </form>
