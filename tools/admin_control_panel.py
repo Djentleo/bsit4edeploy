@@ -151,6 +151,18 @@ class AdminControlPanel(tk.Tk):
             pass
         self._build_ui()
 
+        # Intercept window close to optionally stop running services
+        try:
+            self.protocol("WM_DELETE_WINDOW", self.on_close)
+        except Exception:
+            pass
+
+        # After UI is ready, detect already-running services and reflect state
+        try:
+            self.after(300, self.detect_running_services)
+        except Exception:
+            pass
+
     def _build_ui(self):
         # Main container with gradient-like background
         main_container = tk.Frame(self, bg="#ecf0f1", relief="flat", bd=0)
@@ -245,7 +257,7 @@ class AdminControlPanel(tk.Tk):
                     padx=12,
                     pady=6,
                     cursor="hand2",
-                    command=lambda l=label, c=cmd: self.run_command(l, c),
+                    command=lambda l=label, c=cmd: self.toggle_process(l, c),
                 )
                 btn.grid(row=1, column=i, sticky="ew", padx=(0, 4 if i == 0 else 0))
 
@@ -292,7 +304,7 @@ class AdminControlPanel(tk.Tk):
                     padx=12,
                     pady=6,
                     cursor="hand2",
-                    command=lambda l=label, c=cmd: self.run_command(l, c),
+                    command=lambda l=label, c=cmd: self.toggle_process(l, c),
                 )
                 # Add right gap for first column and bottom gap to separate rows
                 btn.grid(
@@ -340,7 +352,7 @@ class AdminControlPanel(tk.Tk):
                 padx=12,
                 pady=6,
                 cursor="hand2",
-                command=self.start_tunnel,
+                command=self.toggle_tunnel,
             )
             tunnel_btn.grid(row=4, column=0, sticky="ew", padx=(0, 4))
             # Track state for tunnel using its long-running label
@@ -616,6 +628,40 @@ class AdminControlPanel(tk.Tk):
         self.output.see(tk.END)
         self.output.configure(state=tk.DISABLED)
 
+    def toggle_process(self, label, cmd):
+        """Start/stop a long-running process on repeated clicks.
+        If the label is already running, kill it; else start it.
+        For non-long-running labels, just run once.
+        """
+        if label in LONG_RUNNING_LABELS:
+            # If running, stop
+            proc = self.processes.get(label)
+            if proc and proc.poll() is None:
+                try:
+                    self.append_output(f"\nStopping '{label}'...\n")
+                    if os.name == "nt":
+                        subprocess.run(
+                            ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                            capture_output=True,
+                        )
+                    else:
+                        proc.terminate()
+                except Exception as e:
+                    self.append_output(f"Stop failed for {label}: {e}\n")
+                return
+            # Not tracked - maybe started from a previous session; stop by port/image if active
+            if self._is_label_active(label):
+                self.append_output(f"\nStopping external '{label}' instance...\n")
+                self._stop_label_externally(label)
+                # Update UI
+                self._set_server_active(label, False)
+                return
+            # Not running -> start
+            return self.run_command(label, cmd)
+        else:
+            # Short task, just run
+            return self.run_command(label, cmd)
+
     def run_command(self, label, cmd):
         # Ensure working directory is repo root so artisan works
         cwd = REPO_ROOT
@@ -643,8 +689,8 @@ class AdminControlPanel(tk.Tk):
                 # track process by label, disable only that button
                 self.processes[label] = proc
                 try:
-                    # Ensure the button for this label stays disabled while running
-                    if label in self.buttons:
+                    # For short tasks: disable their button; for long-running allow toggling, keep enabled
+                    if label in self.buttons and not long_running:
                         self.buttons[label].configure(state=tk.DISABLED)
                 except Exception:
                     pass
@@ -751,15 +797,9 @@ class AdminControlPanel(tk.Tk):
                 except Exception:
                     pass
                 try:
-                    # Re-enable the button if no other process with same label (avoid duplicates)
-                    if label in self.buttons:
-                        self.buttons[label].configure(
-                            state=(
-                                tk.NORMAL
-                                if label not in self.processes
-                                else tk.DISABLED
-                            )
-                        )
+                    # Re-enable the button for short tasks; keep long-running enabled always
+                    if label in self.buttons and label not in LONG_RUNNING_LABELS:
+                        self.buttons[label].configure(state=(tk.NORMAL if label not in self.processes else tk.DISABLED))
                 except Exception:
                     pass
                 # Mark server button as inactive if it was a long-running label
@@ -775,7 +815,7 @@ class AdminControlPanel(tk.Tk):
                     scope=("single" if long_running else "global"),
                     label=label,
                 )
-                # Re-enable Tunnel button if the Cloudflare process finished
+                # Re-enable Tunnel button if the Cloudflare process finished (it stays enabled for toggle anyway)
                 try:
                     if (
                         label == "Start Cloudflare Tunnel"
@@ -817,15 +857,211 @@ class AdminControlPanel(tk.Tk):
 
     def start_tunnel(self):
         # Start a quick Cloudflare Tunnel to 127.0.0.1:8000
-        try:
-            if hasattr(self, "tunnel_btn") and self.tunnel_btn.winfo_exists():
-                self.tunnel_btn.configure(state=tk.DISABLED)
-        except Exception:
-            pass
         self.run_command(
             "Start Cloudflare Tunnel",
             [CLOUDFLARED_EXE, "tunnel", "--url", "http://127.0.0.1:8000"],
         )
+
+    def toggle_tunnel(self):
+        """Toggle Cloudflare Tunnel on/off."""
+        label = "Start Cloudflare Tunnel"
+        proc = self.processes.get(label)
+        if proc and proc.poll() is None:
+            try:
+                self.append_output("\nStopping Cloudflare Tunnel...\n")
+                if os.name == "nt":
+                    subprocess.run(
+                        ["taskkill", "/F", "/T", "/PID", str(proc.pid)],
+                        capture_output=True,
+                    )
+                else:
+                    proc.terminate()
+            except Exception as e:
+                self.append_output(f"Stop failed for Cloudflare Tunnel: {e}\n")
+            return
+        # Not tracked: if an external tunnel exists, stop it; else start new
+        if self._image_running(["cloudflared.exe", "cloudflared.exe "]):
+            self.append_output("\nStopping external Cloudflare Tunnel...\n")
+            self._taskkill_by_image(["cloudflared.exe"])  # reuse existing helper
+            self._set_server_active(label, False)
+            return
+        return self.start_tunnel()
+
+    # ---------- Detection & helpers ----------
+    def _image_running(self, exe_names: list[str]) -> bool:
+        if os.name != "nt":
+            # Basic non-Windows fallback
+            try:
+                out = subprocess.run(["ps", "-A"], capture_output=True, text=True)
+                txt = (out.stdout or "") + (out.stderr or "")
+                return any(name in txt for name in exe_names)
+            except Exception:
+                return False
+        try:
+            out = subprocess.run(["tasklist"], capture_output=True, text=True)
+            txt = (out.stdout or "") + (out.stderr or "")
+            for name in exe_names:
+                if name.lower() in txt.lower():
+                    return True
+        except Exception:
+            pass
+        return False
+
+    def _get_pid_by_port(self, port: int) -> int | None:
+        if os.name != "nt":
+            # lsof fallback on non-Windows
+            try:
+                out = subprocess.run(
+                    ["lsof", "-i", f":{port}", "-sTCP:LISTEN", "-n", "-P"],
+                    capture_output=True,
+                    text=True,
+                )
+                for line in out.stdout.splitlines():
+                    parts = line.split()
+                    if len(parts) >= 2 and parts[1].isdigit():
+                        return int(parts[1])
+            except Exception:
+                return None
+            return None
+        try:
+            # Use cmd to enable pipe/findstr
+            out = subprocess.run(
+                [
+                    "cmd.exe",
+                    "/c",
+                    f"netstat -ano | findstr :{port} | findstr LISTENING",
+                ],
+                capture_output=True,
+                text=True,
+            )
+            for line in out.stdout.splitlines():
+                parts = [p for p in line.split() if p]
+                if parts:
+                    try:
+                        pid = int(parts[-1])
+                        return pid
+                    except Exception:
+                        continue
+        except Exception:
+            pass
+        return None
+
+    def _kill_by_port(self, port: int):
+        pid = self._get_pid_by_port(port)
+        if not pid:
+            return
+        try:
+            if os.name == "nt":
+                subprocess.run(["taskkill", "/F", "/T", "/PID", str(pid)], capture_output=True)
+            else:
+                os.kill(pid, 15)
+        except Exception:
+            pass
+
+    def _is_label_active(self, label: str) -> bool:
+        if label == "Start PHP Server (serve)":
+            return self._port_open("127.0.0.1", 8000)
+        if label == "Start Severity API (python)":
+            # predict_severity_api.py listens on 5000
+            return self._port_open("127.0.0.1", 5000)
+        if label == "Start Cloudflare Tunnel":
+            return self._image_running(["cloudflared.exe"])
+        if label == "XAMPP":
+            return (
+                (self._port_open("127.0.0.1", 80) or self._port_open("127.0.0.1", 443))
+                and self._port_open("127.0.0.1", 3306)
+            )
+        return False
+
+    def _stop_label_externally(self, label: str):
+        try:
+            if label == "Start PHP Server (serve)":
+                self._kill_by_port(8000)
+            elif label == "Start Severity API (python)":
+                self._kill_by_port(5000)
+            elif label == "Start Cloudflare Tunnel":
+                self._taskkill_by_image(["cloudflared.exe"])  # already defined
+            elif label == "XAMPP":
+                self.stop_xampp()
+        except Exception:
+            pass
+
+    def detect_running_services(self):
+        """Detect background services started from previous sessions and update UI."""
+        try:
+            if self._is_label_active("Start PHP Server (serve)"):
+                self._set_server_active("Start PHP Server (serve)", True)
+                self.append_output("Detected: PHP dev server is running on port 8000.\n")
+        except Exception:
+            pass
+        try:
+            if self._is_label_active("Start Severity API (python)"):
+                self._set_server_active("Start Severity API (python)", True)
+                self.append_output("Detected: Severity API is running on port 5000.\n")
+        except Exception:
+            pass
+        try:
+            if self._is_label_active("Start Cloudflare Tunnel"):
+                self._set_server_active("Start Cloudflare Tunnel", True)
+                self.append_output("Detected: Cloudflare Tunnel is running.\n")
+        except Exception:
+            pass
+        try:
+            if self._is_label_active("XAMPP"):
+                self._set_server_active("XAMPP", True)
+                self.append_output("Detected: XAMPP (Apache + MySQL) is running.\n")
+        except Exception:
+            pass
+
+    def on_close(self):
+        """Prompt to stop running services or keep them running when closing the panel."""
+        try:
+            any_running = (
+                bool(self.processes)
+                or self._is_label_active("Start PHP Server (serve)")
+                or self._is_label_active("Start Severity API (python)")
+                or self._is_label_active("Start Cloudflare Tunnel")
+                or self._is_label_active("XAMPP")
+            )
+        except Exception:
+            any_running = False
+
+        if any_running:
+            res = messagebox.askyesno(
+                "Exit",
+                "Some services appear to be running. Stop them before exiting?\nYes = Stop and exit\nNo = Leave running and exit",
+            )
+            if res:
+                # Stop tracked ones
+                try:
+                    self.stop_all_current()
+                except Exception:
+                    pass
+                # Also stop external ones by port/image
+                try:
+                    if self._is_label_active("Start PHP Server (serve)"):
+                        self._kill_by_port(8000)
+                except Exception:
+                    pass
+                try:
+                    if self._is_label_active("Start Severity API (python)"):
+                        self._kill_by_port(5000)
+                except Exception:
+                    pass
+                try:
+                    if self._is_label_active("Start Cloudflare Tunnel"):
+                        self._taskkill_by_image(["cloudflared.exe"])
+                except Exception:
+                    pass
+                try:
+                    if self._is_label_active("XAMPP"):
+                        self.stop_xampp()
+                except Exception:
+                    pass
+        try:
+            self.destroy()
+        except Exception:
+            os._exit(0)
 
     # ---------- XAMPP controls ----------
     def _port_open(self, host: str, port: int, timeout: float = 1.0) -> bool:
@@ -1162,7 +1398,7 @@ class AdminControlPanel(tk.Tk):
                 )
                 # Only disable the button for this label
                 try:
-                    if label in self.buttons:
+                    if label in self.buttons and label not in LONG_RUNNING_LABELS:
                         self.buttons[label].configure(state=tk.DISABLED)
                 except Exception:
                     pass
@@ -1181,8 +1417,13 @@ class AdminControlPanel(tk.Tk):
                 except Exception:
                     pass
                 for b in self.command_buttons:
-                    if b.winfo_exists():  # Check if button still exists
+                    if b.winfo_exists():
                         b.configure(state=tk.DISABLED)
+                # Re-enable long-running buttons for toggle use
+                for lbl in LONG_RUNNING_LABELS:
+                    btn = self.buttons.get(lbl)
+                    if btn and btn.winfo_exists():
+                        btn.configure(state=tk.NORMAL)
             # Stop buttons
             if hasattr(self, "stop_btn") and self.stop_btn.winfo_exists():
                 self.stop_btn.configure(state=tk.NORMAL)
@@ -1196,6 +1437,7 @@ class AdminControlPanel(tk.Tk):
                 # Re-enable only if no process for that label remains
                 try:
                     if label in self.buttons and label not in self.processes:
+                        # Keep long-running enabled regardless
                         self.buttons[label].configure(state=tk.NORMAL)
                 except Exception:
                     pass
@@ -1219,10 +1461,13 @@ class AdminControlPanel(tk.Tk):
                 except Exception:
                     pass
                 for lbl, b in self.buttons.items():
-                    if b.winfo_exists():  # Check if button still exists
-                        b.configure(
-                            state=(tk.DISABLED if lbl in self.processes else tk.NORMAL)
-                        )
+                    if b.winfo_exists():
+                        b.configure(state=(tk.DISABLED if lbl in self.processes else tk.NORMAL))
+                # Ensure long-running buttons are clickable for toggle even during other tasks
+                for lbl in LONG_RUNNING_LABELS:
+                    btn = self.buttons.get(lbl)
+                    if btn and btn.winfo_exists():
+                        btn.configure(state=tk.NORMAL)
             # Update stop buttons state
             if hasattr(self, "stop_btn") and self.stop_btn.winfo_exists():
                 self.stop_btn.configure(
