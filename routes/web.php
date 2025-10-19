@@ -61,23 +61,51 @@ Route::middleware([
         }
         return view('incidents.cctv');
     })->name('incidents.cctv');
-    Route::get('incident-logs', [\App\Http\Controllers\IncidentLogsController::class, 'index'])->name('incident.logs');
     Route::get('incident-logs', function () {
         if (Auth::user()->role !== 'admin') {
             return redirect()->route('dashboard');
         }
         return app(\App\Http\Controllers\IncidentLogsController::class)->index(app(\App\Services\FirebaseService::class));
     })->name('incident.logs');
-
-    Route::get('/incident-report/generate', [\App\Http\Controllers\IncidentReportController::class, 'generate'])->name('incident-report.generate');
+    Route::get('/incident-report/generate', function (\Illuminate\Http\Request $request) {
+        if (Auth::user()->role !== 'admin') {
+            return redirect()->route('dashboard');
+        }
+        return app(\App\Http\Controllers\IncidentReportController::class)->generate($request);
+    })->name('incident-report.generate');
 });
 
 
 
-Route::get('/dispatch', function (\Illuminate\Http\Request $request) {
+Route::get('/dispatch', function (
+    \Illuminate\Http\Request $request
+) {
+    $user = Auth::user();
     $incidentId = $request->query('incident_id');
     $incident = $incidentId ? Incident::where('firebase_id', $incidentId)->first() : null;
-    return view('dispatch.index', compact('incidentId', 'incident'));
+
+    if ($user && $user->role === 'admin') {
+        // Admins can access all
+        return view('dispatch.index', compact('incidentId', 'incident'));
+    }
+
+    if ($user && $user->role === 'responder') {
+        // Responders: only if assigned
+        $assigned = \App\Models\Dispatch::where(function ($q) use ($incidentId) {
+            $q->where('incident_id', $incidentId)
+                ->orWhere('incident_id', \App\Models\Incident::where('firebase_id', $incidentId)->value('id'));
+        })
+            ->where('responder_id', $user->id)
+            ->exists();
+        if ($assigned) {
+            return view('dispatch.index', compact('incidentId', 'incident'));
+        }
+        // Not assigned: redirect to responder dashboard
+        return redirect()->route('responder.incidents');
+    }
+
+    // Not logged in: redirect to login
+    return redirect()->route('login');
 });
 Route::get('/test-firebase', function (FirebaseService $firebaseService) {
     $incidents = $firebaseService->getIncidents();

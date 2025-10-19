@@ -33,7 +33,15 @@ class IncidentDetails extends Component
 
     public function mount($dispatchId)
     {
+        $user = Auth::user();
+        if (! $user || $user->role !== 'responder') {
+            return redirect()->route('dashboard');
+        }
         $dispatch = Dispatch::findOrFail($dispatchId);
+        // Only allow assigned responder
+        if ($dispatch->responder_id !== $user->id) {
+            return redirect()->route('responder.incidents');
+        }
         $incident = Incident::where('id', $dispatch->incident_id)
             ->orWhere('firebase_id', $dispatch->incident_id)
             ->firstOrFail();
