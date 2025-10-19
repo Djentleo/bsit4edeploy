@@ -8,6 +8,10 @@ use Illuminate\Notifications\DatabaseNotification;
 
 class AdminNotificationBell extends Component
 {
+    // ...existing code...
+
+
+
     public $notifications = [];
     public $unreadCount = 0;
     public $filter = 'all'; // all, incident, status, note
@@ -65,5 +69,17 @@ class AdminNotificationBell extends Component
     public function render()
     {
         return view('livewire.admin-notification-bell');
+    }
+
+    public function deleteNotification($id)
+    {
+        $user = Auth::user();
+        if ($user) {
+            $notif = $user->notifications()->where('id', $id)->first();
+            if ($notif) {
+                $notif->delete();
+                $this->fetchNotifications();
+            }
+        }
     }
 }

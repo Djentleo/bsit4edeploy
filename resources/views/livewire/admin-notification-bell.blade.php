@@ -40,18 +40,13 @@
                 <button
                     class="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 @if($filter==='note') bg-blue-600 text-white shadow-md shadow-blue-500/30 @else bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 @endif"
                     wire:click="setFilter('note')">Notes</button>
-            </div>
-            <div class="flex items-center gap-1.5">
+                <span class="text-xs font-semibold text-gray-500 dark:text-gray-400 ml-1 mr-1">Sort:</span>
                 <button
-                    class="px-2.5 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 @if($sort==='desc') bg-blue-600 text-white shadow-md shadow-blue-500/30 @else bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 @endif"
-                    wire:click="setSort('desc')">
-                    <i class="fas fa-arrow-down text-[10px]"></i>
-                </button>
+                    class="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 @if($sort==='desc') bg-blue-600 text-white shadow-md shadow-blue-500/30 @else bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 @endif"
+                    wire:click="setSort('desc')">New</button>
                 <button
-                    class="px-2.5 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 @if($sort==='asc') bg-blue-600 text-white shadow-md shadow-blue-500/30 @else bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 @endif"
-                    wire:click="setSort('asc')">
-                    <i class="fas fa-arrow-up text-[10px]"></i>
-                </button>
+                    class="px-3 py-1.5 text-xs font-medium rounded-lg transition-all duration-200 @if($sort==='asc') bg-blue-600 text-white shadow-md shadow-blue-500/30 @else bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 @endif"
+                    wire:click="setSort('asc')">Old</button>
             </div>
         </div>
 
@@ -84,49 +79,57 @@
             }
             }
             @endphp
-            <a href="{{ $href }}"
-                class="block px-5 py-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 dark:hover:from-gray-700 dark:hover:to-gray-600 transition-all duration-200 group @if(!$notif->read_at) bg-blue-50/30 dark:bg-blue-900/10 @endif">
-                <div class="flex items-start gap-3">
-                    <!-- Icon with type-specific styling -->
-                    <div class="flex-shrink-0 mt-1">
-                        <span
-                            class="inline-flex items-center justify-center w-8 h-8 rounded-full @if($notif->data['type']==='incident') bg-blue-100 dark:bg-blue-900/30 @elseif($notif->data['type']==='status') bg-yellow-100 dark:bg-yellow-900/30 @elseif($notif->data['type']==='note') bg-purple-100 dark:bg-purple-900/30 @else bg-gray-100 dark:bg-gray-700 @endif">
-                            @if($notif->data['type']==='incident')
-                            <i class="fas fa-exclamation-triangle text-blue-600 dark:text-blue-400 text-sm"></i>
-                            @elseif($notif->data['type']==='status')
-                            <i class="fas fa-sync-alt text-yellow-600 dark:text-yellow-400 text-sm"></i>
-                            @elseif($notif->data['type']==='note')
-                            <i class="fas fa-sticky-note text-purple-600 dark:text-purple-400 text-sm"></i>
-                            @else
-                            <i class="fas fa-bell text-gray-600 dark:text-gray-400 text-sm"></i>
-                            @endif
-                        </span>
-                    </div>
-
-                    <!-- Content -->
-                    <div class="flex-1 min-w-0">
-                        <div class="flex items-center gap-2 mb-1.5">
+            <div class="relative group">
+                <a href="{{ $href }}"
+                    class="block px-5 py-4 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 dark:hover:from-gray-700 dark:hover:to-gray-600 transition-all duration-200 group @if(!$notif->read_at) bg-blue-50/30 dark:bg-blue-900/10 @endif">
+                    <div class="flex items-start gap-3">
+                        <!-- Icon with type-specific styling -->
+                        <div class="flex-shrink-0 mt-1">
                             <span
-                                class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium @if($notif->data['type']==='incident') bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 @elseif($notif->data['type']==='status') bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 @elseif($notif->data['type']==='note') bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif">
-                                {{ ucfirst($notif->data['type'] ?? 'notification') }}
-                            </span>
-                            <span class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                                <i class="far fa-clock text-[10px]"></i>
-                                {{ $notif->created_at->diffForHumans() }}
+                                class="inline-flex items-center justify-center w-8 h-8 rounded-full @if($notif->data['type']==='incident') bg-blue-100 dark:bg-blue-900/30 @elseif($notif->data['type']==='status') bg-yellow-100 dark:bg-yellow-900/30 @elseif($notif->data['type']==='note') bg-purple-100 dark:bg-purple-900/30 @else bg-gray-100 dark:bg-gray-700 @endif">
+                                @if($notif->data['type']==='incident')
+                                <i class="fas fa-exclamation-triangle text-blue-600 dark:text-blue-400 text-sm"></i>
+                                @elseif($notif->data['type']==='status')
+                                <i class="fas fa-sync-alt text-yellow-600 dark:text-yellow-400 text-sm"></i>
+                                @elseif($notif->data['type']==='note')
+                                <i class="fas fa-sticky-note text-purple-600 dark:text-purple-400 text-sm"></i>
+                                @else
+                                <i class="fas fa-bell text-gray-600 dark:text-gray-400 text-sm"></i>
+                                @endif
                             </span>
                         </div>
-                        <p
-                            class="text-sm font-medium text-gray-900 dark:text-gray-100 leading-snug line-clamp-2 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
-                            {{ $notif->data['message'] ?? 'Notification' }}
-                        </p>
-                    </div>
 
-                    <!-- Arrow indicator -->
-                    <div class="flex-shrink-0 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i class="fas fa-chevron-right text-blue-600 dark:text-blue-400 text-xs"></i>
+                        <!-- Content -->
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1.5">
+                                <span
+                                    class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium @if($notif->data['type']==='incident') bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 @elseif($notif->data['type']==='status') bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 @elseif($notif->data['type']==='note') bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 @else bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 @endif">
+                                    {{ ucfirst($notif->data['type'] ?? 'notification') }}
+                                </span>
+                                <span class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                                    <i class="far fa-clock text-[10px]"></i>
+                                    {{ $notif->created_at->diffForHumans() }}
+                                </span>
+                            </div>
+                            <p
+                                class="text-sm font-medium text-gray-900 dark:text-gray-100 leading-snug line-clamp-2 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors">
+                                {{ $notif->data['message'] ?? 'Notification' }}
+                            </p>
+                        </div>
+
+                        <!-- Arrow indicator -->
+                        <div class="flex-shrink-0 mt-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <i class="fas fa-chevron-right text-blue-600 dark:text-blue-400 text-xs"></i>
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+                <!-- Delete/hide button -->
+                <button wire:click="deleteNotification('{{ $notif->id }}')"
+                    class="absolute top-2 right-2 z-10 text-gray-400 hover:text-red-500 bg-white dark:bg-gray-800 rounded-full p-1 transition-colors duration-150"
+                    title="Delete notification">
+                    <i class="fas fa-times text-xs"></i>
+                </button>
+            </div>
             @empty
             <div class="px-6 py-12 text-center">
                 <div
