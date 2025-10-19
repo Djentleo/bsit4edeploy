@@ -80,8 +80,8 @@
     <div class="container mx-auto py-8">
         <!-- Header Banner -->
         <div class="flex items-center mb-6 border-b pb-3">
-            <img src="https://scontent.fmnl4-7.fna.fbcdn.net/v/t39.30808-6/559425642_122149487702748041_1971237142326372742_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeF8kM5RNkJBptscc3TF7cD2k3gm0Rl5aK6TeCbRGXloruUXplkG9VhXq1H9i5SzQ3eL3nCiNfHmJVup25T1ZFkF&_nc_ohc=hU0CtEGEHf0Q7kNvwGNA9T8&_nc_oc=AdkjMNAZxqcibz95RIgy7usXeoAX-L9NN_-zL-Vmczay2zlFGCQa1yWVMTyKjP81zyM&_nc_zt=23&_nc_ht=scontent.fmnl4-7.fna&_nc_gid=WgESCojIZyc9W6dhrZjV3A&oh=00_Afeg39JH8Y5Aa1We8cFrQMO0aWsDNDz7WXbXN-Li3AhnEA&oe=68F38B8D"
-                alt="Barangay Baritan Logo" class="mr-4" style="width:60px; height:60px; object-fit:contain;" />
+            <img src="https://firebasestorage.googleapis.com/v0/b/incident-report--database.firebasestorage.app/o/baritan-logo.png?alt=media&token=43596c3d-3b7d-4b1a-b12a-39fd55b927dc"
+                alt="Barangay Baritan Logo" class="mr-4" style="width:80px; height:80px; object-fit:contain;" />
             <div>
                 <div class="font-bold text-lg">Barangay Baritan, Malabon City</div>
                 <div class="font-semibold text-base">AI-Based Incident Report and Management System</div>
