@@ -8,9 +8,8 @@ use Illuminate\Notifications\DatabaseNotification;
 
 class AdminNotificationBell extends Component
 {
+    protected $listeners = ['notificationUpdated' => 'fetchNotifications'];
     // ...existing code...
-
-
 
     public $notifications = [];
     public $unreadCount = 0;
@@ -29,10 +28,13 @@ class AdminNotificationBell extends Component
         if (!$user) return;
         $query = $user->notifications();
         if ($this->filter !== 'all') {
-            // Use JSON_EXTRACT to be explicit for MySQL
-            $query->whereRaw("JSON_EXTRACT(data, '$.type') = ?", [$this->filter]);
+            // Portable JSON filtering across drivers
+            $query->where('data->type', $this->filter);
         }
-        $query->orderBy('created_at', $this->sort);
+        // Validate sort direction and override default ordering from relation
+        $sortDirection = in_array($this->sort, ['asc', 'desc']) ? $this->sort : 'desc';
+        // Replace the relation's default orderBy with our chosen direction
+        $query->reorder('created_at', $sortDirection);
         $this->notifications = $query->limit(20)->get();
         $this->unreadCount = $user->unreadNotifications()->count();
     }

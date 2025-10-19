@@ -1,4 +1,4 @@
-<div class="relative" x-data="{ open: false }">
+<div class="relative" x-data="{ open: false }" wire:poll.5s="fetchNotifications">
     <!-- Notification Bell Button -->
     <button type="button" @click.stop="open = !open; if(open) { $wire.markAllRead() }"
         class="relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full group transition-all duration-200">
@@ -52,7 +52,7 @@
 
         <!-- Notifications List -->
         <div
-            class="max-h-[340px] overflow-y-auto divide-y divide-gray-100 dark:divide-gray-700 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+            class="max-h-[340px] custom-scrollbar overflow-y-auto divide-y divide-gray-100 dark:divide-gray-700 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
             @forelse($notifications as $notif)
             @php
             // Build a safe href that works even when the app runs under a subfolder (e.g., /CAP102_TEST/public)
@@ -142,4 +142,36 @@
             @endforelse
         </div>
     </div>
+    <!-- Custom Scrollbar Styles -->
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #374151;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #6b7280;
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
 </div>
