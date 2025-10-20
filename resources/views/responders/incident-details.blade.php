@@ -101,9 +101,7 @@
             <!-- Update Status Button -->
             <div class="flex justify-end pt-4 border-t border-gray-200 dark:border-gray-700 mt-6">
                 <div class="flex items-center gap-3">
-                    <select wire:model="selectedStatus"
-                        @if($readOnly) disabled @endif
-                        class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                    <select wire:model="selectedStatus" @if($readOnly) disabled @endif class="border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent
                         @if($readOnly)
                             opacity-60 cursor-not-allowed bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400
                         @else
@@ -113,15 +111,12 @@
                         <option value="{{ $value }}">{{ $label }}</option>
                         @endforeach
                     </select>
-                    <button type="button"
-                        @if($readOnly) disabled @endif
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm
+                    <button type="button" @if($readOnly) disabled @endif class="inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-sm
                         @if($readOnly)
                             bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-not-allowed opacity-70
                         @else
                             bg-blue-600 hover:bg-blue-700 text-white
-                        @endif"
-                        x-data="{}" @if(!$readOnly) x-on:click.prevent="Swal.fire({
+                        @endif" x-data="{}" @if(!$readOnly) x-on:click.prevent="Swal.fire({
                             title: 'Update Status?',
                             text: 'Are you sure you want to update the status?',
                             icon: 'question',
@@ -189,18 +184,13 @@
                 @endforelse
             </div>
             <form wire:submit.prevent="addNote" class="flex gap-3">
-                <input type="text" wire:model.defer="newNote"
-                    @if($readOnly) disabled @endif
-                    class="flex-1 border rounded-lg px-4 py-2.5 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                <input type="text" wire:model.defer="newNote" @if($readOnly) disabled @endif class="flex-1 border rounded-lg px-4 py-2.5 placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent
                     @if($readOnly)
                         bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-70
                     @else
                         bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white
-                    @endif"
-                    placeholder="Add a note...">
-                <button type="submit"
-                    @if($readOnly) disabled @endif
-                    class="px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                    @endif" placeholder="Add a note...">
+                <button type="submit" @if($readOnly) disabled @endif class="px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                     @if($readOnly)
                         bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-300 cursor-not-allowed opacity-70
                     @else
@@ -334,6 +324,113 @@
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script src="https://unpkg.com/@mapbox/mapbox-sdk/umd/mapbox-sdk.min.js"></script>
+    <style>
+        /* Custom Map Style Switcher Control */
+        .mapboxgl-ctrl-style-switcher {
+            background-color: #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, .1);
+        }
+
+        .mapboxgl-ctrl-style-switcher button {
+            width: 29px;
+            height: 29px;
+            display: block;
+            padding: 0;
+            outline: none;
+            border: 0;
+            box-sizing: border-box;
+            background-color: transparent;
+            color: #111827;
+            /* ensure icon visible in light mode */
+            cursor: pointer;
+            position: relative;
+        }
+
+        .mapboxgl-ctrl-style-switcher button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        .mapboxgl-ctrl-style-switcher button svg {
+            width: 20px;
+            height: 20px;
+            display: block;
+            margin: auto;
+        }
+
+        .mapboxgl-ctrl-style-switcher .style-dropdown {
+            position: absolute;
+            top: 0;
+            right: 35px;
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, .1);
+            display: none;
+            min-width: 180px;
+            z-index: 1;
+        }
+
+        .mapboxgl-ctrl-style-switcher .style-dropdown.active {
+            display: block;
+        }
+
+        .mapboxgl-ctrl-style-switcher .style-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            border-bottom: 1px solid #f0f0f0;
+            white-space: nowrap;
+        }
+
+        .mapboxgl-ctrl-style-switcher .style-option:last-child {
+            border-bottom: none;
+        }
+
+        .mapboxgl-ctrl-style-switcher .style-option:hover {
+            background-color: #f0f0f0;
+        }
+
+        .mapboxgl-ctrl-style-switcher .style-option.active {
+            background-color: #e8f4f8;
+            font-weight: 600;
+        }
+
+        /* Dark mode support (Tailwind uses `.dark` class) */
+        .dark .mapboxgl-ctrl-style-switcher {
+            background-color: #111827;
+            /* gray-900 */
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+        }
+
+        .dark .mapboxgl-ctrl-style-switcher button {
+            color: #e5e7eb;
+            /* icon color in dark */
+        }
+
+        .dark .mapboxgl-ctrl-style-switcher button:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .dark .mapboxgl-ctrl-style-switcher .style-dropdown {
+            background: #111827;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.08);
+        }
+
+        .dark .mapboxgl-ctrl-style-switcher .style-option {
+            color: #e5e7eb;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .dark .mapboxgl-ctrl-style-switcher .style-option:hover {
+            background-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .dark .mapboxgl-ctrl-style-switcher .style-option.active {
+            background-color: rgba(59, 130, 246, 0.18);
+            color: #ffffff;
+        }
+    </style>
     <script>
         (function () {
             if (window.__initResponderMapsBound) return; // prevent double-binding
@@ -380,9 +477,87 @@
                 while (containerEl.firstChild) containerEl.removeChild(containerEl.firstChild);
             }
 
+            // Custom Style Switcher Control
+            class StyleSwitcherControl {
+                constructor(styles) {
+                    this._styles = styles;
+                    this._currentStyle = styles[0].url;
+                }
+
+                onAdd(map) {
+                    this._map = map;
+                    this._container = document.createElement('div');
+                    this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group mapboxgl-ctrl-style-switcher';
+
+                    // Create button
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.innerHTML = '<svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/></svg>';
+                    button.title = 'Change map style';
+
+                    // Create dropdown
+                    const dropdown = document.createElement('div');
+                    dropdown.className = 'style-dropdown';
+
+                    this._styles.forEach(style => {
+                        const option = document.createElement('div');
+                        option.className = 'style-option';
+                        option.textContent = style.name;
+                        option.dataset.styleUrl = style.url;
+                        
+                        if (style.url === this._currentStyle) {
+                            option.classList.add('active');
+                        }
+
+                        option.addEventListener('click', () => {
+                            // Update active state
+                            dropdown.querySelectorAll('.style-option').forEach(opt => opt.classList.remove('active'));
+                            option.classList.add('active');
+                            
+                            // Change map style
+                            this._currentStyle = style.url;
+                            this._map.setStyle(style.url);
+                            
+                            // Close dropdown
+                            dropdown.classList.remove('active');
+                        });
+
+                        dropdown.appendChild(option);
+                    });
+
+                    // Toggle dropdown on button click
+                    button.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        dropdown.classList.toggle('active');
+                    });
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', () => {
+                        dropdown.classList.remove('active');
+                    });
+
+                    this._container.appendChild(button);
+                    this._container.appendChild(dropdown);
+
+                    return this._container;
+                }
+
+                onRemove() {
+                    this._container.parentNode.removeChild(this._container);
+                    this._map = undefined;
+                }
+            }
+
             window.initResponderMaps = function () {
                 if (!window.mapboxgl) return;
-                mapboxgl.accessToken = 'pk.eyJ1IjoiZGplbnRsZW8iLCJhIjoiY21mNnoxMDgzMGt3NjJyb20zY3dqdnRjdSJ9.OKI8RAGo7e9eRRXejMLfOA';
+                mapboxgl.accessToken = @json(config('services.mapbox.token'));
+
+                const mapStyles = [
+                    { name: 'Streets', url: 'mapbox://styles/mapbox/streets-v12' },
+                    { name: 'Satellite Streets', url: 'mapbox://styles/mapbox/satellite-streets-v12' },
+                    { name: 'Navigation Day', url: 'mapbox://styles/mapbox/navigation-day-v1' },
+                    { name: 'Navigation Night', url: 'mapbox://styles/mapbox/navigation-night-v1' }
+                ];
 
                 // Initialize Mobile map if present
                 var mapEl = document.getElementById('map');
@@ -390,7 +565,7 @@
                     destroyExistingMap(mapEl);
                     var map = new mapboxgl.Map({
                         container: 'map',
-                        style: 'mapbox://styles/mapbox/streets-v11',
+                        style: mapStyles[0].url,
                         center: [120.9532, 14.6562],
                         zoom: 13,
                         pitch: 45,
@@ -404,6 +579,7 @@
                         trackUserLocation: true,
                         showUserHeading: true
                     }));
+                    map.addControl(new StyleSwitcherControl(mapStyles), 'top-right');
                     add3DBuildings(map);
                     // Ensure proper sizing after DOM updates
                     setTimeout(() => { try { map.resize(); } catch (e) {} }, 60);
@@ -437,7 +613,7 @@
                     destroyExistingMap(cctvEl);
                     var cctvMap = new mapboxgl.Map({
                         container: 'cctv-map',
-                        style: 'mapbox://styles/mapbox/streets-v11',
+                        style: mapStyles[0].url,
                         center: [120.9532, 14.6562],
                         zoom: 13,
                         pitch: 45,
@@ -451,6 +627,7 @@
                         trackUserLocation: true,
                         showUserHeading: true
                     }));
+                    cctvMap.addControl(new StyleSwitcherControl(mapStyles), 'top-right');
                     add3DBuildings(cctvMap);
                     // Ensure proper sizing after DOM updates
                     setTimeout(() => { try { cctvMap.resize(); } catch (e) {} }, 60);
