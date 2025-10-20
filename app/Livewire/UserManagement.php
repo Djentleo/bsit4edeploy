@@ -122,6 +122,15 @@ class UserManagement extends Component
             // Log or handle mail error
         }
 
+        // Send email verification only for admin and responder roles
+        if (in_array($user->role, ['admin', 'responder'])) {
+            try {
+                $user->sendEmailVerificationNotification();
+            } catch (\Exception $e) {
+                // Log or handle verification email error
+            }
+        }
+
         $this->closeModal();
         $this->reset(['name', 'email', 'password', 'mobile', 'role', 'assigned_area']);
         $this->dispatch('user-added');
