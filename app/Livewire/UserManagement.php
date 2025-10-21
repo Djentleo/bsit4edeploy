@@ -6,7 +6,9 @@ use App\Services\FirebaseUserService;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
+
 use App\Mail\WelcomeUserMail;
+use Illuminate\Support\Facades\DB;
 
 class UserManagement extends Component
 {
@@ -160,6 +162,14 @@ class UserManagement extends Component
             'responder_type' => $this->role === 'responder' ? $this->responder_type : null,
             'assigned_area' => $this->assigned_area,
         ]);
+
+        // Send email notification about updated data (no password)
+        try {
+            Mail::to($user->email)->send(new \App\Mail\UserUpdatedMail($user));
+        } catch (\Exception $e) {
+            // Log or handle mail error
+        }
+
         $this->closeModal();
         $this->dispatch('user-updated');
     }
@@ -169,6 +179,10 @@ class UserManagement extends Component
         $user = User::findOrFail($id);
         $user->status = $user->status === 'active' ? 'inactive' : 'active';
         $user->save();
+        // Force logout if deactivated
+        if ($user->status === 'inactive') {
+            DB::table('sessions')->where('user_id', $user->id)->delete();
+        }
         $this->dispatch('user-status-toggled');
     }
 

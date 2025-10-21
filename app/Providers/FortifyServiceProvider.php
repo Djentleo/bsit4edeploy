@@ -60,6 +60,10 @@ class FortifyServiceProvider extends ServiceProvider
                 ->orWhere('email', $login)
                 ->first();
             if ($user && \Illuminate\Support\Facades\Hash::check($request->input('password'), $user->password)) {
+                // Block login if user is not active
+                if ($user->status !== 'active') {
+                    return null;
+                }
                 return $user;
             }
             return null;
