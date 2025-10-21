@@ -215,7 +215,9 @@ class IncidentDetails extends Component
                     'id' => $note->id,
                     'note' => $note->note,
                     'user_name' => $note->user->name ?? 'Unknown',
-                    'created_at' => $note->created_at->diffForHumans(),
+                    'user_role' => $note->user->role ?? null,
+                    'responder_type' => $note->user->responder_type ?? null,
+                    'created_at' => $note->created_at,
                 ];
             })->toArray();
         $this->incidentNotes = $notes;

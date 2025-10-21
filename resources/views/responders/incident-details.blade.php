@@ -156,19 +156,52 @@
             <div class="space-y-3 max-h-40 overflow-y-auto mb-4">
                 @forelse($incidentNotes as $note)
                 <div
-                    class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 border-l-4 border-blue-500">
-                    <div class="flex items-start justify-between">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-2 mb-2">
-                                <div
-                                    class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                                    {{ substr($note['user_name'], 0, 1) }}
-                                </div>
-                                <div class="font-semibold text-gray-900 dark:text-white">{{ $note['user_name'] }}</div>
+                    class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 rounded-lg p-4 border-l-4 border-blue-500 relative">
+                    <!-- Top row: Avatar, Name, and Role badges in top-right -->
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium flex-shrink-0">
+                                {{ substr($note['user_name'], 0, 1) }}
                             </div>
-                            <div class="text-gray-700 dark:text-gray-300 leading-relaxed">{{ $note['note'] }}</div>
+                            <span class="font-semibold text-gray-900 dark:text-white">{{ $note['user_name'] }}</span>
                         </div>
-                        <div class="text-xs text-gray-500 dark:text-gray-400 ml-4">{{ $note['created_at'] }}</div>
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            @if(!empty($note['user_role']))
+                            <span
+                                class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold border
+                                    @if($note['user_role'] === 'admin') bg-red-100 text-red-800 border-red-300 dark:bg-red-900 dark:text-red-200 dark:border-red-700
+                                    @elseif($note['user_role'] === 'responder') bg-green-100 text-green-800 border-green-300 dark:bg-green-900 dark:text-green-200 dark:border-green-700
+                                    @else bg-gray-100 text-gray-800 border-gray-300 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 @endif">
+                                @if($note['user_role'] === 'admin') A
+                                @elseif($note['user_role'] === 'responder') R
+                                @else {{ substr(ucfirst($note['user_role']), 0, 1) }}
+                                @endif
+                            </span>
+                            @endif
+                            @if(!empty($note['user_role']) && strtolower($note['user_role']) === 'responder' &&
+                            !empty($note['responder_type']))
+                            <span
+                                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-900 dark:text-emerald-200 dark:border-emerald-700">
+                                {{ $note['responder_type'] }}
+                            </span>
+                            @endif
+                        </div>
+                    </div>
+                    <!-- Note text -->
+                    <div class="text-gray-700 dark:text-gray-300 leading-relaxed pl-10 pr-16 mb-2">{{ $note['note'] }}
+                    </div>
+                    <!-- Bottom-right timestamp -->
+                    <div class="absolute bottom-3 right-4">
+                        <span
+                            class="text-xs text-gray-500 dark:text-gray-400 bg-gray-200 dark:bg-gray-600 px-2 py-0.5 rounded-full">
+                            @php
+                            $createdAt = is_string($note['created_at']) ? \Carbon\Carbon::parse($note['created_at']) :
+                            $note['created_at'];
+                            $seconds = $createdAt->diffInSeconds(now());
+                            if ($seconds < 60) { echo max(1, round($seconds)) . 's' ; } elseif ($seconds < 3600) { echo
+                                round($seconds / 60) . 'm' ; } elseif ($seconds < 86400) { echo round($seconds / 3600)
+                                . 'h' ; } else { echo round($seconds / 86400) . 'd' ; } @endphp </span>
                     </div>
                 </div>
                 @empty
